@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/views/loans_view.dart';
-import 'package:librarian_app/lending/views/profile_view.dart';
-import 'package:librarian_app/lending/views/select_member_view.dart';
+import 'package:librarian_app/lending/views/borrowers_view.dart';
+import 'package:librarian_app/lending/views/select_borrower_view.dart';
 
 class LendingPage extends StatefulWidget {
   const LendingPage({super.key});
@@ -16,8 +16,8 @@ class _LendingPageState extends State<LendingPage> {
   int _viewIndex = 0;
   final _views = [
     const LoansView(),
-    const SelectMemberView(),
-    const ProfileView(),
+    const SelectBorrowerView(),
+    const BorrowersView(),
   ];
 
   @override
@@ -39,8 +39,8 @@ class _LendingPageState extends State<LendingPage> {
             label: "Open Loan",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: "Me",
+            icon: Icon(Icons.people_rounded),
+            label: "Borrowers",
           ),
         ],
         backgroundColor: Colors.blue,
