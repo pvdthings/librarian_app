@@ -28,7 +28,6 @@ class LoansView extends StatelessWidget {
             label: Text(_loans[index]["due"] as String),
           ),
           tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
-          hoverColor: Colors.blueGrey[100],
         );
       },
     );

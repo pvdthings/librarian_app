@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/lending_page.dart';
+import 'package:librarian_app/lending/pages/lending_page.dart';
 
 void main() {
   runApp(const LibrarianApp());

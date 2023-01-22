@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/lending/pages/open_loan_page.dart';
 import 'package:librarian_app/lending/views/loans_view.dart';
 import 'package:librarian_app/lending/views/borrowers_view.dart';
-import 'package:librarian_app/lending/views/select_borrower_view.dart';
 
 class LendingPage extends StatefulWidget {
   const LendingPage({super.key});
@@ -14,15 +14,18 @@ class LendingPage extends StatefulWidget {
 
 class _LendingPageState extends State<LendingPage> {
   int _viewIndex = 0;
+
   final _views = [
     const LoansView(),
-    const SelectBorrowerView(),
     const BorrowersView(),
   ];
+
+  final _titles = ["Loans", "Borrowers"];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text(_titles[_viewIndex])),
       body: _views[_viewIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _viewIndex,
@@ -35,20 +38,27 @@ class _LendingPageState extends State<LendingPage> {
             label: "Loans",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_rounded),
-            label: "Open Loan",
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.people_rounded),
             label: "Borrowers",
           ),
         ],
-        backgroundColor: Colors.blue,
         iconSize: 30,
-        selectedItemColor: Colors.white,
         showSelectedLabels: false,
         showUnselectedLabels: false,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const OpenLoanPage()),
+          );
+        },
+        child: const Icon(
+          Icons.add_rounded,
+          size: 30,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
