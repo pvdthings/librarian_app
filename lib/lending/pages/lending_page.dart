@@ -15,12 +15,15 @@ class LendingPage extends StatefulWidget {
 class _LendingPageState extends State<LendingPage> {
   int _viewIndex = 0;
 
-  final _views = [
+  static final _views = [
     const LoansView(),
     const BorrowersView(),
   ];
 
-  final _titles = ["Loans", "Borrowers"];
+  static final _titles = [
+    "Loans",
+    "Borrowers",
+  ];
 
   @override
   Widget build(BuildContext context) {

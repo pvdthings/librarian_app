@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/pages/lending_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const LibrarianApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => LoansModel(),
+    child: const LibrarianApp(),
+  ));
 }
 
 class LibrarianApp extends StatelessWidget {
