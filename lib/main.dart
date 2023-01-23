@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/pages/lending_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => LoansModel(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<LoansModel>(
+        create: (context) => LoansModel(),
+      ),
+      ChangeNotifierProvider<BorrowersModel>(
+        create: (context) => BorrowersModel(),
+      ),
+    ],
     child: const LibrarianApp(),
   ));
 }
