@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/views/add_things_view.dart';
 import 'package:librarian_app/lending/views/open_loan_view.dart';
 import 'package:librarian_app/lending/views/select_borrower_view.dart';
+import 'package:librarian_app/views/placeholder_view.dart';
 
 class OpenLoanPage extends StatefulWidget {
   const OpenLoanPage({super.key});
@@ -20,12 +21,21 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     });
   }
 
+  void skipToLastViewIndex() {
+    setState(() {
+      _viewIndex = _viewModels.length - 1;
+    });
+  }
+
   @override
   void initState() {
     _viewModels = [
       ViewModel(
         title: "Select Borrower",
-        body: SelectBorrowerView(onTap: incrementViewIndex),
+        body: SelectBorrowerView(
+          onTapActiveBorrower: incrementViewIndex,
+          onTapInactiveBorrower: skipToLastViewIndex,
+        ),
       ),
       ViewModel(
         title: "Add Things",
@@ -47,6 +57,19 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
           backgroundColor: Colors.green,
           child: const Icon(
             Icons.check_rounded,
+            size: 30,
+          ),
+        ),
+      ),
+      ViewModel(
+        title: "Inactive Borrower",
+        body: const PlaceholderView(
+            title: "Inactive Borrower Reasons & QR code to pay dues"),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => Navigator.pop(context),
+          backgroundColor: Colors.orange,
+          child: const Icon(
+            Icons.close_rounded,
             size: 30,
           ),
         ),

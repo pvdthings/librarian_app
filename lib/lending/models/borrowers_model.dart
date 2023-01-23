@@ -5,6 +5,10 @@ class BorrowersModel extends ChangeNotifier {
     const Borrower(name: "Ash Ketchum"),
     const Borrower(name: "Professor Oak"),
     const Borrower(name: "Nurse May"),
+    const Borrower(
+      name: "Brock",
+      inactiveReasons: [InactiveReasonCode.overdueLoan],
+    ),
   ];
 
   Iterable<Borrower> get all => _borrowers;
@@ -12,6 +16,14 @@ class BorrowersModel extends ChangeNotifier {
 
 class Borrower {
   final String name;
+  final List<InactiveReasonCode>? inactiveReasons;
 
-  const Borrower({required this.name});
+  bool get active => inactiveReasons?.isEmpty ?? true;
+
+  const Borrower({
+    required this.name,
+    this.inactiveReasons,
+  });
 }
+
+enum InactiveReasonCode { unpaidDues, overdueLoan, banned }
