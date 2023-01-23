@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/lending/models/borrowers_model.dart';
 
 class LoansModel extends ChangeNotifier {
-  static final List<Loan> _loans = [
-    const Loan(
-      name: "Alice",
-      things: "Chainsaw, Shovel, Rubber Gloves",
-      due: "Today",
-    ),
-    const Loan(
-      name: "Bob",
-      things: "Coventry-opoly",
-      due: "10/31",
-    )
-  ];
-
-  Iterable<Loan> get activeLoans => _loans;
+  List<Loan> getAll() {
+    return [
+      const Loan(
+        borrower: Borrower(name: "Ash Ketchum"),
+        things: "Pokédex, Flyswatter",
+        due: "Today",
+      ),
+      const Loan(
+        borrower: Borrower(name: "Brock"),
+        things: "UltraBall, Kanto Map",
+        due: "1/5",
+        isOverdue: true,
+      ),
+    ];
+  }
 }
 
 class Loan {
-  final String name;
   final String things;
   final String due;
+  final Borrower borrower;
+  final bool isOverdue;
 
   const Loan({
-    required this.name,
+    required this.borrower,
     required this.things,
     required this.due,
+    this.isOverdue = false,
   });
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/views/add_things_view.dart';
 import 'package:librarian_app/lending/views/open_loan_view.dart';
-import 'package:librarian_app/lending/views/select_borrower_view.dart';
+import 'package:librarian_app/lending/views/borrowers_list_view.dart';
 import 'package:librarian_app/views/placeholder_view.dart';
 
 class OpenLoanPage extends StatefulWidget {
@@ -32,7 +32,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     _viewModels = [
       ViewModel(
         title: "Select Borrower",
-        body: SelectBorrowerView(
+        body: BorrowersListView(
           onTapActiveBorrower: incrementViewIndex,
           onTapInactiveBorrower: skipToLastViewIndex,
         ),

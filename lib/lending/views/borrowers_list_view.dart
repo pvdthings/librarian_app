@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:provider/provider.dart';
 
-class SelectBorrowerView extends StatelessWidget {
-  const SelectBorrowerView({
+class BorrowersListView extends StatelessWidget {
+  const BorrowersListView({
     super.key,
     this.onTapActiveBorrower,
     this.onTapInactiveBorrower,

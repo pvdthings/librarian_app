@@ -10,16 +10,18 @@ class LoansView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<LoansModel>(
       builder: (context, model, child) {
-        final loans = model.activeLoans.toList();
+        final loans = model.getAll();
 
         return ListView.builder(
           itemCount: loans.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(loans[index].name),
+              title: Text(loans[index].borrower.name),
               subtitle: Text(loans[index].things),
               trailing: Chip(
                 label: Text(loans[index].due),
+                backgroundColor:
+                    loans[index].isOverdue ? Colors.red[100] : null,
               ),
               tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
               hoverColor: Colors.grey[100],
