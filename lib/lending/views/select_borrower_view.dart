@@ -16,6 +16,12 @@ class SelectBorrowerView extends StatelessWidget {
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(borrowers[index].name),
+              subtitle: const Text(
+                "Active",
+                style: TextStyle(
+                  color: Colors.green,
+                ),
+              ),
               tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
               hoverColor: Colors.grey[100],
               onTap: () {},
