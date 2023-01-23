@@ -3,7 +3,9 @@ import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:provider/provider.dart';
 
 class SelectBorrowerView extends StatelessWidget {
-  const SelectBorrowerView({super.key});
+  const SelectBorrowerView({super.key, this.onTap});
+
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class SelectBorrowerView extends StatelessWidget {
               ),
               tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
               hoverColor: Colors.grey[100],
-              onTap: () {},
+              onTap: onTap,
             );
           },
         );

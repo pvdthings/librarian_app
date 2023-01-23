@@ -11,46 +11,69 @@ class OpenLoanPage extends StatefulWidget {
 }
 
 class _OpenLoanPageState extends State<OpenLoanPage> {
+  late final List<ViewModel> _viewModels;
   int _viewIndex = 0;
 
-  static final _views = [
-    const SelectBorrowerView(),
-    const AddThingsView(),
-    const OpenLoanView(),
-  ];
+  void incrementViewIndex() {
+    setState(() {
+      _viewIndex += 1;
+    });
+  }
 
-  static final _titles = [
-    "Select Borrower",
-    "Add Things",
-    "Loan Details",
-  ];
+  @override
+  void initState() {
+    _viewModels = [
+      ViewModel(
+        title: "Select Borrower",
+        body: SelectBorrowerView(onTap: incrementViewIndex),
+      ),
+      ViewModel(
+        title: "Add Things",
+        body: const AddThingsView(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: incrementViewIndex,
+          backgroundColor: Colors.orange,
+          child: const Icon(
+            Icons.navigate_next_rounded,
+            size: 30,
+          ),
+        ),
+      ),
+      ViewModel(
+        title: "Loan Details",
+        body: const OpenLoanView(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => Navigator.pop(context),
+          backgroundColor: Colors.green,
+          child: const Icon(
+            Icons.check_rounded,
+            size: 30,
+          ),
+        ),
+      ),
+    ];
 
-  bool get _isFinishStep => _viewIndex == _titles.length - 1;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_titles[_viewIndex])),
-      body: _views[_viewIndex],
-      floatingActionButton: _isFinishStep
-          ? FloatingActionButton(
-              onPressed: () => Navigator.pop(context),
-              backgroundColor: Colors.green,
-              child: const Icon(
-                Icons.check_rounded,
-                size: 30,
-              ),
-            )
-          : FloatingActionButton(
-              onPressed: () => setState(() {
-                _viewIndex += 1;
-              }),
-              backgroundColor: Colors.orange,
-              child: const Icon(
-                Icons.navigate_next_rounded,
-                size: 30,
-              ),
-            ),
+      appBar: AppBar(title: Text(_viewModels[_viewIndex].title)),
+      body: _viewModels[_viewIndex].body,
+      floatingActionButton: _viewModels[_viewIndex].floatingActionButton,
     );
   }
+}
+
+class ViewModel {
+  final Widget body;
+  final String title;
+  final Widget? floatingActionButton;
+
+  const ViewModel({
+    required this.title,
+    required this.body,
+    this.floatingActionButton,
+  });
 }
