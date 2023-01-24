@@ -27,7 +27,7 @@ class LoansListView extends StatelessWidget {
               title: Text(loan.thing),
               subtitle: Text(loan.borrower.name),
               trailing: Chip(
-                label: Text(loan.dueDate.toString()),
+                label: Text("${loan.dueDate.month}/${loan.dueDate.day}"),
                 backgroundColor: _dueDateBackgroundColor(loan),
               ),
               tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
