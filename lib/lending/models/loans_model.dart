@@ -5,7 +5,7 @@ class LoansModel extends ChangeNotifier {
   List<Loan> getAll() {
     final today = DateUtils.dateOnly(DateTime.now());
 
-    return [
+    final loans = [
       Loan(
         thing: "Pokédex",
         borrower: const Borrower(name: "Ash Ketchum"),
@@ -27,6 +27,10 @@ class LoansModel extends ChangeNotifier {
         dueDate: today.add(const Duration(days: 3)),
       ),
     ];
+
+    loans.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+
+    return loans;
   }
 }
 
