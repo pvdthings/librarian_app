@@ -1,11 +1,11 @@
 {
-    "name": "librarian_app",
-    "short_name": "librarian_app",
+    "name": "Librarian",
+    "short_name": "Librarian",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Intuitively manage your lending library.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
