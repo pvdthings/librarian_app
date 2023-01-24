@@ -7,7 +7,7 @@ class NeedsAttentionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const PlaceholderView(
-      title: "Borrower Eligibility Needs Attention",
+      title: "Ineligible borrower reasons & QR code to pay dues",
     );
   }
 }

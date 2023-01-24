@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/views/add_things_view.dart';
+import 'package:librarian_app/lending/views/needs_attention_view.dart';
 import 'package:librarian_app/lending/views/open_loan_view.dart';
 import 'package:librarian_app/lending/views/borrowers_list_view.dart';
-import 'package:librarian_app/views/placeholder_view.dart';
 
 class OpenLoanPage extends StatefulWidget {
   const OpenLoanPage({super.key});
@@ -63,8 +63,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       ),
       ViewModel(
         title: "Inactive Borrower",
-        body: const PlaceholderView(
-            title: "Inactive Borrower Reasons & QR code to pay dues"),
+        body: const NeedsAttentionView(),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.pop(context),
           backgroundColor: Colors.orange,
