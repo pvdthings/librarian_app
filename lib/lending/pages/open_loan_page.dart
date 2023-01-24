@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/views/add_things_view.dart';
-import 'package:librarian_app/lending/views/needs_attention_view.dart';
-import 'package:librarian_app/lending/views/open_loan_view.dart';
-import 'package:librarian_app/lending/views/borrowers_list_view.dart';
+import 'package:librarian_app/lending/widgets/add_things_view.dart';
+import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
+import 'package:librarian_app/lending/widgets/open_loan_view.dart';
+import 'package:librarian_app/lending/widgets/borrowers_list_view.dart';
 
 class OpenLoanPage extends StatefulWidget {
   const OpenLoanPage({super.key});

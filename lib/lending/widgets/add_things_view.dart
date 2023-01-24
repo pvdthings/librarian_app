@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/views/placeholder_view.dart';
+import 'package:librarian_app/widgets/placeholder_view.dart';
 
 class AddThingsView extends StatelessWidget {
   const AddThingsView({super.key});
