@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/pages/open_loan_page.dart';
 import 'package:librarian_app/lending/views/borrowers_list_view.dart';
-import 'package:librarian_app/lending/views/loans_view.dart';
+import 'package:librarian_app/lending/views/loans_list_view.dart';
 
 class LendingPage extends StatefulWidget {
   const LendingPage({super.key});
@@ -16,7 +16,7 @@ class _LendingPageState extends State<LendingPage> {
   int _viewIndex = 0;
 
   static final _views = [
-    const LoansView(),
+    const LoansListView(),
     const BorrowersListView(),
   ];
 

@@ -3,32 +3,48 @@ import 'package:librarian_app/lending/models/borrowers_model.dart';
 
 class LoansModel extends ChangeNotifier {
   List<Loan> getAll() {
+    final today = DateUtils.dateOnly(DateTime.now());
+
     return [
-      const Loan(
-        borrower: Borrower(name: "Ash Ketchum"),
-        things: "Pokédex, Flyswatter",
-        due: "Today",
+      Loan(
+        thing: "Pokédex",
+        borrower: const Borrower(name: "Ash Ketchum"),
+        dueDate: today,
       ),
-      const Loan(
-        borrower: Borrower(name: "Brock"),
-        things: "UltraBall, Kanto Map",
-        due: "1/5",
-        isOverdue: true,
+      Loan(
+        thing: "Flyswatter",
+        borrower: const Borrower(name: "Ash Ketchum"),
+        dueDate: today,
+      ),
+      Loan(
+        thing: "Kanto Map",
+        borrower: const Borrower(name: "Brock"),
+        dueDate: today.subtract(const Duration(days: 14)),
+      ),
+      Loan(
+        thing: "Pokémon Incubator",
+        borrower: const Borrower(name: "Professor Oak"),
+        dueDate: today.add(const Duration(days: 3)),
       ),
     ];
   }
 }
 
 class Loan {
-  final String things;
-  final String due;
+  final String thing;
   final Borrower borrower;
-  final bool isOverdue;
+  final DateTime dueDate;
+
+  bool get isOverdue {
+    final now = DateTime.now();
+    return DateUtils.dateOnly(dueDate).isBefore(DateUtils.dateOnly(now));
+  }
+
+  bool get isDueToday => DateUtils.isSameDay(DateTime.now(), dueDate);
 
   const Loan({
+    required this.thing,
     required this.borrower,
-    required this.things,
-    required this.due,
-    this.isOverdue = false,
+    required this.dueDate,
   });
 }

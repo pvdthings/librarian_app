@@ -3,8 +3,14 @@ import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/pages/loan_details_page.dart';
 import 'package:provider/provider.dart';
 
-class LoansView extends StatelessWidget {
-  const LoansView({super.key});
+class LoansListView extends StatelessWidget {
+  const LoansListView({super.key});
+
+  Color? _dueDateBackgroundColor(Loan loan) {
+    if (loan.isOverdue) return Colors.red[100];
+    if (loan.isDueToday) return Colors.green[100];
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +21,14 @@ class LoansView extends StatelessWidget {
         return ListView.builder(
           itemCount: loans.length,
           itemBuilder: (context, index) {
+            final loan = loans[index];
+
             return ListTile(
-              title: Text(loans[index].borrower.name),
-              subtitle: Text(loans[index].things),
+              title: Text(loan.thing),
+              subtitle: Text(loan.borrower.name),
               trailing: Chip(
-                label: Text(loans[index].due),
-                backgroundColor:
-                    loans[index].isOverdue ? Colors.red[100] : null,
+                label: Text(loan.dueDate.toString()),
+                backgroundColor: _dueDateBackgroundColor(loan),
               ),
               tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
               hoverColor: Colors.grey[100],
@@ -29,7 +36,8 @@ class LoansView extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const LoanDetailsPage()),
+                    builder: (context) => const LoanDetailsPage(),
+                  ),
                 );
               },
             );
