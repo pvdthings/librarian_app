@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/widgets/add_things_view.dart';
+import 'package:librarian_app/lending/widgets/things_list_view.dart';
 import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:librarian_app/lending/widgets/open_loan_view.dart';
 import 'package:librarian_app/lending/widgets/borrowers_list_view.dart';
@@ -39,7 +39,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       ),
       ViewModel(
         title: "Add Things",
-        body: const AddThingsView(),
+        body: const ThingsListView(),
         floatingActionButton: FloatingActionButton(
           onPressed: incrementViewIndex,
           backgroundColor: Colors.orange,
