@@ -62,11 +62,11 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
         ),
       ),
       ViewModel(
-        title: "Inactive Borrower",
+        title: "Ineligible Borrower",
         body: const NeedsAttentionView(),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.pop(context),
-          backgroundColor: Colors.orange,
+          backgroundColor: Colors.green,
           child: const Icon(
             Icons.close_rounded,
             size: 30,
