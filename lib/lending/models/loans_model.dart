@@ -37,7 +37,7 @@ class LoansModel extends ChangeNotifier {
 class Loan {
   final String thing;
   final Borrower borrower;
-  final DateTime dueDate;
+  DateTime dueDate;
 
   bool get isOverdue {
     final now = DateTime.now();
@@ -46,7 +46,7 @@ class Loan {
 
   bool get isDueToday => DateUtils.isSameDay(DateTime.now(), dueDate);
 
-  const Loan({
+  Loan({
     required this.thing,
     required this.borrower,
     required this.dueDate,
