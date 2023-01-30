@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/widgets/things_list_view.dart';
 import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:librarian_app/lending/widgets/open_loan_view.dart';
@@ -27,15 +28,21 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     });
   }
 
+  void onTapBorrower(Borrower borrower) {
+    if (borrower.active) {
+      incrementViewIndex();
+      return;
+    }
+
+    skipToLastViewIndex();
+  }
+
   @override
   void initState() {
     _viewModels = [
       ViewModel(
         title: "Select Borrower",
-        body: BorrowersListView(
-          onTapActiveBorrower: incrementViewIndex,
-          onTapInactiveBorrower: skipToLastViewIndex,
-        ),
+        body: BorrowersListView(onTapBorrower: onTapBorrower),
       ),
       ViewModel(
         title: "Add Things",
