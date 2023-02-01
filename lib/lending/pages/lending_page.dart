@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/pages/open_loan_page.dart';
 import 'package:librarian_app/lending/widgets/borrowers_list_view.dart';
 import 'package:librarian_app/lending/widgets/loans_list_view.dart';
@@ -17,7 +18,9 @@ class _LendingPageState extends State<LendingPage> {
 
   static final _views = [
     const LoansListView(),
-    const BorrowersListView(),
+    BorrowersListView(
+      onTapBorrower: (Borrower borrower) {},
+    ),
   ];
 
   static final _titles = [

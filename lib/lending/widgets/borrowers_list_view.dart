@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 class BorrowersListView extends StatelessWidget {
   const BorrowersListView({
     super.key,
-    this.onTapBorrower,
+    required this.onTapBorrower,
   });
 
-  final void Function(Borrower borrower)? onTapBorrower;
+  final void Function(Borrower borrower) onTapBorrower;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class BorrowersListView extends StatelessWidget {
                     ),
               tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
               hoverColor: Colors.grey[100],
-              onTap: () => onTapBorrower != null ? onTapBorrower!(b) : () {},
+              onTap: () => onTapBorrower(b),
             );
           },
         );

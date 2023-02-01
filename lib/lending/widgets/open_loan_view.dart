@@ -3,7 +3,12 @@ import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 
 class OpenLoanView extends StatefulWidget {
-  const OpenLoanView({super.key});
+  const OpenLoanView({
+    super.key,
+    required this.borrower,
+  });
+
+  final Borrower borrower;
 
   @override
   State<OpenLoanView> createState() => _OpenLoanViewState();
@@ -17,7 +22,7 @@ class _OpenLoanViewState extends State<OpenLoanView> {
   void initState() {
     _loan = Loan(
       thing: "Hammer",
-      borrower: const Borrower(name: "Borrower"),
+      borrower: widget.borrower,
       dueDate: _initialDueDate,
     );
     super.initState();
@@ -32,7 +37,7 @@ class _OpenLoanViewState extends State<OpenLoanView> {
           Card(
             child: ListTile(
               leading: const Text("Borrower"),
-              title: Text(_loan.borrower.name),
+              title: Text(widget.borrower.name),
             ),
           ),
           Card(

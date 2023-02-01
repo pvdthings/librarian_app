@@ -13,8 +13,10 @@ class OpenLoanPage extends StatefulWidget {
 }
 
 class _OpenLoanPageState extends State<OpenLoanPage> {
-  late final List<ViewModel> _viewModels;
+  late List<ViewModel> _viewModels;
   int _viewIndex = 0;
+
+  Borrower _borrower = const Borrower(name: "Borrower");
 
   void incrementViewIndex() {
     setState(() {
@@ -29,6 +31,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   }
 
   void onTapBorrower(Borrower borrower) {
+    _borrower = borrower;
     if (borrower.active) {
       incrementViewIndex();
       return;
@@ -38,7 +41,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   }
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     _viewModels = [
       ViewModel(
         title: "Select Borrower",
@@ -58,7 +61,9 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       ),
       ViewModel(
         title: "Loan Details",
-        body: const OpenLoanView(),
+        body: OpenLoanView(
+          borrower: _borrower,
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.pop(context),
           backgroundColor: Colors.green,
@@ -82,11 +87,6 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       ),
     ];
 
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(_viewModels[_viewIndex].title)),
       body: _viewModels[_viewIndex].body,
