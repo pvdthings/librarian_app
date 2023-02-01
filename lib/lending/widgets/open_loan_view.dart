@@ -31,6 +31,12 @@ class _OpenLoanViewState extends State<OpenLoanView> {
         children: [
           Card(
             child: ListTile(
+              leading: const Text("Borrower"),
+              title: Text(_loan.borrower.name),
+            ),
+          ),
+          Card(
+            child: ListTile(
               leading: const Text("Due Date"),
               title: Text("${_loan.dueDate.month}/${_loan.dueDate.day}"),
               onTap: () async {
