@@ -4,7 +4,7 @@ class BorrowersModel extends ChangeNotifier {
   static final _borrowers = [
     const Borrower(name: "Ash Ketchum"),
     const Borrower(name: "Professor Oak"),
-    const Borrower(name: "Nurse May"),
+    const Borrower(name: "Nurse Joy"),
     const Borrower(
       name: "Brock",
       inactiveReasons: [InactiveReasonCode.overdueLoan],
