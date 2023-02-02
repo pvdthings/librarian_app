@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
+import 'package:librarian_app/lending/models/things_model.dart';
 import 'package:librarian_app/lending/widgets/things_list_view.dart';
 import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:librarian_app/lending/widgets/open_loan_view.dart';
@@ -17,6 +18,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   int _viewIndex = 0;
 
   Borrower _borrower = const Borrower(name: "Borrower");
+  final List<Thing> _things = [];
 
   void incrementViewIndex() {
     setState(() {
@@ -40,6 +42,10 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     skipToLastViewIndex();
   }
 
+  void onTapThing(Thing thing) {
+    _things.add(thing);
+  }
+
   @override
   Widget build(BuildContext context) {
     _viewModels = [
@@ -49,7 +55,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       ),
       ViewModel(
         title: "Add Things",
-        body: const ThingsListView(),
+        body: ThingsListView(onTapThing: onTapThing),
         floatingActionButton: FloatingActionButton(
           onPressed: incrementViewIndex,
           backgroundColor: Colors.orange,
@@ -63,6 +69,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
         title: "Loan Details",
         body: OpenLoanView(
           borrower: _borrower,
+          things: _things,
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.pop(context),

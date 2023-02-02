@@ -3,7 +3,12 @@ import 'package:librarian_app/lending/models/things_model.dart';
 import 'package:provider/provider.dart';
 
 class ThingsListView extends StatefulWidget {
-  const ThingsListView({super.key});
+  const ThingsListView({
+    super.key,
+    required this.onTapThing,
+  });
+
+  final Function(Thing) onTapThing;
 
   @override
   State<ThingsListView> createState() => _ThingsListViewState();
@@ -41,14 +46,17 @@ class _ThingsListViewState extends State<ThingsListView> {
               tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
               hoverColor: Colors.grey[100],
               onTap: thing.available
-                  ? () => setState(() {
+                  ? () {
+                      setState(() {
                         if (_selectedThingIds.contains(thing.id)) {
                           _selectedThingIds.remove(thing.id);
                           return;
                         }
 
                         _selectedThingIds.add(thing.id);
-                      })
+                      });
+                      widget.onTapThing(thing);
+                    }
                   : null,
             );
           },

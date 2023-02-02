@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
+import 'package:librarian_app/lending/models/things_model.dart';
 
 class OpenLoanView extends StatefulWidget {
   const OpenLoanView({
     super.key,
     required this.borrower,
+    required this.things,
   });
 
   final Borrower borrower;
+  final List<Thing> things;
 
   @override
   State<OpenLoanView> createState() => _OpenLoanViewState();
@@ -38,6 +41,20 @@ class _OpenLoanViewState extends State<OpenLoanView> {
             child: ListTile(
               leading: const Text("Borrower"),
               title: Text(widget.borrower.name),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: const Text("Things"),
+              title: Wrap(
+                spacing: 4,
+                children: widget.things
+                    .map((t) => Chip(
+                          label: Text("#${t.id} - ${t.name}"),
+                          backgroundColor: Colors.blue[100],
+                        ))
+                    .toList(),
+              ),
             ),
           ),
           Card(
