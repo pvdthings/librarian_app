@@ -46,7 +46,13 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   }
 
   void onTapThing(Thing thing) {
-    _things.add(thing);
+    setState(() {
+      if (_things.contains(thing)) {
+        _things.remove(thing);
+      } else {
+        _things.add(thing);
+      }
+    });
   }
 
   void onTapCreate() {
@@ -75,14 +81,16 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       ViewModel(
         title: "Add Things",
         body: ThingsListView(onTapThing: onTapThing),
-        floatingActionButton: FloatingActionButton(
-          onPressed: incrementViewIndex,
-          backgroundColor: Colors.orange,
-          child: const Icon(
-            Icons.navigate_next_rounded,
-            size: 30,
-          ),
-        ),
+        floatingActionButton: _things.isNotEmpty
+            ? FloatingActionButton(
+                onPressed: incrementViewIndex,
+                backgroundColor: Colors.orange,
+                child: const Icon(
+                  Icons.navigate_next_rounded,
+                  size: 30,
+                ),
+              )
+            : null,
       ),
       ViewModel(
         title: "Loan Details",
