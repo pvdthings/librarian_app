@@ -24,7 +24,7 @@ class LoansListView extends StatelessWidget {
             final loan = loans[index];
 
             return ListTile(
-              title: Text(loan.thing),
+              title: Text(loan.thing.name),
               subtitle: Text(loan.borrower.name),
               trailing: Chip(
                 label: Text("${loan.dueDate.month}/${loan.dueDate.day}"),
@@ -36,7 +36,7 @@ class LoansListView extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LoanDetailsPage(),
+                    builder: (context) => LoanDetailsPage(loan),
                   ),
                 );
               },

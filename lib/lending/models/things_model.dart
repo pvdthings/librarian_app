@@ -15,6 +15,11 @@ class ThingsModel extends ChangeNotifier {
     _things.singleWhere((t) => t.id == id).available = false;
     notifyListeners();
   }
+
+  void checkIn(int id) {
+    _things.singleWhere((t) => t.id == id).available = true;
+    notifyListeners();
+  }
 }
 
 class Thing {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 
+import 'things_model.dart';
+
 class LoansModel extends ChangeNotifier {
   static final List<Loan> _loans = [];
 
@@ -10,14 +12,20 @@ class LoansModel extends ChangeNotifier {
     return loans;
   }
 
-  void add(Loan loan) {
+  void open(Loan loan) {
     _loans.add(loan);
+    notifyListeners();
+  }
+
+  void close(UniqueKey id) {
+    _loans.removeWhere((l) => l.id == id);
     notifyListeners();
   }
 }
 
 class Loan {
-  final String thing;
+  final UniqueKey id = UniqueKey();
+  final Thing thing;
   final Borrower borrower;
   DateTime dueDate;
 

@@ -57,9 +57,9 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
 
     for (final thing in _things) {
       things.checkOut(thing.id);
-      loans.add(Loan(
+      loans.open(Loan(
         borrower: _borrower,
-        thing: thing.name,
+        thing: Thing(name: thing.name, id: thing.id),
         dueDate: _dueDate,
       ));
     }
