@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
+import 'package:librarian_app/lending/widgets/thing_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class ThingsListView extends StatefulWidget {
@@ -28,23 +29,12 @@ class _ThingsListViewState extends State<ThingsListView> {
           itemBuilder: (context, index) {
             final thing = things[index];
 
-            return ListTile(
-              title: Text(thing.name),
-              subtitle: thing.available
-                  ? const Text(
-                      "Available",
-                      style: TextStyle(color: Colors.green),
-                    )
-                  : const Text(
-                      "Checked out",
-                      style: TextStyle(color: Colors.orange),
-                    ),
-              leading: Text("#${thing.id}"),
-              trailing: _selectedThingIds.contains(thing.id)
-                  ? const Icon(Icons.check_rounded, color: Colors.green)
-                  : null,
-              tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
-              hoverColor: Colors.grey[100],
+            return ThingListTile(
+              id: thing.id,
+              name: thing.name,
+              available: thing.available,
+              selected: _selectedThingIds.contains(thing.id),
+              alternateTileColor: index % 2 == 0,
               onTap: thing.available
                   ? () {
                       setState(() {

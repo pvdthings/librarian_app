@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
-import 'package:librarian_app/lending/widgets/things_list_view.dart';
+import 'package:librarian_app/lending/widgets/pick_things_view.dart';
 import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:librarian_app/lending/widgets/open_loan_view.dart';
 import 'package:librarian_app/lending/widgets/borrowers_list_view.dart';
@@ -24,15 +24,11 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
   void incrementViewIndex() {
-    setState(() {
-      _viewIndex += 1;
-    });
+    setState(() => _viewIndex += 1);
   }
 
   void skipToLastViewIndex() {
-    setState(() {
-      _viewIndex = _viewModels.length - 1;
-    });
+    setState(() => _viewIndex = _viewModels.length - 1);
   }
 
   void onTapBorrower(Borrower borrower) {
@@ -80,7 +76,10 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       ),
       ViewModel(
         title: "Add Things",
-        body: ThingsListView(onTapThing: onTapThing),
+        body: PickThingsView(
+          pickedThings: _things,
+          onThingPicked: onTapThing,
+        ),
         floatingActionButton: _things.isNotEmpty
             ? FloatingActionButton(
                 onPressed: incrementViewIndex,
