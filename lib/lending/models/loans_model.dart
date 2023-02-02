@@ -2,35 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 
 class LoansModel extends ChangeNotifier {
+  static final List<Loan> _loans = [];
+
   List<Loan> getAll() {
-    final today = DateUtils.dateOnly(DateTime.now());
-
-    final loans = [
-      Loan(
-        thing: "Pokédex",
-        borrower: const Borrower(name: "Ash Ketchum"),
-        dueDate: today,
-      ),
-      Loan(
-        thing: "Flyswatter",
-        borrower: const Borrower(name: "Ash Ketchum"),
-        dueDate: today,
-      ),
-      Loan(
-        thing: "Kanto Map",
-        borrower: const Borrower(name: "Brock"),
-        dueDate: today.subtract(const Duration(days: 14)),
-      ),
-      Loan(
-        thing: "Pokémon Incubator",
-        borrower: const Borrower(name: "Professor Oak"),
-        dueDate: today.add(const Duration(days: 3)),
-      ),
-    ];
-
+    final loans = _loans;
     loans.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-
     return loans;
+  }
+
+  void add(Loan loan) {
+    _loans.add(loan);
+    notifyListeners();
   }
 }
 

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
+import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
 import 'package:librarian_app/lending/widgets/things_list_view.dart';
 import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:librarian_app/lending/widgets/open_loan_view.dart';
 import 'package:librarian_app/lending/widgets/borrowers_list_view.dart';
+import 'package:provider/provider.dart';
 
 class OpenLoanPage extends StatefulWidget {
   const OpenLoanPage({super.key});
@@ -19,6 +21,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
 
   Borrower _borrower = const Borrower(name: "Borrower");
   final List<Thing> _things = [];
+  DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
   void incrementViewIndex() {
     setState(() {
@@ -46,6 +49,18 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     _things.add(thing);
   }
 
+  void onTapCreate() {
+    final model = Provider.of<LoansModel>(context, listen: false);
+    for (final thing in _things) {
+      model.add(Loan(
+        borrower: _borrower,
+        thing: thing.name,
+        dueDate: _dueDate,
+      ));
+    }
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     _viewModels = [
@@ -70,9 +85,13 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
         body: OpenLoanView(
           borrower: _borrower,
           things: _things,
+          dueDate: _dueDate,
+          onDueDateUpdated: (newDate) {
+            setState(() => _dueDate = newDate);
+          },
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: onTapCreate,
           backgroundColor: Colors.green,
           child: const Icon(
             Icons.check_rounded,
