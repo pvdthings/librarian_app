@@ -67,6 +67,7 @@ class _PickThingsViewState extends State<PickThingsView> {
 
               searchController.clear();
             },
+            keyboardType: TextInputType.number,
             decoration: const InputDecoration(
               hintText: "Enter Thing #",
               border: OutlineInputBorder(),
