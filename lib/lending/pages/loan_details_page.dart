@@ -12,10 +12,7 @@ class LoanDetailsPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Colors.orange,
-        child: const Icon(
-          Icons.edit_rounded,
-          size: 30,
-        ),
+        child: const Icon(Icons.edit_rounded),
       ),
     );
   }

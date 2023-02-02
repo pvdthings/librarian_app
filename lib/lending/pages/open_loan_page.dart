@@ -85,10 +85,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
             ? FloatingActionButton(
                 onPressed: incrementViewIndex,
                 backgroundColor: Colors.orange,
-                child: const Icon(
-                  Icons.navigate_next_rounded,
-                  size: 30,
-                ),
+                child: const Icon(Icons.navigate_next_rounded),
               )
             : null,
       ),
@@ -105,10 +102,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
         floatingActionButton: FloatingActionButton(
           onPressed: onTapCreate,
           backgroundColor: Colors.green,
-          child: const Icon(
-            Icons.check_rounded,
-            size: 30,
-          ),
+          child: const Icon(Icons.check_rounded),
         ),
       ),
       ViewModel(
@@ -117,10 +111,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
         floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.pop(context),
           backgroundColor: Colors.green,
-          child: const Icon(
-            Icons.close_rounded,
-            size: 30,
-          ),
+          child: const Icon(Icons.close_rounded),
         ),
       ),
     ];

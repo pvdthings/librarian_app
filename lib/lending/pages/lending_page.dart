@@ -48,7 +48,6 @@ class _LendingPageState extends State<LendingPage> {
             label: "Borrowers",
           ),
         ],
-        iconSize: 30,
         showSelectedLabels: false,
         showUnselectedLabels: false,
       ),
@@ -61,7 +60,6 @@ class _LendingPageState extends State<LendingPage> {
         },
         child: const Icon(
           Icons.add_rounded,
-          size: 30,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
