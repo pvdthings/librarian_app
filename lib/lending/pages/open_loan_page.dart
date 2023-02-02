@@ -50,14 +50,18 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   }
 
   void onTapCreate() {
-    final model = Provider.of<LoansModel>(context, listen: false);
+    final things = Provider.of<ThingsModel>(context, listen: false);
+    final loans = Provider.of<LoansModel>(context, listen: false);
+
     for (final thing in _things) {
-      model.add(Loan(
+      things.checkOut(thing.id);
+      loans.add(Loan(
         borrower: _borrower,
         thing: thing.name,
         dueDate: _dueDate,
       ));
     }
+
     Navigator.pop(context);
   }
 
