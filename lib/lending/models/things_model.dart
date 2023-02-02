@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class ThingsModel extends ChangeNotifier {
   static final _things = [
     Thing(id: 1, name: "Pokédex"),
-    Thing(id: 2, name: "Hammer"),
-    Thing(id: 3, name: "Something else"),
+    Thing(id: 2, name: "Pokéball"),
+    Thing(id: 3, name: "Pokéball"),
+    Thing(id: 4, name: "Bug net"),
+    Thing(id: 5, name: "Incubator"),
   ];
 
   List<Thing> getAll() => _things;
