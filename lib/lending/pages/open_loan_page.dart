@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
+import 'package:librarian_app/lending/widgets/confirm_floating_action_button.dart';
 import 'package:librarian_app/lending/widgets/pick_things_view.dart';
 import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:librarian_app/lending/widgets/open_loan_view.dart';
@@ -98,10 +99,11 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
             setState(() => _dueDate = newDate);
           },
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: ConfirmFloatingActionButton(
           onPressed: onTapCreate,
           backgroundColor: Colors.green,
-          child: const Icon(Icons.check_rounded),
+          icon: const Icon(Icons.check_rounded),
+          label: "Finish",
         ),
       ),
       ViewModel(
