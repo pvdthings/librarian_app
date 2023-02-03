@@ -39,6 +39,7 @@ class _OpenLoanViewState extends State<OpenLoanView> {
               leading: const Text("Things"),
               title: Wrap(
                 spacing: 4,
+                runSpacing: 4,
                 children: widget.things
                     .map((t) => Chip(
                           label: Text("#${t.id} - ${t.name}"),
