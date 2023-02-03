@@ -41,13 +41,13 @@ class _PickThingsViewState extends State<PickThingsView> {
     );
   }
 
-  void showUnknownThingDialog(String searchValue) {
+  void showUnknownThingDialog(String searchValue, int lastNumber) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text("Thing #$searchValue does not exist"),
-          content: const Text("For demo purposes, try #1 - #5."),
+          content: Text("For demo purposes, try #1 - #$lastNumber."),
           actions: [
             TextButton(
               child: const Text("OK"),
@@ -84,7 +84,7 @@ class _PickThingsViewState extends State<PickThingsView> {
               }
 
               if (matches.isEmpty) {
-                showUnknownThingDialog(value);
+                showUnknownThingDialog(value, things.length);
               }
 
               searchController.clear();
