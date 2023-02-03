@@ -41,6 +41,24 @@ class _PickThingsViewState extends State<PickThingsView> {
     );
   }
 
+  void showUnknownThingDialog(String searchValue) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Thing #$searchValue does not exist"),
+          content: const Text("For demo purposes, try #1 - #5."),
+          actions: [
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final things = Provider.of<ThingsModel>(context).getAll();
@@ -63,6 +81,10 @@ class _PickThingsViewState extends State<PickThingsView> {
                 } else {
                   widget.onThingPicked(match);
                 }
+              }
+
+              if (matches.isEmpty) {
+                showUnknownThingDialog(value);
               }
 
               searchController.clear();
