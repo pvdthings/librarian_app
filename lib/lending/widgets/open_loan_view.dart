@@ -52,6 +52,7 @@ class _OpenLoanViewState extends State<OpenLoanView> {
             child: ListTile(
               leading: const Text("Due Date"),
               title: Text("${widget.dueDate.month}/${widget.dueDate.day}"),
+              trailing: const Icon(Icons.edit_rounded),
               onTap: () async {
                 showDatePicker(
                   context: context,
