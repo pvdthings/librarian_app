@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
-import 'package:librarian_app/widgets/placeholder_view.dart';
+import 'package:librarian_app/lending/widgets/loan_details.dart';
 import 'package:provider/provider.dart';
 
 class LoanDetailsPage extends StatefulWidget {
@@ -16,42 +16,57 @@ class LoanDetailsPage extends StatefulWidget {
 class _LoanDetailsPageState extends State<LoanDetailsPage> {
   bool _editMode = false;
 
+  DateTime? _newDueDate;
+
+  void _saveChanges(BuildContext context) {
+    if (_newDueDate != null) {
+      _updateDueDate(context);
+    }
+  }
+
+  void _updateDueDate(BuildContext context) {
+    final loans = Provider.of<LoansModel>(context, listen: false);
+    loans.updateDueDate(widget.loan.id, _newDueDate!);
+  }
+
+  void _closeLoan(BuildContext context) {
+    final things = Provider.of<ThingsModel>(context, listen: false);
+    things.checkIn(widget.loan.thing.id);
+
+    final loans = Provider.of<LoansModel>(context, listen: false);
+    loans.close(widget.loan.id);
+
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final loan = widget.loan;
+
     return Scaffold(
       appBar: AppBar(title: const Text("Loan Details")),
-      body: _editMode
-          ? Center(
-              child: TextButton(
-                onPressed: () {
-                  final things =
-                      Provider.of<ThingsModel>(context, listen: false);
-                  things.checkIn(widget.loan.thing.id);
-
-                  final loans = Provider.of<LoansModel>(context, listen: false);
-                  loans.close(widget.loan.id);
-
-                  Navigator.pop(context);
-                },
-                child: const Text("Close Loan"),
-              ),
-            )
-          : const PlaceholderView(title: "Loan Details"),
+      body: LoanDetails(
+        borrower: loan.borrower,
+        things: [loan.thing],
+        dueDate: _newDueDate ?? loan.dueDate,
+        editable: _editMode,
+        onDueDateUpdated: (newDueDate) {
+          setState(() => _newDueDate = newDueDate);
+        },
+        onClose: () => _closeLoan(context),
+      ),
       floatingActionButton: _editMode
           ? FloatingActionButton(
               onPressed: () {
-                setState(() {
-                  _editMode = false;
-                });
+                _saveChanges(context);
+                setState(() => _editMode = false);
               },
               backgroundColor: Colors.green,
               child: const Icon(Icons.save_rounded),
             )
           : FloatingActionButton(
               onPressed: () {
-                setState(() {
-                  _editMode = true;
-                });
+                setState(() => _editMode = true);
               },
               backgroundColor: Colors.orange,
               child: const Icon(Icons.edit_rounded),

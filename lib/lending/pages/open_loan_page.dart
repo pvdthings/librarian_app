@@ -5,7 +5,7 @@ import 'package:librarian_app/lending/models/things_model.dart';
 import 'package:librarian_app/lending/widgets/confirm_floating_action_button.dart';
 import 'package:librarian_app/lending/widgets/pick_things_view.dart';
 import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
-import 'package:librarian_app/lending/widgets/open_loan_view.dart';
+import 'package:librarian_app/lending/widgets/loan_details.dart';
 import 'package:librarian_app/lending/widgets/borrowers_list_view.dart';
 import 'package:provider/provider.dart';
 
@@ -91,7 +91,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       ),
       ViewModel(
         title: "Loan Details",
-        body: OpenLoanView(
+        body: LoanDetails(
           borrower: _borrower,
           things: _things,
           dueDate: _dueDate,

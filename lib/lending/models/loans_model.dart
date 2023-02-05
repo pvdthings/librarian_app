@@ -21,6 +21,11 @@ class LoansModel extends ChangeNotifier {
     _loans.removeWhere((l) => l.id == id);
     notifyListeners();
   }
+
+  void updateDueDate(UniqueKey id, DateTime dueDate) {
+    _loans.singleWhere((l) => l.id == id).dueDate = dueDate;
+    notifyListeners();
+  }
 }
 
 class Loan {

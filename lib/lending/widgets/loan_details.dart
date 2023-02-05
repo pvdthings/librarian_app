@@ -2,26 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
 
-class OpenLoanView extends StatefulWidget {
-  const OpenLoanView({
+class LoanDetails extends StatefulWidget {
+  const LoanDetails({
     super.key,
     required this.borrower,
     required this.things,
     required this.dueDate,
     required this.onDueDateUpdated,
+    this.editable = true,
+    this.onClose,
   });
 
+  final bool editable;
   final Borrower borrower;
   final List<Thing> things;
   final DateTime dueDate;
 
   final Function(DateTime) onDueDateUpdated;
+  final Function()? onClose;
 
   @override
-  State<OpenLoanView> createState() => _OpenLoanViewState();
+  State<LoanDetails> createState() => _LoanDetailsState();
 }
 
-class _OpenLoanViewState extends State<OpenLoanView> {
+class _LoanDetailsState extends State<LoanDetails> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,7 +40,7 @@ class _OpenLoanViewState extends State<OpenLoanView> {
           ),
           Card(
             child: ListTile(
-              leading: const Text("Things"),
+              leading: Text(widget.things.length > 1 ? "Things" : "Thing"),
               title: Wrap(
                 spacing: 4,
                 runSpacing: 4,
@@ -53,20 +57,28 @@ class _OpenLoanViewState extends State<OpenLoanView> {
             child: ListTile(
               leading: const Text("Due Date"),
               title: Text("${widget.dueDate.month}/${widget.dueDate.day}"),
-              trailing: const Icon(Icons.edit_rounded),
-              onTap: () async {
-                showDatePicker(
-                  context: context,
-                  initialDate: widget.dueDate,
-                  firstDate: widget.dueDate,
-                  lastDate: widget.dueDate.add(const Duration(days: 14)),
-                ).then((value) {
-                  if (value == null) return;
-                  widget.onDueDateUpdated(value);
-                });
-              },
+              trailing: widget.editable ? const Icon(Icons.edit_rounded) : null,
+              onTap: widget.editable
+                  ? () async {
+                      showDatePicker(
+                        context: context,
+                        initialDate: widget.dueDate,
+                        firstDate: widget.dueDate,
+                        lastDate: widget.dueDate.add(const Duration(days: 14)),
+                      ).then((value) {
+                        if (value == null) return;
+                        widget.onDueDateUpdated(value);
+                      });
+                    }
+                  : null,
             ),
           ),
+          if (widget.onClose != null)
+            TextButton.icon(
+              onPressed: widget.onClose,
+              icon: const Icon(Icons.arrow_drop_down_circle_rounded),
+              label: const Text("Thing Returned"),
+            ),
         ],
       ),
     );
