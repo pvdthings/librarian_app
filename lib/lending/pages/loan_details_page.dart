@@ -30,13 +30,37 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
   }
 
   void _closeLoan(BuildContext context) {
-    final things = Provider.of<ThingsModel>(context, listen: false);
-    things.checkIn(widget.loan.thing.id);
+    final thingId = widget.loan.thing.id;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Thing #$thingId"),
+          content:
+              Text("Are you sure you want to check Thing #$thingId back in?"),
+          actions: [
+            TextButton(
+              child: const Text("Yes"),
+              onPressed: () {
+                final things = Provider.of<ThingsModel>(context, listen: false);
+                things.checkIn(widget.loan.thing.id);
 
-    final loans = Provider.of<LoansModel>(context, listen: false);
-    loans.close(widget.loan.id);
+                final loans = Provider.of<LoansModel>(context, listen: false);
+                loans.close(widget.loan.id);
 
-    Navigator.pop(context);
+                Navigator.pop(context);
+                // TODO: Hide edit button and show that the loan was closed.
+                // Going back shows that the loan was removed.
+              },
+            ),
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
