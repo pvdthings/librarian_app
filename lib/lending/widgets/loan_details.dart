@@ -73,12 +73,11 @@ class _LoanDetailsState extends State<LoanDetails> {
                   : null,
             ),
           ),
-          if (widget.onClose != null)
-            TextButton.icon(
+          if (widget.editable && widget.onClose != null)
+            ElevatedButton(
               onPressed: widget.onClose,
-              icon: const Icon(Icons.arrow_drop_down_circle_rounded),
-              label: const Text("Thing Returned"),
-            ),
+              child: const Text("Check in"),
+            )
         ],
       ),
     );

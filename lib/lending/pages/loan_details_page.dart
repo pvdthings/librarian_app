@@ -15,6 +15,7 @@ class LoanDetailsPage extends StatefulWidget {
 
 class _LoanDetailsPageState extends State<LoanDetailsPage> {
   bool _editMode = false;
+  bool _editable = true;
 
   DateTime? _newDueDate;
 
@@ -49,8 +50,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
                 loans.close(widget.loan.id);
 
                 Navigator.pop(context);
-                // TODO: Hide edit button and show that the loan was closed.
-                // Going back shows that the loan was removed.
+                setState(() => _editable = false);
               },
             ),
             TextButton(
@@ -79,22 +79,24 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
         },
         onClose: () => _closeLoan(context),
       ),
-      floatingActionButton: _editMode
-          ? FloatingActionButton(
-              onPressed: () {
-                _saveChanges(context);
-                setState(() => _editMode = false);
-              },
-              backgroundColor: Colors.green,
-              child: const Icon(Icons.save_rounded),
-            )
-          : FloatingActionButton(
-              onPressed: () {
-                setState(() => _editMode = true);
-              },
-              backgroundColor: Colors.orange,
-              child: const Icon(Icons.edit_rounded),
-            ),
+      floatingActionButton: _editable
+          ? _editMode
+              ? FloatingActionButton(
+                  onPressed: () {
+                    _saveChanges(context);
+                    setState(() => _editMode = false);
+                  },
+                  backgroundColor: Colors.green,
+                  child: const Icon(Icons.save_rounded),
+                )
+              : FloatingActionButton(
+                  onPressed: () {
+                    setState(() => _editMode = true);
+                  },
+                  backgroundColor: Colors.orange,
+                  child: const Icon(Icons.edit_rounded),
+                )
+          : null,
     );
   }
 }
