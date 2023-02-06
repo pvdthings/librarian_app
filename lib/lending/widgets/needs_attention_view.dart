@@ -44,8 +44,9 @@ class NeedsAttentionView extends StatelessWidget {
                     reason.explanation ?? "",
                     style: const TextStyle(fontSize: 18),
                   ),
+                  const SizedBox(height: 16),
                   if (reason.graphicUrl != null)
-                    Image.asset(reason.graphicUrl!),
+                    Center(child: Image.asset(reason.graphicUrl!)),
                 ],
               ),
             ),

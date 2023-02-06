@@ -84,7 +84,6 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
         floatingActionButton: _things.isNotEmpty
             ? FloatingActionButton(
                 onPressed: incrementViewIndex,
-                backgroundColor: Colors.orange,
                 child: const Icon(Icons.navigate_next_rounded),
               )
             : null,

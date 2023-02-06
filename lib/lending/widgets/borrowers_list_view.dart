@@ -36,8 +36,8 @@ class BorrowersListView extends StatelessWidget {
                         color: Colors.orange,
                       ),
                     ),
-              tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
-              hoverColor: Colors.grey[100],
+              // tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
+              // hoverColor: Colors.grey[100],
               onTap: () => onTapBorrower(b),
             );
           },

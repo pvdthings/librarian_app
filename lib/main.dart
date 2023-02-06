@@ -30,8 +30,10 @@ class LibrarianApp extends StatelessWidget {
     return MaterialApp(
       title: 'Librarian',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
+        brightness: Brightness.dark,
       ),
+      darkTheme: ThemeData.dark(useMaterial3: true),
       home: const LendingPage(),
     );
   }

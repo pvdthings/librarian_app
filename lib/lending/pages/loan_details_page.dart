@@ -93,7 +93,6 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
                   onPressed: () {
                     setState(() => _editMode = true);
                   },
-                  backgroundColor: Colors.orange,
                   child: const Icon(Icons.edit_rounded),
                 )
           : null,

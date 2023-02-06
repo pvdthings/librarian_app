@@ -18,6 +18,12 @@ class LoansListView extends StatelessWidget {
       builder: (context, model, child) {
         final loans = model.getAll();
 
+        if (loans.isEmpty) {
+          return const Center(
+            child: Text("No open loans!"),
+          );
+        }
+
         return ListView.builder(
           itemCount: loans.length,
           itemBuilder: (context, index) {
@@ -30,8 +36,8 @@ class LoansListView extends StatelessWidget {
                 label: Text("${loan.dueDate.month}/${loan.dueDate.day}"),
                 backgroundColor: _dueDateBackgroundColor(loan),
               ),
-              tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
-              hoverColor: Colors.grey[100],
+              //tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
+              // hoverColor: Colors.grey[100],
               onTap: () {
                 Navigator.push(
                   context,

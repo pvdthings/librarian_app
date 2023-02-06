@@ -45,10 +45,7 @@ class _LoanDetailsState extends State<LoanDetails> {
                 spacing: 4,
                 runSpacing: 4,
                 children: widget.things
-                    .map((t) => Chip(
-                          label: Text("#${t.id} - ${t.name}"),
-                          backgroundColor: Colors.blue[100],
-                        ))
+                    .map((t) => Chip(label: Text("#${t.id} - ${t.name}")))
                     .toList(),
               ),
             ),
