@@ -34,7 +34,6 @@ class _ThingsListViewState extends State<ThingsListView> {
               name: thing.name,
               available: thing.available,
               selected: _selectedThingIds.contains(thing.id),
-              alternateTileColor: index % 2 == 0,
               onTap: thing.available
                   ? () {
                       setState(() {

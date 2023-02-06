@@ -106,7 +106,6 @@ class _PickThingsViewState extends State<PickThingsView> {
               name: thing.name,
               available: thing.available,
               selected: true,
-              alternateTileColor: index % 2 == 0,
               onTap: () => widget.onThingPicked(thing),
             );
           },

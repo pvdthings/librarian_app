@@ -5,7 +5,6 @@ class ThingListTile extends StatelessWidget {
   final String name;
   final bool available;
   final bool selected;
-  final bool alternateTileColor;
   final Function()? onTap;
 
   const ThingListTile({
@@ -14,7 +13,6 @@ class ThingListTile extends StatelessWidget {
     required this.name,
     required this.available,
     required this.selected,
-    required this.alternateTileColor,
     this.onTap,
   });
 
@@ -35,8 +33,6 @@ class ThingListTile extends StatelessWidget {
       trailing: selected
           ? const Icon(Icons.check_rounded, color: Colors.green)
           : null,
-      tileColor: alternateTileColor ? null : Colors.blueGrey[50],
-      hoverColor: Colors.grey[100],
       onTap: onTap,
     );
   }
