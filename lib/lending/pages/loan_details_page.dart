@@ -30,37 +30,17 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
     loans.updateDueDate(widget.loan.id, _newDueDate!);
   }
 
-  void _closeLoan(BuildContext context) {
-    final thingId = widget.loan.thing.id;
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Thing #$thingId"),
-          content:
-              Text("Are you sure you want to check Thing #$thingId back in?"),
-          actions: [
-            TextButton(
-              child: const Text("Yes"),
-              onPressed: () {
-                final things = Provider.of<ThingsModel>(context, listen: false);
-                things.checkIn(widget.loan.thing.id);
+  void _closeLoan(int thingId) {
+    final things = Provider.of<ThingsModel>(context, listen: false);
+    things.checkIn(widget.loan.thing.id);
 
-                final loans = Provider.of<LoansModel>(context, listen: false);
-                loans.close(widget.loan.id);
+    final loans = Provider.of<LoansModel>(context, listen: false);
+    loans.close(widget.loan.id);
 
-                Navigator.pop(context);
-                setState(() => _editable = false);
-              },
-            ),
-            TextButton(
-              child: const Text("Cancel"),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        );
-      },
-    );
+    setState(() {
+      _editable = false;
+      _editMode = false;
+    });
   }
 
   @override
@@ -77,7 +57,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
         onDueDateUpdated: (newDueDate) {
           setState(() => _newDueDate = newDueDate);
         },
-        onClose: () => _closeLoan(context),
+        onClose: _closeLoan,
       ),
       floatingActionButton: _editable
           ? _editMode

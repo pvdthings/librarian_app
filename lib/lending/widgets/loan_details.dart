@@ -19,7 +19,7 @@ class LoanDetails extends StatefulWidget {
   final DateTime dueDate;
 
   final Function(DateTime) onDueDateUpdated;
-  final Function()? onClose;
+  final Function(int)? onClose;
 
   @override
   State<LoanDetails> createState() => _LoanDetailsState();
@@ -71,8 +71,33 @@ class _LoanDetailsState extends State<LoanDetails> {
             ),
           ),
           if (widget.editable && widget.onClose != null)
-            ElevatedButton(
-              onPressed: widget.onClose,
+            OutlinedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    final thingId = widget.things[0].id;
+                    return AlertDialog(
+                      title: Text("Thing #$thingId"),
+                      content: Text(
+                          "Are you sure you want to check Thing #$thingId back in?"),
+                      actions: [
+                        TextButton(
+                          child: const Text("Yes"),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            widget.onClose!(thingId);
+                          },
+                        ),
+                        TextButton(
+                          child: const Text("Cancel"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
               child: const Text("Check in"),
             )
         ],
