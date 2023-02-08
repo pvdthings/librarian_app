@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class LoansListView extends StatelessWidget {
   const LoansListView({super.key});
 
-  Color? _dueDateBackgroundColor(Loan loan) {
+  Color? _dueDateColor(Loan loan) {
     if (loan.isOverdue) return Colors.red[100];
     if (loan.isDueToday) return Colors.green[100];
     return null;
@@ -32,12 +32,10 @@ class LoansListView extends StatelessWidget {
             return ListTile(
               title: Text(loan.thing.name),
               subtitle: Text(loan.borrower.name),
-              trailing: Chip(
-                label: Text("${loan.dueDate.month}/${loan.dueDate.day}"),
-                backgroundColor: _dueDateBackgroundColor(loan),
+              trailing: Text(
+                "${loan.dueDate.month}/${loan.dueDate.day}",
+                style: TextStyle(color: _dueDateColor(loan)),
               ),
-              //tileColor: (index % 2 == 0) ? null : Colors.blueGrey[50],
-              // hoverColor: Colors.grey[100],
               onTap: () {
                 Navigator.push(
                   context,
