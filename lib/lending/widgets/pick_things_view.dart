@@ -21,9 +21,29 @@ class PickThingsView extends StatefulWidget {
 }
 
 class _PickThingsViewState extends State<PickThingsView> {
-  final searchController = TextEditingController();
+  final _searchController = TextEditingController();
 
-  void showThingCheckedOutDialog(Thing thing) {
+  void _onSearchSubmitted(List<Thing> things, String value) {
+    final matches =
+        things.where((t) => t.id.toString() == _searchController.text).toList();
+
+    if (matches.length == 1) {
+      final match = matches[0];
+      if (!match.available) {
+        _showThingCheckedOutDialog(match);
+      } else {
+        widget.onThingPicked(match);
+      }
+    }
+
+    if (matches.isEmpty) {
+      _showUnknownThingDialog(value, things.length);
+    }
+
+    _searchController.clear();
+  }
+
+  void _showThingCheckedOutDialog(Thing thing) {
     showDialog(
       context: context,
       builder: (context) {
@@ -41,7 +61,7 @@ class _PickThingsViewState extends State<PickThingsView> {
     );
   }
 
-  void showUnknownThingDialog(String searchValue, int lastNumber) {
+  void _showUnknownThingDialog(String searchValue, int lastNumber) {
     showDialog(
       context: context,
       builder: (context) {
@@ -63,43 +83,28 @@ class _PickThingsViewState extends State<PickThingsView> {
   Widget build(BuildContext context) {
     final things = Provider.of<ThingsModel>(context).getAll();
 
+    final pickedThings = widget.pickedThings;
+    pickedThings.sort((a, b) => a.id.compareTo(b.id));
+
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextField(
-            controller: searchController,
-            onSubmitted: (value) {
-              final matches = things
-                  .where((t) => t.id.toString() == searchController.text)
-                  .toList();
-
-              if (matches.length == 1) {
-                final match = matches[0];
-                if (!match.available) {
-                  showThingCheckedOutDialog(match);
-                } else {
-                  widget.onThingPicked(match);
-                }
-              }
-
-              if (matches.isEmpty) {
-                showUnknownThingDialog(value, things.length);
-              }
-
-              searchController.clear();
-            },
+            controller: _searchController,
+            onSubmitted: (value) => _onSearchSubmitted(things, value),
             keyboardType: TextInputType.number,
             decoration: const InputDecoration(
-              hintText: "Enter Thing #",
+              prefixIcon: Icon(Icons.search),
+              hintText: "Thing #",
               border: OutlineInputBorder(),
             ),
           ),
         ),
         ListView.builder(
-          itemCount: widget.pickedThings.length,
+          itemCount: pickedThings.length,
           itemBuilder: (context, index) {
-            final thing = widget.pickedThings[index];
+            final thing = pickedThings[index];
 
             return ThingListTile(
               id: thing.id,

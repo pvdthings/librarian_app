@@ -30,7 +30,8 @@ class _BorrowersListViewState extends State<BorrowersListView> {
             },
             controller: _searchController,
             decoration: const InputDecoration(
-              hintText: "Search...",
+              prefixIcon: Icon(Icons.search),
+              hintText: "Borrower name",
               border: OutlineInputBorder(),
             ),
           ),
