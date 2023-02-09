@@ -23,6 +23,8 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
     if (_newDueDate != null) {
       _updateDueDate(context);
     }
+
+    setState(() => _editMode = false);
   }
 
   void _updateDueDate(BuildContext context) {
@@ -62,10 +64,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
       floatingActionButton: _editable
           ? _editMode
               ? FloatingActionButton(
-                  onPressed: () {
-                    _saveChanges(context);
-                    setState(() => _editMode = false);
-                  },
+                  onPressed: () => _saveChanges(context),
                   backgroundColor: Colors.green,
                   child: const Icon(Icons.save_rounded),
                 )
