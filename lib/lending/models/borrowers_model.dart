@@ -7,7 +7,7 @@ class BorrowersModel extends ChangeNotifier {
     const Borrower(name: "Nurse Joy"),
     const Borrower(
       name: "Brock",
-      inactiveReasons: [InactiveReasonCode.overdueLoan],
+      inactiveReasons: [InactiveReasonCode.unpaidDues],
     ),
   ];
 

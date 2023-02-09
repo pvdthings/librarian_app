@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/lending/models/borrowers_model.dart';
 
 class NeedsAttentionView extends StatelessWidget {
-  const NeedsAttentionView({super.key});
+  final Borrower borrower;
 
-  static final reasons = [
-    const Reason(
+  const NeedsAttentionView({super.key, required this.borrower});
+
+  static final _reasonMap = <InactiveReasonCode, Reason>{
+    InactiveReasonCode.unpaidDues: const Reason(
       title: "Dues Not Paid",
       explanation:
           "All borrowing members are required to pay annual dues. The QR code below redirects to Givebutter, where the borrower can pay their dues. Cash is accepted.",
       graphicUrl: "qr_givebutter.png",
     ),
-    const Reason(
+    InactiveReasonCode.overdueLoan: const Reason(
       title: "Overdue Loan",
       explanation:
           "This borrower has an overdue loan. They will not be eligible to borrow again until the overdue item(s) are returned.",
     ),
-  ];
+    InactiveReasonCode.banned: const Reason(
+      title: "Banned",
+      explanation: "This person has been banned from borrowing.",
+    ),
+  };
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: ListView.builder(
-        itemCount: reasons.length,
+        itemCount: borrower.inactiveReasons!.length,
         itemBuilder: (context, index) {
-          final reason = reasons[index];
+          final reasonCode = borrower.inactiveReasons![index];
+          final reason = _reasonMap[reasonCode]!;
 
           return Card(
             child: Padding(
@@ -52,6 +60,7 @@ class NeedsAttentionView extends StatelessWidget {
             ),
           );
         },
+        shrinkWrap: true,
       ),
     );
   }

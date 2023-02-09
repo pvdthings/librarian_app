@@ -107,7 +107,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       ),
       ViewModel(
         title: "Ineligible Borrower",
-        body: const NeedsAttentionView(),
+        body: NeedsAttentionView(borrower: _borrower),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.pop(context),
           backgroundColor: Colors.green,
