@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
+import 'package:librarian_app/lending/models/user_model.dart';
 import 'package:librarian_app/lending/pages/loan_details_page.dart';
 import 'package:provider/provider.dart';
 
@@ -14,13 +15,15 @@ class LoansListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel>(context, listen: false);
+
     return Consumer<LoansModel>(
       builder: (context, model, child) {
         final loans = model.getAll();
 
         if (loans.isEmpty) {
-          return const Center(
-            child: Text("No open loans!"),
+          return Center(
+            child: Text("No loans, ${user.name}!"),
           );
         }
 
