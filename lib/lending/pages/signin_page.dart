@@ -14,6 +14,16 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   String? _error;
 
+  final _pinController = TextEditingController();
+
+  void _submit(UserModel user, String value) {
+    try {
+      user.signIn(pin: value);
+    } catch (e) {
+      setState(() => _error = e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel>(context);
@@ -29,19 +39,17 @@ class _SignInPageState extends State<SignInPage> {
             ),
             const SizedBox(height: 16),
             TextField(
-              onSubmitted: (value) {
-                try {
-                  user.signIn(pin: value);
-                } catch (e) {
-                  setState(() => _error = e.toString());
-                }
-              },
-              decoration: const InputDecoration(
-                icon: Icon(Icons.key_rounded),
-                suffixIcon: Icon(Icons.keyboard_return_rounded),
+              controller: _pinController,
+              onSubmitted: (value) => _submit(user, value),
+              decoration: InputDecoration(
+                icon: const Icon(Icons.key_rounded),
+                suffixIcon: IconButton(
+                  onPressed: () => _submit(user, _pinController.text),
+                  icon: const Icon(Icons.keyboard_return_rounded),
+                ),
                 labelText: "PIN",
                 hintText: "User PIN",
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 8),
