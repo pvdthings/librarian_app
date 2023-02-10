@@ -16,7 +16,7 @@ class UserModel extends ChangeNotifier {
       notifyListeners();
     }
 
-    throw "Invalid PIN";
+    throw "Invalid PIN - Use 1234 or 4321";
   }
 }
 
