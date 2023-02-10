@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
+import 'package:librarian_app/lending/models/user_model.dart';
 import 'package:librarian_app/lending/pages/open_loan_page.dart';
 import 'package:librarian_app/lending/widgets/borrowers_list_view.dart';
 import 'package:librarian_app/lending/widgets/loans_list_view.dart';
+import 'package:provider/provider.dart';
 
 class LendingPage extends StatefulWidget {
   const LendingPage({super.key});
@@ -30,8 +32,18 @@ class _LendingPageState extends State<LendingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel>(context);
+
     return Scaffold(
-      appBar: AppBar(title: Text(_titles[_viewIndex])),
+      appBar: AppBar(
+        title: Text(_titles[_viewIndex]),
+        leading: IconButton(
+          onPressed: user.signOut,
+          icon: const Icon(
+            Icons.logout_rounded,
+          ),
+        ),
+      ),
       body: _views[_viewIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _viewIndex,

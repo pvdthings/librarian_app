@@ -37,7 +37,8 @@ class _SignInPageState extends State<SignInPage> {
                 }
               },
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.key_rounded),
+                icon: Icon(Icons.key_rounded),
+                suffixIcon: Icon(Icons.keyboard_return_rounded),
                 labelText: "PIN",
                 hintText: "User PIN",
                 border: OutlineInputBorder(),
