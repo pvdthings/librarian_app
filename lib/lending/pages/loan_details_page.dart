@@ -55,6 +55,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
         borrower: loan.borrower,
         things: [loan.thing],
         dueDate: _newDueDate ?? loan.dueDate,
+        checkedInDate: loan.checkedInDate,
         editable: _editMode,
         onDueDateUpdated: (newDueDate) {
           setState(() => _newDueDate = newDueDate);

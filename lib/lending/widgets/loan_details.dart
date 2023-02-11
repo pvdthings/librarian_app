@@ -9,6 +9,7 @@ class LoanDetails extends StatefulWidget {
     required this.things,
     required this.dueDate,
     required this.onDueDateUpdated,
+    this.checkedInDate,
     this.editable = true,
     this.onClose,
   });
@@ -17,6 +18,7 @@ class LoanDetails extends StatefulWidget {
   final Borrower borrower;
   final List<Thing> things;
   final DateTime dueDate;
+  final DateTime? checkedInDate;
 
   final Function(DateTime) onDueDateUpdated;
   final Function(int)? onClose;
@@ -70,6 +72,14 @@ class _LoanDetailsState extends State<LoanDetails> {
                   : null,
             ),
           ),
+          if (widget.checkedInDate != null)
+            Card(
+              child: ListTile(
+                leading: const Text("Checked In"),
+                title: Text(
+                    "${widget.checkedInDate!.month}/${widget.checkedInDate!.day}"),
+              ),
+            ),
           if (widget.editable && widget.onClose != null)
             OutlinedButton(
               onPressed: () {

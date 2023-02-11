@@ -7,7 +7,7 @@ class LoansModel extends ChangeNotifier {
   static final List<Loan> _loans = [];
 
   List<Loan> getAll() {
-    final loans = _loans;
+    final loans = _loans.where((l) => l.checkedInDate == null).toList();
     loans.sort((a, b) => a.dueDate.compareTo(b.dueDate));
     return loans;
   }
@@ -18,7 +18,7 @@ class LoansModel extends ChangeNotifier {
   }
 
   void close(UniqueKey id) {
-    _loans.removeWhere((l) => l.id == id);
+    _loans.singleWhere((l) => l.id == id).checkedInDate = DateTime.now();
     notifyListeners();
   }
 
@@ -33,6 +33,7 @@ class Loan {
   final Thing thing;
   final Borrower borrower;
   DateTime dueDate;
+  DateTime? checkedInDate;
 
   bool get isOverdue {
     final now = DateTime.now();
@@ -45,5 +46,6 @@ class Loan {
     required this.thing,
     required this.borrower,
     required this.dueDate,
+    this.checkedInDate,
   });
 }
