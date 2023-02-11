@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:provider/provider.dart';
 
+import 'submit_text_field.dart';
+
 class BorrowersListView extends StatefulWidget {
   const BorrowersListView({
     super.key,
@@ -24,16 +26,15 @@ class _BorrowersListViewState extends State<BorrowersListView> {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextField(
+          child: SubmitTextField(
+            hintText: "Alice Appleseed",
+            labelText: "Borrower",
+            prefixIcon: const Icon(Icons.search),
+            showSubmitButton: false,
             onChanged: (value) {
               setState(() => _searchText = value.toLowerCase());
             },
             controller: _searchController,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: "Borrower name",
-              border: OutlineInputBorder(),
-            ),
           ),
         ),
         Consumer<BorrowersModel>(

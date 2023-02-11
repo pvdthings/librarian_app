@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
 import 'package:provider/provider.dart';
 
+import 'submit_text_field.dart';
 import 'thing_list_tile.dart';
 
 class PickThingsView extends StatefulWidget {
@@ -90,15 +91,11 @@ class _PickThingsViewState extends State<PickThingsView> {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextField(
+          child: SubmitTextField(
+            labelText: "Thing ID",
+            prefixIcon: const Icon(Icons.search),
             controller: _searchController,
             onSubmitted: (value) => _onSearchSubmitted(things, value),
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: "Thing #",
-              border: OutlineInputBorder(),
-            ),
           ),
         ),
         ListView.builder(
