@@ -18,6 +18,11 @@ class _SignInPageState extends State<SignInPage> {
   final _pinController = TextEditingController();
 
   void _submit(UserModel user, String value) {
+    if (value.isEmpty) {
+      setState(() => _error = "PIN cannot be empty");
+      return;
+    }
+
     try {
       user.signIn(pin: value);
     } catch (e) {
