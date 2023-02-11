@@ -12,6 +12,7 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  bool _showSubmitButton = false;
   String? _error;
 
   final _pinController = TextEditingController();
@@ -35,18 +36,24 @@ class _SignInPageState extends State<SignInPage> {
           children: [
             Image.asset(
               "pvd_things.png",
-              width: 256,
+              isAntiAlias: true,
+              width: 160,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
             TextField(
               controller: _pinController,
               onSubmitted: (value) => _submit(user, value),
+              onChanged: (value) {
+                setState(() => _showSubmitButton = value.isNotEmpty);
+              },
               decoration: InputDecoration(
                 icon: const Icon(Icons.key_rounded),
-                suffixIcon: IconButton(
-                  onPressed: () => _submit(user, _pinController.text),
-                  icon: const Icon(Icons.keyboard_return_rounded),
-                ),
+                suffixIcon: _showSubmitButton
+                    ? IconButton(
+                        onPressed: () => _submit(user, _pinController.text),
+                        icon: const Icon(Icons.keyboard_return_rounded),
+                      )
+                    : null,
                 labelText: "PIN",
                 hintText: "User PIN",
                 border: const OutlineInputBorder(),
