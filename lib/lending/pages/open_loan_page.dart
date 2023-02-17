@@ -17,42 +17,38 @@ class OpenLoanPage extends StatefulWidget {
 }
 
 class _OpenLoanPageState extends State<OpenLoanPage> {
-  late List<ViewModel> _viewModels;
-  int _viewIndex = 0;
+  late ViewModel _view = selectBorrowerView;
 
   Borrower _borrower = const Borrower(name: "Borrower");
   final List<Thing> _things = [];
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
-  void incrementViewIndex() {
-    setState(() => _viewIndex += 1);
+  void _updateView(ViewModel view) {
+    setState(() => _view = view);
   }
 
-  void skipToLastViewIndex() {
-    setState(() => _viewIndex = _viewModels.length - 1);
-  }
-
-  void onTapBorrower(Borrower borrower) {
+  void _onTapBorrower(Borrower borrower) {
     _borrower = borrower;
     if (borrower.active) {
-      incrementViewIndex();
+      _updateView(addThingsView);
       return;
     }
 
-    skipToLastViewIndex();
+    _updateView(needsAttentionView);
   }
 
-  void onTapThing(Thing thing) {
+  void _onTapThing(Thing thing) {
     setState(() {
       if (_things.contains(thing)) {
         _things.remove(thing);
       } else {
         _things.add(thing);
       }
+      _view = addThingsView;
     });
   }
 
-  void onTapCreate() {
+  void _onTapCreate() {
     final things = Provider.of<ThingsModel>(context, listen: false);
     final loans = Provider.of<LoansModel>(context, listen: false);
 
@@ -69,27 +65,26 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     Navigator.pop(context);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    _viewModels = [
-      ViewModel(
+  ViewModel get selectBorrowerView => ViewModel(
         title: "Select Borrower",
-        body: BorrowersListView(onTapBorrower: onTapBorrower),
-      ),
-      ViewModel(
+        body: BorrowersListView(onTapBorrower: _onTapBorrower),
+      );
+
+  ViewModel get addThingsView => ViewModel(
         title: "Add Things",
         body: PickThingsView(
           pickedThings: _things,
-          onThingPicked: onTapThing,
+          onThingPicked: _onTapThing,
         ),
         floatingActionButton: _things.isNotEmpty
             ? FloatingActionButton(
-                onPressed: incrementViewIndex,
+                onPressed: () => _updateView(loanDetailsView),
                 child: const Icon(Icons.navigate_next_rounded),
               )
             : null,
-      ),
-      ViewModel(
+      );
+
+  ViewModel get loanDetailsView => ViewModel(
         title: "Loan Details",
         body: LoanDetails(
           borrower: _borrower,
@@ -101,13 +96,14 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
           },
         ),
         floatingActionButton: ConfirmFloatingActionButton(
-          onPressed: onTapCreate,
+          onPressed: _onTapCreate,
           backgroundColor: Colors.green,
           icon: const Icon(Icons.check_rounded),
           label: "Finish",
         ),
-      ),
-      ViewModel(
+      );
+
+  ViewModel get needsAttentionView => ViewModel(
         title: "Ineligible Borrower",
         body: NeedsAttentionView(borrower: _borrower),
         floatingActionButton: FloatingActionButton(
@@ -115,13 +111,14 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
           backgroundColor: Colors.green,
           child: const Icon(Icons.close_rounded),
         ),
-      ),
-    ];
+      );
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_viewModels[_viewIndex].title)),
-      body: _viewModels[_viewIndex].body,
-      floatingActionButton: _viewModels[_viewIndex].floatingActionButton,
+      appBar: AppBar(title: Text(_view.title)),
+      body: _view.body,
+      floatingActionButton: _view.floatingActionButton,
     );
   }
 }
