@@ -58,7 +58,7 @@ class _LoanDetailsState extends State<LoanDetails> {
             child: ListTile(
               leading: const Text("Checked Out"),
               title: Text(
-                  "${widget.checkedOutDate!.month}/${widget.checkedOutDate!.day}"),
+                  "${widget.checkedOutDate.month}/${widget.checkedOutDate.day}"),
             ),
           ),
           Card(
