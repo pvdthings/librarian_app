@@ -9,8 +9,8 @@ class SubmitTextField extends StatefulWidget {
     this.icon,
     this.prefixIcon,
     this.showSubmitButton = true,
-    this.onSubmitted,
-    this.onChanged,
+    required this.onSubmitted,
+    required this.onChanged,
   });
 
   final TextEditingController? controller;
@@ -19,8 +19,8 @@ class SubmitTextField extends StatefulWidget {
   final Widget? icon;
   final Widget? prefixIcon;
   final bool showSubmitButton;
-  final Function(String)? onSubmitted;
-  final Function(String)? onChanged;
+  final Function(String) onSubmitted;
+  final Function(String) onChanged;
 
   @override
   State<StatefulWidget> createState() {
@@ -38,14 +38,14 @@ class _SubmitTextFieldState extends State<SubmitTextField> {
       onSubmitted: widget.onSubmitted,
       onChanged: (value) {
         setState(() => _showSubmitButton = value.isNotEmpty);
-        widget.onChanged!(value);
+        widget.onChanged(value);
       },
       decoration: InputDecoration(
         icon: widget.icon,
         prefixIcon: widget.prefixIcon,
         suffixIcon: _showSubmitButton && widget.showSubmitButton
             ? IconButton(
-                onPressed: () => widget.onSubmitted!(widget.controller!.text),
+                onPressed: () => widget.onSubmitted(widget.controller!.text),
                 icon: const Icon(Icons.keyboard_return_rounded),
               )
             : null,

@@ -34,6 +34,7 @@ class _BorrowersListViewState extends State<BorrowersListView> {
             onChanged: (value) {
               setState(() => _searchText = value.toLowerCase());
             },
+            onSubmitted: (_) => {},
             controller: _searchController,
           ),
         ),

@@ -96,6 +96,7 @@ class _PickThingsViewState extends State<PickThingsView> {
             prefixIcon: const Icon(Icons.search),
             controller: _searchController,
             onSubmitted: (value) => _onSearchSubmitted(things, value),
+            onChanged: (_) => {},
           ),
         ),
         ListView.builder(

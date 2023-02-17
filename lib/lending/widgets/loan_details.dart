@@ -7,6 +7,7 @@ class LoanDetails extends StatefulWidget {
     super.key,
     required this.borrower,
     required this.things,
+    required this.checkedOutDate,
     required this.dueDate,
     required this.onDueDateUpdated,
     this.checkedInDate,
@@ -17,6 +18,7 @@ class LoanDetails extends StatefulWidget {
   final bool editable;
   final Borrower borrower;
   final List<Thing> things;
+  final DateTime checkedOutDate;
   final DateTime dueDate;
   final DateTime? checkedInDate;
 
@@ -50,6 +52,13 @@ class _LoanDetailsState extends State<LoanDetails> {
                     .map((t) => Chip(label: Text("#${t.id} - ${t.name}")))
                     .toList(),
               ),
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: const Text("Checked Out"),
+              title: Text(
+                  "${widget.checkedOutDate!.month}/${widget.checkedOutDate!.day}"),
             ),
           ),
           Card(
@@ -93,15 +102,15 @@ class _LoanDetailsState extends State<LoanDetails> {
                           "Are you sure you want to check Thing #$thingId back in?"),
                       actions: [
                         TextButton(
+                          child: const Text("Cancel"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        TextButton(
                           child: const Text("Yes"),
                           onPressed: () {
                             Navigator.pop(context);
                             widget.onClose!(thingId);
                           },
-                        ),
-                        TextButton(
-                          child: const Text("Cancel"),
-                          onPressed: () => Navigator.pop(context),
                         ),
                       ],
                     );

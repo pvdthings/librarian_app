@@ -54,6 +54,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
       body: LoanDetails(
         borrower: loan.borrower,
         things: [loan.thing],
+        checkedOutDate: loan.checkedOutDate,
         dueDate: _newDueDate ?? loan.dueDate,
         checkedInDate: loan.checkedInDate,
         editable: _editMode,

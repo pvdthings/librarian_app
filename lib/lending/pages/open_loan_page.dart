@@ -61,6 +61,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       loans.open(Loan(
         borrower: _borrower,
         thing: Thing(name: thing.name, id: thing.id),
+        checkedOutDate: DateTime.now(),
         dueDate: _dueDate,
       ));
     }
@@ -93,6 +94,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
         body: LoanDetails(
           borrower: _borrower,
           things: _things,
+          checkedOutDate: DateTime.now(),
           dueDate: _dueDate,
           onDueDateUpdated: (newDate) {
             setState(() => _dueDate = newDate);

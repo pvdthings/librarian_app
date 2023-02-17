@@ -32,6 +32,7 @@ class Loan {
   final UniqueKey id = UniqueKey();
   final Thing thing;
   final Borrower borrower;
+  final DateTime checkedOutDate;
   DateTime dueDate;
   DateTime? checkedInDate;
 
@@ -45,6 +46,7 @@ class Loan {
   Loan({
     required this.thing,
     required this.borrower,
+    required this.checkedOutDate,
     required this.dueDate,
     this.checkedInDate,
   });
