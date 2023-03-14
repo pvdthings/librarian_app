@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserModel extends ChangeNotifier {
-  static SupabaseClient get supabase => Supabase.instance.client;
+  static SupabaseClient get _supabase => Supabase.instance.client;
+  static User? get _currentUser => _supabase.auth.currentUser;
 
-  bool get signedIn => supabase.auth.currentSession != null;
+  bool get signedIn => _supabase.auth.currentSession != null;
 
-  String get name => supabase.auth.currentUser!.id;
+  String get name =>
+      _currentUser?.userMetadata?['full_name'] ??
+      _currentUser?.email ??
+      'Alice';
 
   void signIn() {
-    supabase.auth
+    _supabase.auth
         .signInWithOAuth(Provider.discord)
         .whenComplete(() => notifyListeners());
   }
 
   void signOut() {
-    supabase.auth.signOut().whenComplete(() => notifyListeners());
+    _supabase.auth.signOut().whenComplete(() => notifyListeners());
   }
 }
