@@ -12,24 +12,6 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  bool _showSubmitButton = false;
-  String? _error;
-
-  final _pinController = TextEditingController();
-
-  void _submit(UserModel user, String value) {
-    if (value.isEmpty) {
-      setState(() => _error = "PIN cannot be empty");
-      return;
-    }
-
-    try {
-      user.signIn();
-    } catch (e) {
-      setState(() => _error = e.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel>(context);
@@ -37,49 +19,23 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Image.asset(
-              "pvd_things.png",
-              isAntiAlias: true,
-              width: 160,
-            ),
-            const SizedBox(height: 32),
-            TextField(
-              controller: _pinController,
-              onSubmitted: (value) => _submit(user, value),
-              onChanged: (value) {
-                setState(() => _showSubmitButton = value.isNotEmpty);
-              },
-              decoration: InputDecoration(
-                icon: const Icon(Icons.key_rounded),
-                suffixIcon: _showSubmitButton
-                    ? IconButton(
-                        onPressed: () => _submit(user, _pinController.text),
-                        icon: const Icon(Icons.keyboard_return_rounded),
-                      )
-                    : null,
-                labelText: "PIN",
-                hintText: "User PIN",
-                border: const OutlineInputBorder(),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "pvd_things.png",
+                isAntiAlias: true,
+                width: 160,
               ),
-            ),
-            const SizedBox(height: 8),
-            TextButton(
-              onPressed: () => user.signIn(),
-              child: const Text('Discord Login'),
-            ),
-            const SizedBox(height: 8),
-            if (_error != null)
-              Center(
-                child: Text(
-                  _error!,
-                  style: const TextStyle(
-                    color: Colors.orange,
-                  ),
-                ),
+              const SizedBox(height: 32),
+              TextButton(
+                onPressed: user.signIn,
+                child: const Text('Sign in with Discord'),
               ),
-          ],
+            ],
+          ),
         ),
       ),
     );
