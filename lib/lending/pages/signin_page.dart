@@ -24,7 +24,7 @@ class _SignInPageState extends State<SignInPage> {
     }
 
     try {
-      user.signIn(pin: value);
+      user.signIn();
     } catch (e) {
       setState(() => _error = e.toString());
     }
@@ -63,6 +63,11 @@ class _SignInPageState extends State<SignInPage> {
                 hintText: "User PIN",
                 border: const OutlineInputBorder(),
               ),
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              onPressed: () => user.signIn(),
+              child: const Text('Discord Login'),
             ),
             const SizedBox(height: 8),
             if (_error != null)
