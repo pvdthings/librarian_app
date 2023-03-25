@@ -10,7 +10,7 @@ class NeedsAttentionView extends StatelessWidget {
     'duesNotPaid': const Reason(
       title: "Dues Not Paid",
       explanation:
-          "All borrowing members are required to pay annual dues. The QR code below redirects to Givebutter, where the borrower can pay their dues. Cash is accepted.",
+          "Scan the QR code to pay annual dues. \nAlternatively, cash is accepted.",
       graphicUrl: "qr_givebutter.png",
     ),
     'overdueLoan': const Reason(
@@ -29,9 +29,9 @@ class NeedsAttentionView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: ListView.builder(
-        itemCount: borrower.issues!.length,
+        itemCount: borrower.issues.length,
         itemBuilder: (context, index) {
-          final reasonCode = borrower.issues![index];
+          final reasonCode = borrower.issues[index];
           final reason = _reasonMap[reasonCode]!;
 
           return Card(
