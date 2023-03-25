@@ -9,7 +9,10 @@ class LoansMapper {
             name: e['thing']['name'] as String,
             id: e['thing']['number'] as int,
           ),
-          borrower: Borrower(name: e['borrower']['name'] as String),
+          borrower: Borrower(
+            name: e['borrower']['name'] as String,
+            issues: [],
+          ),
           checkedOutDate: DateTime.parse(e['checkedOutDate'] as String),
           checkedInDate: e['checkedInDate'] != null
               ? DateTime.parse(e['checkedInDate'] as String)

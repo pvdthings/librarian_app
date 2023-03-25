@@ -19,7 +19,7 @@ class OpenLoanPage extends StatefulWidget {
 class _OpenLoanPageState extends State<OpenLoanPage> {
   late ViewModel _view = selectBorrowerView;
 
-  Borrower _borrower = const Borrower(name: "Borrower");
+  Borrower _borrower = Borrower(name: "Borrower", issues: []);
   final List<Thing> _things = [];
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 

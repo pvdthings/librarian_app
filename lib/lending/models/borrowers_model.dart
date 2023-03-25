@@ -2,25 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/api/lending_api.dart';
 
 class BorrowersModel extends ChangeNotifier {
-  static final _borrowers = [
-    const Borrower(name: "Ash Ketchum"),
-    const Borrower(name: "Professor Oak"),
-    const Borrower(name: "Nurse Joy"),
-    const Borrower(
-      name: "Brock",
-      inactiveReasons: [InactiveReasonCode.unpaidDues],
-    ),
-  ];
-
-  Iterable<Borrower> get all => _borrowers;
-
   Future<List<Borrower>> getAll() async {
     final response = await LendingApi.fetchBorrowers();
     final data = response.data as List;
-    // TODO: map inactive reasons and contact info
+    // TODO: map contact info
     return data
         .map((e) => Borrower(
               name: e['name'] as String,
+              issues: (e['issues'] as List).map((e) => e as String).toList(),
             ))
         .toList();
   }
@@ -28,14 +17,14 @@ class BorrowersModel extends ChangeNotifier {
 
 class Borrower {
   final String name;
-  final List<InactiveReasonCode>? inactiveReasons;
+  final List<String> issues;
 
-  bool get active => inactiveReasons?.isEmpty ?? true;
+  bool get active => issues.isEmpty;
 
-  const Borrower({
+  Borrower({
     required this.name,
-    this.inactiveReasons,
+    required this.issues,
   });
 }
 
-enum InactiveReasonCode { unpaidDues, overdueLoan, banned }
+// enum InactiveReasonCode { duesNotPaid, overdueLoan, suspended }
