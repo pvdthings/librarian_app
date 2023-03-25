@@ -1,15 +1,34 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'mappers/loans_mapper.dart';
 import 'things_model.dart';
 
 class LoansModel extends ChangeNotifier {
   static final List<Loan> _loans = [];
 
-  List<Loan> getAll() {
-    final loans = _loans.where((l) => l.checkedInDate == null).toList();
-    loans.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-    return loans;
+  String get _refreshToken =>
+      Supabase.instance.client.auth.currentSession?.refreshToken ?? '';
+
+  String get _accessToken =>
+      Supabase.instance.client.auth.currentSession?.accessToken ?? '';
+
+  Future<List<Loan>> getAll() async {
+    // TODO: switch to production endpoint
+    final response = await Dio().get(
+      'http://localhost:3000/lending/loans',
+      options: Options(
+        contentType: 'application/json',
+        headers: {
+          'supabase-access-token': _accessToken,
+          'supabase-refresh-token': _refreshToken,
+        },
+      ),
+    );
+
+    return LoansMapper.map(response.data as List).toList();
   }
 
   void open(Loan loan) {
