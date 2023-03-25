@@ -17,11 +17,47 @@ class BorrowersListView extends StatefulWidget {
 }
 
 class _BorrowersListViewState extends State<BorrowersListView> {
+  List<Borrower> _borrowers = [];
+  String? _errorMessage;
+
   final _searchController = TextEditingController();
   String? _searchText;
 
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBorrowers();
+  }
+
+  Future<void> _fetchBorrowers() async {
+    await Future.delayed(Duration.zero);
+
+    // ignore: use_build_context_synchronously
+    final borrowersModel = Provider.of<BorrowersModel>(context, listen: false);
+    try {
+      final borrowers = await borrowersModel.getAll();
+      setState(() => _borrowers = borrowers);
+    } catch (error) {
+      setState(() => _errorMessage = error.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var borrowers = _borrowers;
+
+    if (_errorMessage != null) {
+      return Center(child: Text(_errorMessage!));
+    }
+
+    if (_searchText != null) {
+      borrowers = borrowers
+          .where((b) => b.name.toLowerCase().contains(_searchText!))
+          .toList();
+    }
+
     return Column(
       children: [
         Padding(
@@ -38,43 +74,34 @@ class _BorrowersListViewState extends State<BorrowersListView> {
             controller: _searchController,
           ),
         ),
-        Consumer<BorrowersModel>(
-          builder: (context, model, child) {
-            var borrowers = model.all.toList();
+        Expanded(
+          child: ListView.builder(
+            controller: _scrollController,
+            itemCount: borrowers.length,
+            itemBuilder: (context, index) {
+              final b = borrowers[index];
 
-            if (_searchText != null) {
-              borrowers = borrowers
-                  .where((b) => b.name.toLowerCase().contains(_searchText!))
-                  .toList();
-            }
-
-            return ListView.builder(
-              itemCount: borrowers.length,
-              itemBuilder: (context, index) {
-                final b = borrowers[index];
-
-                return ListTile(
-                  title: Text(b.name),
-                  subtitle: b.active
-                      ? const Text(
-                          "Active",
-                          style: TextStyle(
-                            color: Colors.green,
-                          ),
-                        )
-                      : const Text(
-                          "Inactive",
-                          style: TextStyle(
-                            color: Colors.orange,
-                          ),
+              return ListTile(
+                title: Text(b.name),
+                subtitle: b.active
+                    ? const Text(
+                        "Active",
+                        style: TextStyle(
+                          color: Colors.green,
                         ),
-                  onTap: () => widget.onTapBorrower(b),
-                );
-              },
-              shrinkWrap: true,
-            );
-          },
-        ),
+                      )
+                    : const Text(
+                        "Inactive",
+                        style: TextStyle(
+                          color: Colors.orange,
+                        ),
+                      ),
+                onTap: () => widget.onTapBorrower(b),
+              );
+            },
+            shrinkWrap: true,
+          ),
+        )
       ],
     );
   }

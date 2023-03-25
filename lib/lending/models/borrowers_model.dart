@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/lending/api/lending_api.dart';
 
 class BorrowersModel extends ChangeNotifier {
   static final _borrowers = [
@@ -12,6 +13,17 @@ class BorrowersModel extends ChangeNotifier {
   ];
 
   Iterable<Borrower> get all => _borrowers;
+
+  Future<List<Borrower>> getAll() async {
+    final response = await LendingApi.fetchBorrowers();
+    final data = response.data as List;
+    // TODO: map inactive reasons and contact info
+    return data
+        .map((e) => Borrower(
+              name: e['name'] as String,
+            ))
+        .toList();
+  }
 }
 
 class Borrower {

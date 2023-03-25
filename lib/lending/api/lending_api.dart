@@ -20,4 +20,8 @@ class LendingApi {
   static Future<Response> fetchLoans() async {
     return await _client.get('/loans');
   }
+
+  static Future<Response> fetchBorrowers() async {
+    return await _client.get('/borrowers');
+  }
 }
