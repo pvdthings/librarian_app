@@ -17,6 +17,7 @@ class BorrowersListView extends StatefulWidget {
 }
 
 class _BorrowersListViewState extends State<BorrowersListView> {
+  bool _isLoading = false;
   List<Borrower> _borrowers = [];
   String? _errorMessage;
 
@@ -33,12 +34,16 @@ class _BorrowersListViewState extends State<BorrowersListView> {
 
   Future<void> _fetchBorrowers() async {
     await Future.delayed(Duration.zero);
+    setState(() => _isLoading = true);
 
     // ignore: use_build_context_synchronously
     final borrowersModel = Provider.of<BorrowersModel>(context, listen: false);
     try {
       final borrowers = await borrowersModel.getAll();
-      setState(() => _borrowers = borrowers);
+      setState(() {
+        _borrowers = borrowers;
+        _isLoading = false;
+      });
     } catch (error) {
       setState(() => _errorMessage = error.toString());
     }
@@ -46,6 +51,10 @@ class _BorrowersListViewState extends State<BorrowersListView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     var borrowers = _borrowers;
 
     if (_errorMessage != null) {

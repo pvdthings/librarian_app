@@ -12,6 +12,7 @@ class LoansListView extends StatefulWidget {
 }
 
 class _LoansListViewState extends State<LoansListView> {
+  bool _isLoading = false;
   List<Loan> _loans = [];
   String? _errorMessage;
 
@@ -29,12 +30,16 @@ class _LoansListViewState extends State<LoansListView> {
 
   Future<void> _fetchLoans() async {
     await Future.delayed(Duration.zero);
+    setState(() => _isLoading = true);
 
     // ignore: use_build_context_synchronously
     final loansModel = Provider.of<LoansModel>(context, listen: false);
     try {
       final loans = await loansModel.getAll();
-      setState(() => _loans = loans);
+      setState(() {
+        _loans = loans;
+        _isLoading = false;
+      });
     } catch (error) {
       setState(() => _errorMessage = error.toString());
     }
@@ -42,40 +47,40 @@ class _LoansListViewState extends State<LoansListView> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserModel>(context, listen: false);
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-    return Consumer<LoansModel>(
-      builder: (context, model, child) {
-        if (_errorMessage != null) {
-          return Center(child: Text(_errorMessage!));
-        }
+    if (_errorMessage != null) {
+      return Center(child: Text(_errorMessage!));
+    }
 
-        if (_loans.isEmpty) {
-          return Center(
-            child: Text("No loans, ${user.name}!"),
-          );
-        }
+    if (_loans.isEmpty) {
+      final user = Provider.of<UserModel>(context, listen: false);
 
-        return ListView.builder(
-          itemCount: _loans.length,
-          itemBuilder: (context, index) {
-            final loan = _loans[index];
+      return Center(
+        child: Text("No loans, ${user.name}!"),
+      );
+    }
 
-            return ListTile(
-              title: Text(loan.thing.name),
-              subtitle: Text(loan.borrower.name),
-              trailing: Text(
-                "${loan.dueDate.month}/${loan.dueDate.day}",
-                style: TextStyle(color: _dueDateColor(loan)),
+    return ListView.builder(
+      itemCount: _loans.length,
+      itemBuilder: (context, index) {
+        final loan = _loans[index];
+
+        return ListTile(
+          title: Text(loan.thing.name),
+          subtitle: Text(loan.borrower.name),
+          trailing: Text(
+            "${loan.dueDate.month}/${loan.dueDate.day}",
+            style: TextStyle(color: _dueDateColor(loan)),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoanDetailsPage(loan),
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoanDetailsPage(loan),
-                  ),
-                );
-              },
             );
           },
         );
