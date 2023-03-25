@@ -21,5 +21,3 @@ class Borrower {
     required this.issues,
   });
 }
-
-// enum InactiveReasonCode { duesNotPaid, overdueLoan, suspended }

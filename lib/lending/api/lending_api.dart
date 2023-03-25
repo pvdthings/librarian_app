@@ -24,4 +24,8 @@ class LendingApi {
   static Future<Response> fetchBorrowers() async {
     return await _client.get('/borrowers');
   }
+
+  static Future<Response> fetchThing({required int number}) async {
+    return await _client.get('/things/$number');
+  }
 }

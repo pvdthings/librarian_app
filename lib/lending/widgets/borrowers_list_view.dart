@@ -51,15 +51,15 @@ class _BorrowersListViewState extends State<BorrowersListView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_errorMessage != null) {
+      return Center(child: Text(_errorMessage!));
+    }
+
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     var borrowers = _borrowers;
-
-    if (_errorMessage != null) {
-      return Center(child: Text(_errorMessage!));
-    }
 
     if (_searchText != null) {
       borrowers = borrowers

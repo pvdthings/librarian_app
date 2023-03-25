@@ -23,22 +23,24 @@ class PickThingsView extends StatefulWidget {
 
 class _PickThingsViewState extends State<PickThingsView> {
   final _searchController = TextEditingController();
+  bool _isLoading = false;
 
-  void _onSearchSubmitted(List<Thing> things, String value) {
-    final matches =
-        things.where((t) => t.id.toString() == _searchController.text).toList();
+  Future<void> _onSearchSubmitted(String value) async {
+    setState(() => _isLoading = true);
 
-    if (matches.length == 1) {
-      final match = matches[0];
+    final thingsModel = Provider.of<ThingsModel>(context, listen: false);
+    final match = await thingsModel.getOne(number: int.parse(value));
+
+    setState(() => _isLoading = false);
+
+    if (match != null) {
       if (!match.available) {
         _showThingCheckedOutDialog(match);
       } else {
         widget.onThingPicked(match);
       }
-    }
-
-    if (matches.isEmpty) {
-      _showUnknownThingDialog(value, things.length);
+    } else {
+      _showUnknownThingDialog(value);
     }
 
     _searchController.clear();
@@ -50,7 +52,7 @@ class _PickThingsViewState extends State<PickThingsView> {
       builder: (context) {
         return AlertDialog(
           title: const Text("Thing Unavailable"),
-          content: Text("Thing #${thing.id} is checked out."),
+          content: Text("Thing #${thing.number} is checked out."),
           actions: [
             TextButton(
               child: const Text("OK"),
@@ -62,13 +64,13 @@ class _PickThingsViewState extends State<PickThingsView> {
     );
   }
 
-  void _showUnknownThingDialog(String searchValue, int lastNumber) {
+  void _showUnknownThingDialog(String searchValue) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text("Thing #$searchValue does not exist"),
-          content: Text("For demo purposes, try #1 - #$lastNumber."),
+          content: const Text("Try another number."),
           actions: [
             TextButton(
               child: const Text("OK"),
@@ -82,10 +84,12 @@ class _PickThingsViewState extends State<PickThingsView> {
 
   @override
   Widget build(BuildContext context) {
-    final things = Provider.of<ThingsModel>(context).getAll();
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     final pickedThings = widget.pickedThings;
-    pickedThings.sort((a, b) => a.id.compareTo(b.id));
+    pickedThings.sort((a, b) => a.number.compareTo(b.number));
 
     return Column(
       children: [
@@ -95,7 +99,7 @@ class _PickThingsViewState extends State<PickThingsView> {
             labelText: "Thing ID",
             prefixIcon: const Icon(Icons.search),
             controller: _searchController,
-            onSubmitted: (value) => _onSearchSubmitted(things, value),
+            onSubmitted: _onSearchSubmitted,
             onChanged: (_) => {},
           ),
         ),
@@ -105,7 +109,7 @@ class _PickThingsViewState extends State<PickThingsView> {
             final thing = pickedThings[index];
 
             return ThingListTile(
-              id: thing.id,
+              number: thing.number,
               name: thing.name,
               available: thing.available,
               selected: true,
