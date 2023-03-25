@@ -11,6 +11,7 @@ class LoansMapper {
             number: e['thing']['number'] as int,
           ),
           borrower: Borrower(
+            id: e['borrower']['id'] as String,
             name: e['borrower']['name'] as String,
             issues: [],
           ),

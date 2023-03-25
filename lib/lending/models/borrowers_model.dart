@@ -11,12 +11,14 @@ class BorrowersModel extends ChangeNotifier {
 }
 
 class Borrower {
+  final String id;
   final String name;
   final List<String> issues;
 
   bool get active => issues.isEmpty;
 
   Borrower({
+    required this.id,
     required this.name,
     required this.issues,
   });

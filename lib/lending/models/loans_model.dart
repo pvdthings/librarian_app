@@ -13,6 +13,20 @@ class LoansModel extends ChangeNotifier {
     return LoansMapper.map(response.data as List).toList();
   }
 
+  Future<void> openLoan({
+    required String borrowerId,
+    required List<String> thingIds,
+    required String checkedOutDate,
+    required String dueBackDate,
+  }) async {
+    await LendingApi.createLoan(NewLoan(
+      borrowerId: borrowerId,
+      thingIds: thingIds,
+      checkedOutDate: checkedOutDate,
+      dueBackDate: dueBackDate,
+    ));
+  }
+
   void open(Loan loan) {
     _loans.add(loan);
     notifyListeners();

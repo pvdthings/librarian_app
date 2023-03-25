@@ -21,6 +21,16 @@ class LendingApi {
     return await _client.get('/loans');
   }
 
+  static Future<Response> createLoan(NewLoan data) async {
+    return await _client.put('/loans', data: {
+      'borrowerId': data.borrowerId,
+      'thingIds': data.thingIds,
+      'checkedOutDate': data.checkedOutDate,
+      'dueBackDate': data.dueBackDate,
+      'notes': 'This loan was created by the Librarian app!'
+    });
+  }
+
   static Future<Response> fetchBorrowers() async {
     return await _client.get('/borrowers');
   }
@@ -28,4 +38,20 @@ class LendingApi {
   static Future<Response> fetchThing({required int number}) async {
     return await _client.get('/things/$number');
   }
+}
+
+class NewLoan {
+  String borrowerId;
+  List<String> thingIds;
+  String checkedOutDate;
+  String dueBackDate;
+  String? notes;
+
+  NewLoan({
+    required this.borrowerId,
+    required this.thingIds,
+    required this.checkedOutDate,
+    required this.dueBackDate,
+    this.notes,
+  });
 }
