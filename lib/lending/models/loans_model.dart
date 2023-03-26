@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:librarian_app/lending/api/lending_api.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 
@@ -6,8 +7,6 @@ import 'mappers/loans_mapper.dart';
 import 'things_model.dart';
 
 class LoansModel extends ChangeNotifier {
-  static final List<Loan> _loans = [];
-
   Future<List<Loan>> getAll() async {
     final response = await LendingApi.fetchLoans();
     return LoansMapper.map(response.data as List).toList();
@@ -27,24 +26,36 @@ class LoansModel extends ChangeNotifier {
     ));
   }
 
-  void open(Loan loan) {
-    _loans.add(loan);
-    notifyListeners();
+  Future<void> closeLoan({
+    required String loanId,
+    required String thingId,
+  }) async {
+    final dateFormat = DateFormat('yyyy-MM-dd');
+
+    await LendingApi.updateLoan(UpdatedLoan(
+      loanId: loanId,
+      thingId: thingId,
+      checkedInDate: dateFormat.format(DateTime.now()),
+    ));
   }
 
-  void close(UniqueKey id) {
-    _loans.singleWhere((l) => l.id == id).checkedInDate = DateTime.now();
-    notifyListeners();
-  }
+  Future<void> updateDueDate({
+    required String loanId,
+    required String thingId,
+    required DateTime dueBackDate,
+  }) async {
+    final dateFormat = DateFormat('yyyy-MM-dd');
 
-  void updateDueDate(UniqueKey id, DateTime dueDate) {
-    _loans.singleWhere((l) => l.id == id).dueDate = dueDate;
-    notifyListeners();
+    await LendingApi.updateLoan(UpdatedLoan(
+      loanId: loanId,
+      thingId: thingId,
+      dueBackDate: dateFormat.format(dueBackDate),
+    ));
   }
 }
 
 class Loan {
-  final UniqueKey id = UniqueKey();
+  final String id;
   final Thing thing;
   final Borrower borrower;
   final DateTime checkedOutDate;
@@ -59,6 +70,7 @@ class Loan {
   bool get isDueToday => DateUtils.isSameDay(DateTime.now(), dueDate);
 
   Loan({
+    required this.id,
     required this.thing,
     required this.borrower,
     required this.checkedOutDate,

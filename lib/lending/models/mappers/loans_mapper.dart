@@ -5,6 +5,7 @@ import '../things_model.dart';
 class LoansMapper {
   static Iterable<Loan> map(Iterable<dynamic> data) {
     return data.map((e) => Loan(
+          id: e['id'] as String,
           thing: Thing(
             name: e['thing']['name'] as String,
             id: e['thing']['id'] as String,

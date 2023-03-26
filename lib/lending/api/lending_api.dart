@@ -31,6 +31,13 @@ class LendingApi {
     });
   }
 
+  static Future<Response> updateLoan(UpdatedLoan data) async {
+    return await _client.patch('/loans/${data.loanId}/${data.thingId}', data: {
+      'checkedInDate': data.checkedInDate,
+      'dueBackDate': data.dueBackDate,
+    });
+  }
+
   static Future<Response> fetchBorrowers() async {
     return await _client.get('/borrowers');
   }
@@ -53,5 +60,19 @@ class NewLoan {
     required this.checkedOutDate,
     required this.dueBackDate,
     this.notes,
+  });
+}
+
+class UpdatedLoan {
+  String loanId;
+  String thingId;
+  String? dueBackDate;
+  String? checkedInDate;
+
+  UpdatedLoan({
+    required this.loanId,
+    required this.thingId,
+    this.dueBackDate,
+    this.checkedInDate,
   });
 }

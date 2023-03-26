@@ -23,7 +23,7 @@ class LoanDetails extends StatefulWidget {
   final DateTime? checkedInDate;
 
   final Function(DateTime) onDueDateUpdated;
-  final Function(int)? onClose;
+  final Function(String)? onClose;
 
   @override
   State<LoanDetails> createState() => _LoanDetailsState();
@@ -109,7 +109,7 @@ class _LoanDetailsState extends State<LoanDetails> {
                           child: const Text("Yes"),
                           onPressed: () {
                             Navigator.pop(context);
-                            widget.onClose!(thingId);
+                            widget.onClose!(widget.things[0].id);
                           },
                         ),
                       ],
