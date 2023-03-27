@@ -26,6 +26,10 @@ class NeedsAttentionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (borrower.issues.isEmpty) {
+      return const Center(child: Text('Ready to borrow!'));
+    }
+
     return Padding(
       padding: const EdgeInsets.all(8),
       child: ListView.builder(
