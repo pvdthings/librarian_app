@@ -2,7 +2,13 @@
 
 ## Running in production
 
-Make sure to set the `API_HOST` environment variable prior to running in production. The default value is `http://localhost:3000/lending`.
+### Environment variables
+
+```
+API_HOST=http://localhost:3000/lending (default)
+SUPABASE_URL
+SUPABASE_PUBLIC_KEY
+```
 
 ## Background
 
