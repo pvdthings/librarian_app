@@ -23,7 +23,7 @@ class LoanDetails extends StatefulWidget {
   final DateTime? checkedInDate;
 
   final Function(DateTime) onDueDateUpdated;
-  final Function(int)? onClose;
+  final Function(String)? onClose;
 
   @override
   State<LoanDetails> createState() => _LoanDetailsState();
@@ -49,7 +49,7 @@ class _LoanDetailsState extends State<LoanDetails> {
                 spacing: 4,
                 runSpacing: 4,
                 children: widget.things
-                    .map((t) => Chip(label: Text("#${t.id} - ${t.name}")))
+                    .map((t) => Chip(label: Text("#${t.number} - ${t.name}")))
                     .toList(),
               ),
             ),
@@ -95,7 +95,7 @@ class _LoanDetailsState extends State<LoanDetails> {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    final thingId = widget.things[0].id;
+                    final thingId = widget.things[0].number;
                     return AlertDialog(
                       title: Text("Thing #$thingId"),
                       content: Text(
@@ -109,7 +109,7 @@ class _LoanDetailsState extends State<LoanDetails> {
                           child: const Text("Yes"),
                           onPressed: () {
                             Navigator.pop(context);
-                            widget.onClose!(thingId);
+                            widget.onClose!(widget.things[0].id);
                           },
                         ),
                       ],

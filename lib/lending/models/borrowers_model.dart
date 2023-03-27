@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/lending/api/lending_api.dart';
+
+import 'mappers/borrowers_mapper.dart';
 
 class BorrowersModel extends ChangeNotifier {
-  static final _borrowers = [
-    const Borrower(name: "Ash Ketchum"),
-    const Borrower(name: "Professor Oak"),
-    const Borrower(name: "Nurse Joy"),
-    const Borrower(
-      name: "Brock",
-      inactiveReasons: [InactiveReasonCode.unpaidDues],
-    ),
-  ];
-
-  Iterable<Borrower> get all => _borrowers;
+  Future<List<Borrower>> getAll() async {
+    final response = await LendingApi.fetchBorrowers();
+    return BorrowersMapper.map(response.data as List).toList();
+  }
 }
 
 class Borrower {
+  final String id;
   final String name;
-  final List<InactiveReasonCode>? inactiveReasons;
+  final List<String> issues;
 
-  bool get active => inactiveReasons?.isEmpty ?? true;
+  bool get active => issues.isEmpty;
 
-  const Borrower({
+  Borrower({
+    required this.id,
     required this.name,
-    this.inactiveReasons,
+    required this.issues,
   });
 }
-
-enum InactiveReasonCode { unpaidDues, overdueLoan, banned }

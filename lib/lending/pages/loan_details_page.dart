@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
-import 'package:librarian_app/lending/models/things_model.dart';
 import 'package:librarian_app/lending/widgets/loan_details.dart';
 import 'package:provider/provider.dart';
 
@@ -17,27 +16,34 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
   bool _editMode = false;
   bool _editable = true;
 
+  String? _errorMessage;
+
   DateTime? _newDueDate;
 
-  void _saveChanges(BuildContext context) {
+  Future<void> _saveChanges(String loanId, String thingId) async {
     if (_newDueDate != null) {
-      _updateDueDate(context);
+      await _updateDueDate(loanId, thingId);
     }
 
     setState(() => _editMode = false);
   }
 
-  void _updateDueDate(BuildContext context) {
+  Future<void> _updateDueDate(String loanId, String thingId) async {
     final loans = Provider.of<LoansModel>(context, listen: false);
-    loans.updateDueDate(widget.loan.id, _newDueDate!);
+    try {
+      await loans.updateDueDate(
+        loanId: loanId,
+        thingId: thingId,
+        dueBackDate: _newDueDate!,
+      );
+    } catch (error) {
+      print(error);
+    }
   }
 
-  void _closeLoan(int thingId) {
-    final things = Provider.of<ThingsModel>(context, listen: false);
-    things.checkIn(widget.loan.thing.id);
-
+  Future<void> _closeLoan(String loanId, String thingId) async {
     final loans = Provider.of<LoansModel>(context, listen: false);
-    loans.close(widget.loan.id);
+    await loans.closeLoan(loanId: loanId, thingId: thingId);
 
     setState(() {
       _editable = false;
@@ -61,12 +67,12 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
         onDueDateUpdated: (newDueDate) {
           setState(() => _newDueDate = newDueDate);
         },
-        onClose: _closeLoan,
+        onClose: (thingId) => _closeLoan(loan.id, thingId),
       ),
       floatingActionButton: _editable
           ? _editMode
               ? FloatingActionButton(
-                  onPressed: () => _saveChanges(context),
+                  onPressed: () => _saveChanges(loan.id, loan.thing.id),
                   backgroundColor: Colors.green,
                   child: const Icon(Icons.save_rounded),
                 )

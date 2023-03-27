@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:librarian_app/constants.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
@@ -5,14 +6,16 @@ import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
 import 'package:librarian_app/lending/models/user_model.dart';
 import 'package:librarian_app/lending/pages/lending_page.dart';
-import 'package:librarian_app/lending/pages/signin_page.dart';
+import 'package:librarian_app/lending/pages/splash_page.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await supabase.Supabase.initialize(
-    url: SUPABASE_URL,
-    anonKey: SUPABASE_PUBLIC_KEY,
+    url: supabaseUrl,
+    anonKey: supabasePublicKey,
   );
 
   runApp(MultiProvider(
@@ -34,19 +37,11 @@ Future<void> main() async {
   ));
 }
 
-class LibrarianApp extends StatefulWidget {
+class LibrarianApp extends StatelessWidget {
   const LibrarianApp({super.key});
 
   @override
-  State<LibrarianApp> createState() => _LibrarianAppState();
-}
-
-class _LibrarianAppState extends State<LibrarianApp> {
-  @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserModel>(context);
-    final home = user.signedIn ? const LendingPage() : const SignInPage();
-
     return MaterialApp(
       title: 'Librarian',
       theme: ThemeData(
@@ -54,7 +49,10 @@ class _LibrarianAppState extends State<LibrarianApp> {
         brightness: Brightness.dark,
       ),
       darkTheme: ThemeData.dark(useMaterial3: true),
-      home: home,
+      initialRoute: '/',
+      routes: {
+        '/': (_) => kDebugMode ? const LendingPage() : const SplashPage(),
+      },
     );
   }
 }

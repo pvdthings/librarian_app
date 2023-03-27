@@ -16,13 +16,13 @@ class ThingsListView extends StatefulWidget {
 }
 
 class _ThingsListViewState extends State<ThingsListView> {
-  final List<int> _selectedThingIds = [];
+  final List<String> _selectedThingIds = [];
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ThingsModel>(
       builder: (context, model, child) {
-        final things = model.getAll();
+        final things = [];
 
         return ListView.builder(
           itemCount: things.length,
@@ -30,7 +30,7 @@ class _ThingsListViewState extends State<ThingsListView> {
             final thing = things[index];
 
             return ThingListTile(
-              id: thing.id,
+              number: thing.id,
               name: thing.name,
               available: thing.available,
               selected: _selectedThingIds.contains(thing.id),

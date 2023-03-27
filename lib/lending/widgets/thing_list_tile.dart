@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThingListTile extends StatelessWidget {
-  final int id;
+  final int number;
   final String name;
   final bool available;
   final bool selected;
@@ -9,7 +9,7 @@ class ThingListTile extends StatelessWidget {
 
   const ThingListTile({
     super.key,
-    required this.id,
+    required this.number,
     required this.name,
     required this.available,
     required this.selected,
@@ -29,7 +29,7 @@ class ThingListTile extends StatelessWidget {
               "Checked out",
               style: TextStyle(color: Colors.orange),
             ),
-      leading: Text("#$id"),
+      leading: Text("#$number"),
       trailing: selected ? const Icon(Icons.remove_circle_rounded) : null,
       onTap: onTap,
     );

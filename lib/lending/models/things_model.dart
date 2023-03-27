@@ -1,35 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/lending/api/lending_api.dart';
 
 class ThingsModel extends ChangeNotifier {
-  static final _things = [
-    Thing(id: 1, name: "Pokédex"),
-    Thing(id: 2, name: "Pokéball"),
-    Thing(id: 3, name: "Pokéball"),
-    Thing(id: 4, name: "Bug net"),
-    Thing(id: 5, name: "Incubator"),
-  ];
-
-  List<Thing> getAll() => _things;
-
-  void checkOut(int id) {
-    _things.singleWhere((t) => t.id == id).available = false;
-    notifyListeners();
-  }
-
-  void checkIn(int id) {
-    _things.singleWhere((t) => t.id == id).available = true;
-    notifyListeners();
+  Future<Thing?> getOne({required int number}) async {
+    try {
+      final response = await LendingApi.fetchThing(number: number);
+      final data = response.data;
+      return Thing(
+        id: data['id'] as String,
+        number: data['number'] as int,
+        name: data['name'] as String,
+        available: data['available'] as bool,
+      );
+    } catch (error) {
+      return null;
+    }
   }
 }
 
 class Thing {
+  final String id;
+  final int number;
   final String name;
-  final int id;
   bool available;
 
   Thing({
-    required this.name,
     required this.id,
+    required this.number,
+    required this.name,
     this.available = true,
   });
 }

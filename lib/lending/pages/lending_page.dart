@@ -4,6 +4,7 @@ import 'package:librarian_app/lending/models/user_model.dart';
 import 'package:librarian_app/lending/pages/open_loan_page.dart';
 import 'package:librarian_app/lending/widgets/borrowers_list_view.dart';
 import 'package:librarian_app/lending/widgets/loans_list_view.dart';
+import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:provider/provider.dart';
 
 class LendingPage extends StatefulWidget {
@@ -18,12 +19,21 @@ class LendingPage extends StatefulWidget {
 class _LendingPageState extends State<LendingPage> {
   int _viewIndex = 0;
 
-  static final _views = [
+  late final _views = [
     const LoansListView(),
     BorrowersListView(
-      onTapBorrower: (Borrower borrower) {},
+      onTapBorrower: _onTapBorrower,
     ),
   ];
+
+  void _onTapBorrower(Borrower borrower) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return Scaffold(
+        appBar: AppBar(title: Text(borrower.name)),
+        body: NeedsAttentionView(borrower: borrower),
+      );
+    }));
+  }
 
   static final _titles = [
     "Loans",
@@ -38,7 +48,10 @@ class _LendingPageState extends State<LendingPage> {
       appBar: AppBar(
         title: Text(_titles[_viewIndex]),
         leading: IconButton(
-          onPressed: user.signOut,
+          onPressed: () {
+            user.signOut();
+            Navigator.of(context).popAndPushNamed('/');
+          },
           icon: const Icon(
             Icons.logout_rounded,
           ),

@@ -1,5 +1,15 @@
 # Librarian app
 
+## Running in production
+
+### Environment variables
+
+```
+API_HOST=http://localhost:3000/lending (default)
+SUPABASE_URL
+SUPABASE_PUBLIC_KEY
+```
+
 ## Background
 
 [PVD Things](https://www.pvdthings.coop) is a non-profit & cooperative tool-lending library based in Providence, RI.
@@ -37,3 +47,10 @@ Additional modules will follow, depending on priority.
 Perhaps a reasonable deadline for the "make-it-work" stage of the app is **April 1, 2023**. (TBD)
 
 We need to balance volunteer developer capacity and the org's capacity to continue functioning with its existing tools. As the frequency of lending increases, this app will become more needed.
+
+## Tech Debt
+
+1. Needs better separation of concerns. Many pages/widgets need to be broken up into smaller pieces.
+2. Architecture needs to support mobile **and** desktop layouts.
+3. `ChangeNotifier`s are a bit messy.
+4. Caching of API data.

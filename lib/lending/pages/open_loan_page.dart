@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
@@ -19,7 +20,7 @@ class OpenLoanPage extends StatefulWidget {
 class _OpenLoanPageState extends State<OpenLoanPage> {
   late ViewModel _view = selectBorrowerView;
 
-  Borrower _borrower = const Borrower(name: "Borrower");
+  Borrower _borrower = Borrower(id: '', name: "Borrower", issues: []);
   final List<Thing> _things = [];
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
@@ -48,20 +49,18 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     });
   }
 
-  void _onTapCreate() {
-    final things = Provider.of<ThingsModel>(context, listen: false);
+  Future<void> _onTapCreate() async {
     final loans = Provider.of<LoansModel>(context, listen: false);
+    final dateFormat = DateFormat('yyyy-MM-dd');
 
-    for (final thing in _things) {
-      things.checkOut(thing.id);
-      loans.open(Loan(
-        borrower: _borrower,
-        thing: Thing(name: thing.name, id: thing.id),
-        checkedOutDate: DateTime.now(),
-        dueDate: _dueDate,
-      ));
-    }
+    await loans.openLoan(
+      borrowerId: _borrower.id,
+      thingIds: _things.map((e) => e.id).toList(),
+      checkedOutDate: dateFormat.format(DateTime.now()),
+      dueBackDate: dateFormat.format(_dueDate),
+    );
 
+    // ignore: use_build_context_synchronously
     Navigator.pop(context);
   }
 
