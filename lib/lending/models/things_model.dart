@@ -16,16 +16,6 @@ class ThingsModel extends ChangeNotifier {
       return null;
     }
   }
-
-  void checkOut(String id) {
-    // _things.singleWhere((t) => t.number == id).available = false;
-    notifyListeners();
-  }
-
-  void checkIn(String id) {
-    // _things.singleWhere((t) => t.number == id).available = true;
-    notifyListeners();
-  }
 }
 
 class Thing {
