@@ -10,6 +10,8 @@ SUPABASE_URL
 SUPABASE_PUBLIC_KEY
 ```
 
+Without a `SUPABASE_URL`, attempting signin will result in a 404 error.
+
 ## Background
 
 [PVD Things](https://www.pvdthings.coop) is a non-profit & cooperative tool-lending library based in Providence, RI.
