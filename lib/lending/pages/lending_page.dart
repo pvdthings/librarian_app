@@ -38,7 +38,10 @@ class _LendingPageState extends State<LendingPage> {
       appBar: AppBar(
         title: Text(_titles[_viewIndex]),
         leading: IconButton(
-          onPressed: user.signOut,
+          onPressed: () {
+            user.signOut();
+            Navigator.of(context).popAndPushNamed('/');
+          },
           icon: const Icon(
             Icons.logout_rounded,
           ),
