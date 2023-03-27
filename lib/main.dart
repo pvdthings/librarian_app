@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:librarian_app/constants.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
 import 'package:librarian_app/lending/models/user_model.dart';
+import 'package:librarian_app/lending/pages/lending_page.dart';
 import 'package:librarian_app/lending/pages/splash_page.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
@@ -47,10 +49,9 @@ class LibrarianApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       darkTheme: ThemeData.dark(useMaterial3: true),
-      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (_) => const SplashPage(),
+        '/': (_) => kDebugMode ? const LendingPage() : const SplashPage(),
       },
     );
   }
