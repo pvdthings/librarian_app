@@ -1,5 +1,9 @@
 # Librarian app
 
+## Running in production
+
+Make sure to set the `API_HOST` environment variable prior to running in production. The default value is `http://localhost:3000/lending`.
+
 ## Background
 
 [PVD Things](https://www.pvdthings.coop) is a non-profit & cooperative tool-lending library based in Providence, RI.

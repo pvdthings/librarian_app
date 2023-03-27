@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:librarian_app/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LendingApi {
   static Dio get _client => Dio(BaseOptions(
-        baseUrl: 'http://localhost:3000/lending', // TODO: update Url
+        baseUrl: API_HOST,
         contentType: 'application/json',
         headers: {
           'supabase-access-token': _accessToken,
