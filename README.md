@@ -1,6 +1,6 @@
-# Librarian app
+# Librarian
 
-## Running in production
+## Running the app
 
 ### Environment variables
 
