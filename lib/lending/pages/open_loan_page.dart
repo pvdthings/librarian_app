@@ -18,24 +18,74 @@ class OpenLoanPage extends StatefulWidget {
 }
 
 class _OpenLoanPageState extends State<OpenLoanPage> {
-  late ViewModel _view = selectBorrowerView;
+  OpenLoanView _currentView = OpenLoanView.selectBorrower;
+
+  late String _viewTitle;
+  late Widget _body;
+  Widget? _floatingActionButton;
 
   Borrower _borrower = Borrower(id: '', name: "Borrower", issues: []);
   final List<Thing> _things = [];
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
-  void _updateView(ViewModel view) {
-    setState(() => _view = view);
+  void _configureView() {
+    switch (_currentView) {
+      case OpenLoanView.selectBorrower:
+        _viewTitle = "Select Borrower";
+        _body = BorrowersListView(onTapBorrower: _onTapBorrower);
+        break;
+      case OpenLoanView.addThings:
+        _viewTitle = "Add Things";
+        _body = PickThingsView(
+          pickedThings: _things,
+          onThingPicked: _onTapThing,
+        );
+        _floatingActionButton = _things.isNotEmpty
+            ? FloatingActionButton(
+                onPressed: () =>
+                    setState(() => _currentView = OpenLoanView.confirmLoan),
+                child: const Icon(Icons.navigate_next_rounded),
+              )
+            : null;
+        break;
+      case OpenLoanView.confirmLoan:
+        _viewTitle = "Confirm Loan";
+        _body = LoanDetails(
+          borrower: _borrower,
+          things: _things,
+          checkedOutDate: DateTime.now(),
+          dueDate: _dueDate,
+          onDueDateUpdated: (newDate) {
+            setState(() => _dueDate = newDate);
+          },
+        );
+        _floatingActionButton = ConfirmFloatingActionButton(
+          onPressed: _onTapCreate,
+          backgroundColor: Colors.green,
+          icon: const Icon(Icons.check_rounded),
+          label: "Finish",
+        );
+        break;
+      case OpenLoanView.borrowerNeedsAttention:
+        _viewTitle = "Ineligible";
+        _body = NeedsAttentionView(borrower: _borrower);
+        _floatingActionButton = FloatingActionButton(
+          onPressed: () => Navigator.pop(context),
+          backgroundColor: Colors.green,
+          child: const Icon(Icons.close_rounded),
+        );
+        break;
+    }
   }
 
   void _onTapBorrower(Borrower borrower) {
     _borrower = borrower;
     if (borrower.active) {
-      _updateView(addThingsView);
+      setState(() => _currentView = OpenLoanView.addThings);
       return;
     }
 
-    _updateView(needsAttentionView);
+    setState(() => _currentView = OpenLoanView.borrowerNeedsAttention);
   }
 
   void _onTapThing(Thing thing) {
@@ -45,7 +95,6 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       } else {
         _things.add(thing);
       }
-      _view = addThingsView;
     });
   }
 
@@ -60,76 +109,24 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       dueBackDate: dateFormat.format(_dueDate),
     );
 
-    // ignore: use_build_context_synchronously
-    Navigator.pop(context);
+    Future.delayed(Duration.zero, () => Navigator.pop(context));
   }
-
-  ViewModel get selectBorrowerView => ViewModel(
-        title: "Select Borrower",
-        body: BorrowersListView(onTapBorrower: _onTapBorrower),
-      );
-
-  ViewModel get addThingsView => ViewModel(
-        title: "Add Things",
-        body: PickThingsView(
-          pickedThings: _things,
-          onThingPicked: _onTapThing,
-        ),
-        floatingActionButton: _things.isNotEmpty
-            ? FloatingActionButton(
-                onPressed: () => _updateView(loanDetailsView),
-                child: const Icon(Icons.navigate_next_rounded),
-              )
-            : null,
-      );
-
-  ViewModel get loanDetailsView => ViewModel(
-        title: "Loan Details",
-        body: LoanDetails(
-          borrower: _borrower,
-          things: _things,
-          checkedOutDate: DateTime.now(),
-          dueDate: _dueDate,
-          onDueDateUpdated: (newDate) {
-            setState(() => _dueDate = newDate);
-          },
-        ),
-        floatingActionButton: ConfirmFloatingActionButton(
-          onPressed: _onTapCreate,
-          backgroundColor: Colors.green,
-          icon: const Icon(Icons.check_rounded),
-          label: "Finish",
-        ),
-      );
-
-  ViewModel get needsAttentionView => ViewModel(
-        title: "Ineligible Borrower",
-        body: NeedsAttentionView(borrower: _borrower),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.pop(context),
-          backgroundColor: Colors.green,
-          child: const Icon(Icons.close_rounded),
-        ),
-      );
 
   @override
   Widget build(BuildContext context) {
+    _configureView();
+
     return Scaffold(
-      appBar: AppBar(title: Text(_view.title)),
-      body: _view.body,
-      floatingActionButton: _view.floatingActionButton,
+      appBar: AppBar(title: Text(_viewTitle)),
+      body: _body,
+      floatingActionButton: _floatingActionButton,
     );
   }
 }
 
-class ViewModel {
-  final Widget body;
-  final String title;
-  final Widget? floatingActionButton;
-
-  const ViewModel({
-    required this.title,
-    required this.body,
-    this.floatingActionButton,
-  });
+enum OpenLoanView {
+  selectBorrower,
+  addThings,
+  confirmLoan,
+  borrowerNeedsAttention
 }

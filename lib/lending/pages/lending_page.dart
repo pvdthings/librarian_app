@@ -58,23 +58,25 @@ class _LendingPageState extends State<LendingPage> {
         ),
       ),
       body: _views[_viewIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _viewIndex,
-        onTap: (index) => setState(() {
-          _viewIndex = index;
-        }),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.table_chart_rounded),
-            label: "Loans",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people_rounded),
-            label: "Borrowers",
-          ),
-        ],
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+      bottomNavigationBar: SafeArea(
+        child: BottomNavigationBar(
+          currentIndex: _viewIndex,
+          onTap: (index) => setState(() {
+            _viewIndex = index;
+          }),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.table_chart_rounded),
+              label: "Loans",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people_rounded),
+              label: "Borrowers",
+            ),
+          ],
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
