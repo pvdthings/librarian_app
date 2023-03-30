@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
 import 'package:provider/provider.dart';
 
@@ -99,6 +100,8 @@ class _PickThingsViewState extends State<PickThingsView> {
             labelText: "Thing ID",
             prefixIcon: const Icon(Icons.search),
             controller: _searchController,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             onSubmitted: _onSearchSubmitted,
             onChanged: (_) => {},
           ),

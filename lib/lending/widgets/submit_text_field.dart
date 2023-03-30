@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SubmitTextField extends StatefulWidget {
   const SubmitTextField({
     super.key,
     this.controller,
+    this.keyboardType,
+    this.inputFormatters,
     this.hintText,
     this.labelText,
     this.icon,
@@ -14,6 +17,8 @@ class SubmitTextField extends StatefulWidget {
   });
 
   final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
   final String? hintText;
   final String? labelText;
   final Widget? icon;
@@ -40,6 +45,8 @@ class _SubmitTextFieldState extends State<SubmitTextField> {
         setState(() => _showSubmitButton = value.isNotEmpty);
         widget.onChanged(value);
       },
+      keyboardType: widget.keyboardType,
+      inputFormatters: widget.inputFormatters,
       decoration: InputDecoration(
         icon: widget.icon,
         prefixIcon: widget.prefixIcon,
