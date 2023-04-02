@@ -90,8 +90,9 @@ class LoanDetails extends StatelessWidget {
                 title: Text("${checkedInDate!.month}/${checkedInDate!.day}"),
               ),
             ),
+          const SizedBox(height: 16),
           if (editable && onClose != null)
-            OutlinedButton(
+            ElevatedButton.icon(
               onPressed: () {
                 showDialog(
                   context: context,
@@ -118,8 +119,9 @@ class LoanDetails extends StatelessWidget {
                   },
                 );
               },
-              child: const Text("Check in"),
-            )
+              icon: const Icon(Icons.check_box_rounded),
+              label: const Text("Check in"),
+            ),
         ],
       ),
     );
