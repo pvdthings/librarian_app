@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
+import 'package:librarian_app/lending/pages/lending_page.dart';
 import 'package:librarian_app/lending/widgets/confirm_floating_action_button.dart';
 import 'package:librarian_app/lending/widgets/pick_things_view.dart';
 import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
@@ -109,7 +110,14 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       dueBackDate: dateFormat.format(_dueDate),
     );
 
-    Future.delayed(Duration.zero, () => Navigator.pop(context));
+    Future.delayed(
+      Duration.zero,
+      () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+        builder: (context) {
+          return const LendingPage();
+        },
+      ), (route) => false),
+    );
   }
 
   @override
