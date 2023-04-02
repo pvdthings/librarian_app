@@ -16,6 +16,7 @@ class LoanDetailsPage extends StatefulWidget {
 
 class _LoanDetailsPageState extends State<LoanDetailsPage> {
   bool _editMode = false;
+  bool _changesMade = false;
 
   DateTime? _newDueDate;
 
@@ -70,22 +71,30 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
         checkedOutDate: loan.checkedOutDate,
         dueDate: _newDueDate ?? loan.dueDate,
         checkedInDate: loan.checkedInDate,
+        isOverdue: loan.isOverdue,
         editable: _editMode,
         onDueDateUpdated: (newDueDate) {
-          setState(() => _newDueDate = newDueDate);
+          setState(() {
+            _newDueDate = newDueDate;
+            _changesMade = true;
+          });
         },
         onClose: (thingId) => _closeLoan(loan.id, thingId),
       ),
       floatingActionButton: _editMode
           ? FloatingActionButton(
-              onPressed: () => _saveChanges(loan.id, loan.thing.id),
-              backgroundColor: Colors.green,
-              child: const Icon(Icons.save_rounded),
+              onPressed: _changesMade
+                  ? () => _saveChanges(loan.id, loan.thing.id)
+                  : () => setState(() => _editMode = false),
+              backgroundColor: _changesMade ? Colors.green : Colors.grey[600],
+              tooltip: _changesMade ? 'Save changes' : 'Cancel',
+              child: _changesMade
+                  ? const Icon(Icons.check_rounded)
+                  : const Icon(Icons.close_rounded),
             )
           : FloatingActionButton(
-              onPressed: () {
-                setState(() => _editMode = true);
-              },
+              onPressed: () => setState(() => _editMode = true),
+              tooltip: 'Edit',
               child: const Icon(Icons.edit_rounded),
             ),
     );

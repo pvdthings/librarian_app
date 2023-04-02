@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
 
-class LoanDetails extends StatefulWidget {
+class LoanDetails extends StatelessWidget {
   const LoanDetails({
     super.key,
     required this.borrower,
@@ -10,6 +10,7 @@ class LoanDetails extends StatefulWidget {
     required this.checkedOutDate,
     required this.dueDate,
     required this.onDueDateUpdated,
+    this.isOverdue = false,
     this.checkedInDate,
     this.editable = true,
     this.onClose,
@@ -21,15 +22,11 @@ class LoanDetails extends StatefulWidget {
   final DateTime checkedOutDate;
   final DateTime dueDate;
   final DateTime? checkedInDate;
+  final bool isOverdue;
 
   final Function(DateTime) onDueDateUpdated;
   final Function(String)? onClose;
 
-  @override
-  State<LoanDetails> createState() => _LoanDetailsState();
-}
-
-class _LoanDetailsState extends State<LoanDetails> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -39,16 +36,16 @@ class _LoanDetailsState extends State<LoanDetails> {
           Card(
             child: ListTile(
               leading: const Text("Borrower"),
-              title: Text(widget.borrower.name),
+              title: Text(borrower.name),
             ),
           ),
           Card(
             child: ListTile(
-              leading: Text(widget.things.length > 1 ? "Things" : "Thing"),
+              leading: Text(things.length > 1 ? "Things" : "Thing"),
               title: Wrap(
                 spacing: 4,
                 runSpacing: 4,
-                children: widget.things
+                children: things
                     .map((t) => Chip(
                         label: Text("#${t.number}  ${t.name ?? 'Unknown'}")))
                     .toList(),
@@ -58,45 +55,48 @@ class _LoanDetailsState extends State<LoanDetails> {
           Card(
             child: ListTile(
               leading: const Text("Checked Out"),
-              title: Text(
-                  "${widget.checkedOutDate.month}/${widget.checkedOutDate.day}"),
+              title: Text("${checkedOutDate.month}/${checkedOutDate.day}"),
             ),
           ),
           Card(
             child: ListTile(
-              leading: const Text("Due Date"),
-              title: Text("${widget.dueDate.month}/${widget.dueDate.day}"),
-              trailing: widget.editable ? const Icon(Icons.edit_rounded) : null,
-              onTap: widget.editable
+              leading: isOverdue
+                  ? const Text(
+                      "Overdue",
+                      style: TextStyle(color: Colors.orange),
+                    )
+                  : const Text("Due Date"),
+              title: Text("${dueDate.month}/${dueDate.day}"),
+              trailing: editable ? const Icon(Icons.edit_rounded) : null,
+              onTap: editable
                   ? () async {
                       showDatePicker(
                         context: context,
-                        initialDate: widget.dueDate,
-                        firstDate: widget.dueDate,
-                        lastDate: widget.dueDate.add(const Duration(days: 14)),
+                        initialDate: dueDate,
+                        firstDate: dueDate,
+                        lastDate: dueDate.add(const Duration(days: 14)),
                       ).then((value) {
                         if (value == null) return;
-                        widget.onDueDateUpdated(value);
+                        onDueDateUpdated(value);
                       });
                     }
                   : null,
             ),
           ),
-          if (widget.checkedInDate != null)
+          if (checkedInDate != null)
             Card(
               child: ListTile(
                 leading: const Text("Checked In"),
-                title: Text(
-                    "${widget.checkedInDate!.month}/${widget.checkedInDate!.day}"),
+                title: Text("${checkedInDate!.month}/${checkedInDate!.day}"),
               ),
             ),
-          if (widget.editable && widget.onClose != null)
+          if (editable && onClose != null)
             OutlinedButton(
               onPressed: () {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    final thingId = widget.things[0].number;
+                    final thingId = things[0].number;
                     return AlertDialog(
                       title: Text("Thing #$thingId"),
                       content: Text(
@@ -110,7 +110,7 @@ class _LoanDetailsState extends State<LoanDetails> {
                           child: const Text("Yes"),
                           onPressed: () {
                             Navigator.pop(context);
-                            widget.onClose!(widget.things[0].id);
+                            onClose!(things[0].id);
                           },
                         ),
                       ],
