@@ -21,7 +21,7 @@ class ThingsModel extends ChangeNotifier {
 class Thing {
   final String id;
   final int number;
-  final String name;
+  String? name;
   bool available;
 
   Thing({

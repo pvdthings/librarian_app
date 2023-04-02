@@ -113,7 +113,7 @@ class _PickThingsViewState extends State<PickThingsView> {
 
             return ThingListTile(
               number: thing.number,
-              name: thing.name,
+              name: thing.name ?? 'Unknown Thing',
               available: thing.available,
               selected: true,
               onTap: () => widget.onThingPicked(thing),

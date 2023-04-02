@@ -7,7 +7,7 @@ class LoansMapper {
     return data.map((e) => Loan(
           id: e['id'] as String,
           thing: Thing(
-            name: e['thing']['name'] as String,
+            name: e['thing']['name'] as String?,
             id: e['thing']['id'] as String,
             number: e['thing']['number'] as int,
           ),

@@ -47,12 +47,12 @@ class _LoansListViewState extends State<LoansListView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
     if (_errorMessage != null) {
       return Center(child: Text(_errorMessage!));
+    }
+
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (_loans.isEmpty) {
@@ -69,7 +69,7 @@ class _LoansListViewState extends State<LoansListView> {
         final loan = _loans[index];
 
         return ListTile(
-          title: Text(loan.thing.name),
+          title: Text(loan.thing.name ?? 'Unknown Thing'),
           subtitle: Text(loan.borrower.name),
           trailing: Text(
             "${loan.dueDate.month}/${loan.dueDate.day}",
