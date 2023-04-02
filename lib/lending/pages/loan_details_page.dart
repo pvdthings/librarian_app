@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
+import 'package:librarian_app/lending/pages/lending_page.dart';
 import 'package:librarian_app/lending/widgets/loan_details.dart';
 import 'package:provider/provider.dart';
 
@@ -14,9 +16,6 @@ class LoanDetailsPage extends StatefulWidget {
 
 class _LoanDetailsPageState extends State<LoanDetailsPage> {
   bool _editMode = false;
-  bool _editable = true;
-
-  String? _errorMessage;
 
   DateTime? _newDueDate;
 
@@ -37,7 +36,9 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
         dueBackDate: _newDueDate!,
       );
     } catch (error) {
-      print(error);
+      if (kDebugMode) {
+        print(error);
+      }
     }
   }
 
@@ -45,10 +46,16 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
     final loans = Provider.of<LoansModel>(context, listen: false);
     await loans.closeLoan(loanId: loanId, thingId: thingId);
 
-    setState(() {
-      _editable = false;
-      _editMode = false;
-    });
+    // ignore: use_build_context_synchronously
+    await Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const LendingPage();
+        },
+      ),
+      (route) => false,
+    );
   }
 
   @override
@@ -69,20 +76,18 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
         },
         onClose: (thingId) => _closeLoan(loan.id, thingId),
       ),
-      floatingActionButton: _editable
-          ? _editMode
-              ? FloatingActionButton(
-                  onPressed: () => _saveChanges(loan.id, loan.thing.id),
-                  backgroundColor: Colors.green,
-                  child: const Icon(Icons.save_rounded),
-                )
-              : FloatingActionButton(
-                  onPressed: () {
-                    setState(() => _editMode = true);
-                  },
-                  child: const Icon(Icons.edit_rounded),
-                )
-          : null,
+      floatingActionButton: _editMode
+          ? FloatingActionButton(
+              onPressed: () => _saveChanges(loan.id, loan.thing.id),
+              backgroundColor: Colors.green,
+              child: const Icon(Icons.save_rounded),
+            )
+          : FloatingActionButton(
+              onPressed: () {
+                setState(() => _editMode = true);
+              },
+              child: const Icon(Icons.edit_rounded),
+            ),
     );
   }
 }
