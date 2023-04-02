@@ -12,6 +12,8 @@ class LoansListView extends StatefulWidget {
 }
 
 class _LoansListViewState extends State<LoansListView> {
+  final _overdueTextStyle = const TextStyle(color: Colors.orange);
+
   bool _isLoading = false;
   List<Loan> _loans = [];
   String? _errorMessage;
@@ -23,8 +25,8 @@ class _LoansListViewState extends State<LoansListView> {
   }
 
   Color? _dueDateColor(Loan loan) {
-    if (loan.isOverdue) return Colors.red[100];
-    if (loan.isDueToday) return Colors.green[100];
+    if (loan.isOverdue) return Colors.orange[200];
+    if (loan.isDueToday) return Colors.green[200];
     return null;
   }
 
@@ -69,10 +71,15 @@ class _LoansListViewState extends State<LoansListView> {
         final loan = _loans[index];
 
         return ListTile(
-          title: Text(loan.thing.name ?? 'Unknown Thing'),
+          title: Text(
+            loan.thing.name ?? 'Unknown Thing',
+            style: loan.isOverdue ? _overdueTextStyle : null,
+          ),
           subtitle: Text(loan.borrower.name),
           trailing: Text(
-            "${loan.dueDate.month}/${loan.dueDate.day}",
+            loan.isDueToday
+                ? 'Today'
+                : '${loan.dueDate.month}/${loan.dueDate.day}',
             style: TextStyle(color: _dueDateColor(loan)),
           ),
           onTap: () {
