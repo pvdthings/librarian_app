@@ -53,7 +53,15 @@ class _SignInPageState extends State<SignInPage> {
                 child: const Text('Sign in with Discord'),
               ),
               if (_errorMessage != null) const SizedBox(height: 16),
-              if (_errorMessage != null) Text('Error: $_errorMessage'),
+              if (_errorMessage != null) Text(_errorMessage!),
+              const SizedBox(height: 32),
+              const Card(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                      'Only authorized users can sign in.\nPlease ask the PVD Things Digital Team for volunteer access.'),
+                ),
+              ),
             ],
           ),
         ),
