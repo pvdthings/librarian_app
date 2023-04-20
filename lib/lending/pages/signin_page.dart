@@ -55,9 +55,14 @@ class _SignInPageState extends State<SignInPage> {
                 width: 160,
               ),
               const SizedBox(height: 32),
-              TextButton(
+              ElevatedButton.icon(
+                icon: const Icon(Icons.discord_rounded),
+                label: const Text('Sign in with Discord'),
                 onPressed: _signIn,
-                child: const Text('Sign in with Discord'),
+                style: ElevatedButton.styleFrom(
+                  textStyle: const TextStyle(fontSize: 20),
+                  padding: const EdgeInsets.all(16),
+                ),
               ),
               if (_errorMessage != null) const SizedBox(height: 16),
               if (_errorMessage != null) Text(_errorMessage!),
