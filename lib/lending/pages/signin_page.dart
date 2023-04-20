@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/pages/lending_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -15,21 +16,27 @@ class _SignInPageState extends State<SignInPage> {
   String? _errorMessage;
 
   Future<void> _signIn() async {
+    if (kDebugMode) {
+      _navigateToLendingPage();
+      return;
+    }
+
     try {
       await Supabase.instance.client.auth
           .signInWithOAuth(Provider.discord)
-          .whenComplete(() => {
-                // ignore: use_build_context_synchronously
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const LendingPage()),
-                  (route) => false,
-                )
-              });
+          .whenComplete(_navigateToLendingPage);
     } on AuthException catch (error) {
       setState(() => _errorMessage = error.message);
     } catch (error) {
       setState(() => _errorMessage = "An unexpected error occurred.");
     }
+  }
+
+  void _navigateToLendingPage() {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const LendingPage()),
+      (route) => false,
+    );
   }
 
   @override
@@ -48,12 +55,25 @@ class _SignInPageState extends State<SignInPage> {
                 width: 160,
               ),
               const SizedBox(height: 32),
-              TextButton(
+              ElevatedButton.icon(
+                icon: const Icon(Icons.discord_rounded),
+                label: const Text('Sign in with Discord'),
                 onPressed: _signIn,
-                child: const Text('Sign in with Discord'),
+                style: ElevatedButton.styleFrom(
+                  textStyle: const TextStyle(fontSize: 20),
+                  padding: const EdgeInsets.all(16),
+                ),
               ),
               if (_errorMessage != null) const SizedBox(height: 16),
-              if (_errorMessage != null) Text('Error: $_errorMessage'),
+              if (_errorMessage != null) Text(_errorMessage!),
+              const SizedBox(height: 32),
+              const Card(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                      'Only authorized users can sign in.\nPlease ask the PVD Things Digital Team for volunteer access.'),
+                ),
+              ),
             ],
           ),
         ),
