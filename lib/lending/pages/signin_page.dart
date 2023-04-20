@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/pages/lending_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -15,21 +16,27 @@ class _SignInPageState extends State<SignInPage> {
   String? _errorMessage;
 
   Future<void> _signIn() async {
+    if (kDebugMode) {
+      _navigateToLendingPage();
+      return;
+    }
+
     try {
       await Supabase.instance.client.auth
           .signInWithOAuth(Provider.discord)
-          .whenComplete(() => {
-                // ignore: use_build_context_synchronously
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const LendingPage()),
-                  (route) => false,
-                )
-              });
+          .whenComplete(_navigateToLendingPage);
     } on AuthException catch (error) {
       setState(() => _errorMessage = error.message);
     } catch (error) {
       setState(() => _errorMessage = "An unexpected error occurred.");
     }
+  }
+
+  void _navigateToLendingPage() {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const LendingPage()),
+      (route) => false,
+    );
   }
 
   @override
