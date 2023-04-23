@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
-import 'package:librarian_app/lending/pages/lending_page.dart';
 import 'package:librarian_app/lending/widgets/loan_details.dart';
 import 'package:provider/provider.dart';
 
@@ -46,16 +45,32 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
   Future<void> _closeLoan(String loanId, String thingId) async {
     final loans = Provider.of<LoansModel>(context, listen: false);
     await loans.closeLoan(loanId: loanId, thingId: thingId);
+  }
 
-    // ignore: use_build_context_synchronously
-    await Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return const LendingPage();
-        },
-      ),
-      (route) => false,
+  void _checkIn() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        final thing = widget.loan.thing;
+        return AlertDialog(
+          title: Text("Thing #${thing.number}"),
+          content: Text(
+              "Are you sure you want to check Thing #${thing.number} back in?"),
+          actions: [
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () => Navigator.pop(context),
+            ),
+            TextButton(
+              child: const Text("Yes"),
+              onPressed: () {
+                _closeLoan(widget.loan.id, thing.id);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -64,7 +79,29 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
     final loan = widget.loan;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Loan Details")),
+      appBar: AppBar(
+        title: const Text("Loan Details"),
+        centerTitle: true,
+        actions: [
+          if (_editMode && _changesMade)
+            IconButton(
+              onPressed: () => _saveChanges(loan.id, loan.thing.id),
+              icon: const Icon(Icons.save_rounded),
+              tooltip: 'Save',
+            ),
+          _editMode
+              ? IconButton(
+                  onPressed: () => setState(() => _editMode = false),
+                  icon: const Icon(Icons.close_rounded),
+                  tooltip: 'Cancel',
+                )
+              : IconButton(
+                  onPressed: () => setState(() => _editMode = true),
+                  icon: const Icon(Icons.edit_rounded),
+                  tooltip: 'Edit',
+                ),
+        ],
+      ),
       body: LoanDetails(
         borrower: loan.borrower,
         things: [loan.thing],
@@ -79,23 +116,13 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
             _changesMade = true;
           });
         },
-        onClose: (thingId) => _closeLoan(loan.id, thingId),
       ),
       floatingActionButton: _editMode
-          ? FloatingActionButton(
-              onPressed: _changesMade
-                  ? () => _saveChanges(loan.id, loan.thing.id)
-                  : () => setState(() => _editMode = false),
-              backgroundColor: _changesMade ? Colors.green : Colors.grey[600],
-              tooltip: _changesMade ? 'Save changes' : 'Cancel',
-              child: _changesMade
-                  ? const Icon(Icons.check_rounded)
-                  : const Icon(Icons.close_rounded),
-            )
+          ? null
           : FloatingActionButton(
-              onPressed: () => setState(() => _editMode = true),
-              tooltip: 'Edit',
-              child: const Icon(Icons.edit_rounded),
+              onPressed: _checkIn,
+              tooltip: 'Check in',
+              child: const Icon(Icons.check_rounded),
             ),
     );
   }

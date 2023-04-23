@@ -13,7 +13,6 @@ class LoanDetails extends StatelessWidget {
     this.isOverdue = false,
     this.checkedInDate,
     this.editable = true,
-    this.onClose,
   });
 
   final bool editable;
@@ -25,7 +24,6 @@ class LoanDetails extends StatelessWidget {
   final bool isOverdue;
 
   final Function(DateTime) onDueDateUpdated;
-  final Function(String)? onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -89,38 +87,6 @@ class LoanDetails extends StatelessWidget {
                 leading: const Text("Checked In"),
                 title: Text("${checkedInDate!.month}/${checkedInDate!.day}"),
               ),
-            ),
-          const SizedBox(height: 16),
-          if (editable && onClose != null)
-            ElevatedButton.icon(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    final thingId = things[0].number;
-                    return AlertDialog(
-                      title: Text("Thing #$thingId"),
-                      content: Text(
-                          "Are you sure you want to check Thing #$thingId back in?"),
-                      actions: [
-                        TextButton(
-                          child: const Text("Cancel"),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        TextButton(
-                          child: const Text("Yes"),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            onClose!(things[0].id);
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              icon: const Icon(Icons.check_box_rounded),
-              label: const Text("Check in"),
             ),
         ],
       ),
