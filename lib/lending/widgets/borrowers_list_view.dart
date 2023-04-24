@@ -73,7 +73,7 @@ class _BorrowersListViewState extends State<BorrowersListView> {
           padding: const EdgeInsets.all(8.0),
           child: SubmitTextField(
             hintText: "Alice Appleseed",
-            labelText: "Borrower",
+            labelText: "Search",
             prefixIcon: const Icon(Icons.search),
             showSubmitButton: false,
             onChanged: (value) {

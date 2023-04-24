@@ -5,7 +5,9 @@ import 'package:librarian_app/lending/pages/loan_details_page.dart';
 import 'package:provider/provider.dart';
 
 class LoansListView extends StatefulWidget {
-  const LoansListView({super.key});
+  final String? filter;
+
+  const LoansListView({super.key, this.filter});
 
   @override
   State<LoansListView> createState() => _LoansListViewState();
@@ -65,10 +67,22 @@ class _LoansListViewState extends State<LoansListView> {
       );
     }
 
+    List<Loan> loans = _loans;
+
+    if (loans.isNotEmpty &&
+        widget.filter != null &&
+        widget.filter!.isNotEmpty) {
+      loans = _loans.where((loan) {
+        final borrowerName = loan.borrower.name.toLowerCase();
+        final filterText = widget.filter!.toLowerCase();
+        return borrowerName.contains(filterText);
+      }).toList();
+    }
+
     return ListView.builder(
-      itemCount: _loans.length,
+      itemCount: loans.length,
       itemBuilder: (context, index) {
-        final loan = _loans[index];
+        final loan = loans[index];
 
         return ListTile(
           title: Text(
@@ -92,6 +106,7 @@ class _LoansListViewState extends State<LoansListView> {
           },
         );
       },
+      shrinkWrap: true,
     );
   }
 }
