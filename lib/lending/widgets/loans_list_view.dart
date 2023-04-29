@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/user_model.dart';
-import 'package:librarian_app/lending/pages/loan_details_page.dart';
 import 'package:provider/provider.dart';
 
 class LoansListView extends StatefulWidget {
   final String? filter;
+  final Function(Loan)? onTap;
 
-  const LoansListView({super.key, this.filter});
+  const LoansListView({
+    super.key,
+    this.filter,
+    this.onTap,
+  });
 
   @override
   State<LoansListView> createState() => _LoansListViewState();
@@ -96,14 +100,7 @@ class _LoansListViewState extends State<LoansListView> {
                 : '${loan.dueDate.month}/${loan.dueDate.day}',
             style: TextStyle(color: _dueDateColor(loan)),
           ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoanDetailsPage(loan),
-              ),
-            );
-          },
+          onTap: () => widget.onTap?.call(loan),
         );
       },
       shrinkWrap: true,

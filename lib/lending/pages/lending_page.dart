@@ -7,6 +7,8 @@ import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:librarian_app/lending/widgets/searchable_loans_list.dart';
 import 'package:provider/provider.dart';
 
+import 'loan_details_page.dart';
+
 class LendingPage extends StatefulWidget {
   const LendingPage({super.key});
 
@@ -20,7 +22,16 @@ class _LendingPageState extends State<LendingPage> {
   int _viewIndex = 0;
 
   late final _views = [
-    const SearchableLoansList(),
+    SearchableLoansList(
+      onLoanTapped: (loan) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoanDetailsPage(loan),
+          ),
+        );
+      },
+    ),
     BorrowersListView(
       onTapBorrower: _onTapBorrower,
     ),
