@@ -4,6 +4,8 @@ import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/widgets/loan_details.dart';
 import 'package:provider/provider.dart';
 
+import 'lending_page.dart';
+
 class LoanDetailsPage extends StatefulWidget {
   const LoanDetailsPage(this.loan, {super.key});
 
@@ -63,9 +65,21 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
             ),
             TextButton(
               child: const Text("Yes"),
-              onPressed: () {
-                _closeLoan(widget.loan.id, thing.id);
-                Navigator.pop(context);
+              onPressed: () async {
+                await _closeLoan(widget.loan.id, thing.id);
+
+                Future.delayed(
+                  Duration.zero,
+                  () {
+                    Navigator.of(context).pop();
+                    return Navigator.pushAndRemoveUntil(context,
+                        MaterialPageRoute(
+                      builder: (context) {
+                        return const LendingPage();
+                      },
+                    ), (route) => false);
+                  },
+                );
               },
             ),
           ],
