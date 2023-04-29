@@ -46,8 +46,8 @@ class LibrarianApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
         brightness: Brightness.dark,
+        useMaterial3: true,
       ),
-      darkTheme: ThemeData.dark(useMaterial3: true),
       initialRoute: '/',
       routes: {
         '/': (_) => const SplashPage(),
