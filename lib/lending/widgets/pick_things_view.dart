@@ -106,21 +106,25 @@ class _PickThingsViewState extends State<PickThingsView> {
             onChanged: (_) => {},
           ),
         ),
-        ListView.builder(
-          itemCount: pickedThings.length,
-          itemBuilder: (context, index) {
-            final thing = pickedThings[index];
+        pickedThings.isNotEmpty
+            ? ListView.builder(
+                itemCount: pickedThings.length,
+                itemBuilder: (context, index) {
+                  final thing = pickedThings[index];
 
-            return ThingListTile(
-              number: thing.number,
-              name: thing.name ?? 'Unknown Thing',
-              available: thing.available,
-              selected: true,
-              onTap: () => widget.onThingPicked(thing),
-            );
-          },
-          shrinkWrap: true,
-        ),
+                  return ThingListTile(
+                    number: thing.number,
+                    name: thing.name ?? 'Unknown Thing',
+                    available: thing.available,
+                    selected: true,
+                    onTap: () => widget.onThingPicked(thing),
+                  );
+                },
+                shrinkWrap: true,
+              )
+            : const Expanded(
+                child: Center(child: Text('Add things to check out.')),
+              ),
       ],
     );
   }

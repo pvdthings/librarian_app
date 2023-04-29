@@ -30,8 +30,13 @@ class ThingListTile extends StatelessWidget {
               style: TextStyle(color: Colors.orange),
             ),
       leading: Text("#$number"),
-      trailing: selected ? const Icon(Icons.remove_circle_rounded) : null,
-      onTap: onTap,
+      trailing: selected
+          ? IconButton(
+              icon: const Icon(Icons.remove_circle_rounded),
+              tooltip: 'Remove',
+              onPressed: onTap,
+            )
+          : null,
     );
   }
 }
