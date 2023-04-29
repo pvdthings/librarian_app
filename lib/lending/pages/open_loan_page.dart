@@ -4,7 +4,6 @@ import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
 import 'package:librarian_app/lending/pages/lending_page.dart';
-import 'package:librarian_app/lending/widgets/confirm_floating_action_button.dart';
 import 'package:librarian_app/lending/widgets/pick_things_view.dart';
 import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:librarian_app/lending/widgets/loan_details.dart';
@@ -42,10 +41,11 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
           onThingPicked: _onTapThing,
         );
         _floatingActionButton = _things.isNotEmpty
-            ? FloatingActionButton(
+            ? FloatingActionButton.extended(
                 onPressed: () =>
                     setState(() => _currentView = OpenLoanView.confirmLoan),
-                child: const Icon(Icons.navigate_next_rounded),
+                icon: const Icon(Icons.navigate_next_rounded),
+                label: const Text('NEXT'),
               )
             : null;
         break;
@@ -60,11 +60,11 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
             setState(() => _dueDate = newDate);
           },
         );
-        _floatingActionButton = ConfirmFloatingActionButton(
+        _floatingActionButton = FloatingActionButton.extended(
           onPressed: _onTapCreate,
-          backgroundColor: Colors.green,
           icon: const Icon(Icons.check_rounded),
-          label: "Finish",
+          label: const Text('CONFIRM'),
+          backgroundColor: Colors.green,
         );
         break;
       case OpenLoanView.borrowerNeedsAttention:
