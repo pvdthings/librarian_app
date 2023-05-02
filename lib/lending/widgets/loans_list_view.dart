@@ -6,11 +6,13 @@ import 'package:provider/provider.dart';
 class LoansListView extends StatefulWidget {
   final String? filter;
   final Function(Loan)? onTap;
+  final Loan? selectedLoan;
 
   const LoansListView({
     super.key,
     this.filter,
     this.onTap,
+    this.selectedLoan,
   });
 
   @override
@@ -100,7 +102,11 @@ class _LoansListViewState extends State<LoansListView> {
                 : '${loan.dueDate.month}/${loan.dueDate.day}',
             style: TextStyle(color: _dueDateColor(loan)),
           ),
+          selected: loan.id == widget.selectedLoan?.id &&
+              loan.thing.id == widget.selectedLoan?.thing.id,
           onTap: () => widget.onTap?.call(loan),
+          selectedTileColor: Colors.indigo,
+          selectedColor: Colors.white,
         );
       },
       shrinkWrap: true,

@@ -65,19 +65,21 @@ class LoanDetails extends StatelessWidget {
                     )
                   : const Text("Due Date"),
               title: Text("${dueDate.month}/${dueDate.day}"),
-              trailing: editable ? const Icon(Icons.edit_rounded) : null,
-              onTap: editable
-                  ? () async {
-                      showDatePicker(
-                        context: context,
-                        initialDate: dueDate,
-                        firstDate: dueDate,
-                        lastDate: dueDate.add(const Duration(days: 14)),
-                      ).then((value) {
-                        if (value == null) return;
-                        onDueDateUpdated(value);
-                      });
-                    }
+              trailing: editable
+                  ? IconButton(
+                      icon: const Icon(Icons.edit_rounded),
+                      onPressed: () async {
+                        showDatePicker(
+                          context: context,
+                          initialDate: dueDate,
+                          firstDate: dueDate,
+                          lastDate: dueDate.add(const Duration(days: 14)),
+                        ).then((value) {
+                          if (value == null) return;
+                          onDueDateUpdated(value);
+                        });
+                      },
+                    )
                   : null,
             ),
           ),

@@ -5,8 +5,13 @@ import 'package:librarian_app/lending/widgets/submit_text_field.dart';
 
 class SearchableLoansList extends StatefulWidget {
   final Function(Loan)? onLoanTapped;
+  final Loan? selectedLoan;
 
-  const SearchableLoansList({super.key, this.onLoanTapped});
+  const SearchableLoansList({
+    super.key,
+    this.onLoanTapped,
+    this.selectedLoan,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -40,6 +45,7 @@ class _SearchableLoansListState extends State<SearchableLoansList> {
           child: LoansListView(
             filter: _searchText,
             onTap: widget.onLoanTapped,
+            selectedLoan: widget.selectedLoan,
           ),
         ),
       ],
