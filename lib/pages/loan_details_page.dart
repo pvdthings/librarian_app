@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/models/loans_model.dart';
-import 'package:librarian_app/lending/widgets/loan_details.dart';
+import 'package:librarian_app/models/loans_model.dart';
+import 'package:librarian_app/widgets/loan_details.dart';
 import 'package:provider/provider.dart';
 
 import 'loans/mobile_layout.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/api/lending_api.dart';
+import 'package:librarian_app/api/lending_api.dart';
 
 class ThingsModel extends ChangeNotifier {
   Future<Thing?> getOne({required int number}) async {

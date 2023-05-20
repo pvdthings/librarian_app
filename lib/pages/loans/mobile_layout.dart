@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/models/borrowers_model.dart';
-import 'package:librarian_app/lending/models/user_model.dart';
-import 'package:librarian_app/lending/pages/open_loan_page.dart';
-import 'package:librarian_app/lending/widgets/borrowers_list_view.dart';
-import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
-import 'package:librarian_app/lending/widgets/searchable_loans_list.dart';
+import 'package:librarian_app/models/borrowers_model.dart';
+import 'package:librarian_app/models/user_model.dart';
+import 'package:librarian_app/pages/open_loan_page.dart';
+import 'package:librarian_app/widgets/borrowers_list_view.dart';
+import 'package:librarian_app/widgets/needs_attention_view.dart';
+import 'package:librarian_app/widgets/searchable_loans_list.dart';
 import 'package:provider/provider.dart';
 
 import '../loan_details_page.dart';

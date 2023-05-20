@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/models/loans_model.dart';
-import 'package:librarian_app/lending/widgets/checkin_dialog.dart';
-import 'package:librarian_app/lending/widgets/loan_details.dart';
-import 'package:librarian_app/lending/widgets/searchable_loans_list.dart';
+import 'package:librarian_app/models/loans_model.dart';
+import 'package:librarian_app/widgets/checkin_dialog.dart';
+import 'package:librarian_app/widgets/loan_details.dart';
+import 'package:librarian_app/widgets/searchable_loans_list.dart';
 import 'package:provider/provider.dart';
 
 class LoansDesktopLayout extends StatefulWidget {

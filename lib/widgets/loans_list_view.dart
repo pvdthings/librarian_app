@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/models/loans_model.dart';
-import 'package:librarian_app/lending/models/user_model.dart';
+import 'package:librarian_app/models/loans_model.dart';
+import 'package:librarian_app/models/user_model.dart';
 import 'package:provider/provider.dart';
 
 class LoansListView extends StatefulWidget {

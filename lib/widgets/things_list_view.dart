@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/models/things_model.dart';
-import 'package:librarian_app/lending/widgets/thing_list_tile.dart';
+import 'package:librarian_app/models/things_model.dart';
+import 'package:librarian_app/widgets/thing_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class ThingsListView extends StatefulWidget {

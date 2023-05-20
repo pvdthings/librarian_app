@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/models/borrowers_model.dart';
-import 'package:librarian_app/lending/models/things_model.dart';
+import 'package:librarian_app/models/borrowers_model.dart';
+import 'package:librarian_app/models/things_model.dart';
 
 class LoanDetails extends StatelessWidget {
   const LoanDetails({
