@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:librarian_app/models/loans_model.dart';
-import 'package:librarian_app/widgets/loan_details.dart';
+import 'package:librarian_app/src/features/loans/data/loans_model.dart';
+import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
 import 'package:provider/provider.dart';
 
-import 'loans/mobile_layout.dart';
+import 'mobile_layout.dart';
 
 class LoanDetailsPage extends StatefulWidget {
   const LoanDetailsPage(this.loan, {super.key});

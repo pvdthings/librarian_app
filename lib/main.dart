@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/constants.dart';
-import 'package:librarian_app/models/borrowers_model.dart';
-import 'package:librarian_app/models/loans_model.dart';
-import 'package:librarian_app/models/things_model.dart';
-import 'package:librarian_app/models/user_model.dart';
-import 'package:librarian_app/pages/splash_page.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
+import 'package:librarian_app/src/features/loans/data/loans_model.dart';
+import 'package:librarian_app/src/features/authentication/data/user_model.dart';
+import 'package:librarian_app/src/features/splash/presentation/splash_page.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
+
+import 'src/features/loans/data/things_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

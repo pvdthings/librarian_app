@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/api/lending_api.dart';
+import 'package:librarian_app/src/features/common/data/lending_api.dart';
 
-import 'mappers/borrowers_mapper.dart';
+import 'borrowers_mapper.dart';
 
 class BorrowersModel extends ChangeNotifier {
   Future<List<Borrower>> getAll() async {

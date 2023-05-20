@@ -1,4 +1,4 @@
-import '../borrowers_model.dart';
+import 'borrowers_model.dart';
 
 class BorrowersMapper {
   static Iterable<Borrower> map(Iterable<dynamic> data) {

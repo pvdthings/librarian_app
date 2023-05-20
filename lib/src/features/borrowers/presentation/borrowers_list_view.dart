@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/models/borrowers_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
 import 'package:provider/provider.dart';
 
-import 'submit_text_field.dart';
+import '../../common/presentation/submit_text_field.dart';
 
 class BorrowersListView extends StatefulWidget {
   const BorrowersListView({

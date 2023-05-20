@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/models/loans_model.dart';
-import 'package:librarian_app/widgets/loans_list_view.dart';
-import 'package:librarian_app/widgets/submit_text_field.dart';
+import 'package:librarian_app/src/features/loans/data/loans_model.dart';
+import 'package:librarian_app/src/features/loans/presentation/loans_list_view.dart';
+import 'package:librarian_app/src/features/common/presentation/submit_text_field.dart';
 
 class SearchableLoansList extends StatefulWidget {
   final Function(Loan)? onLoanTapped;

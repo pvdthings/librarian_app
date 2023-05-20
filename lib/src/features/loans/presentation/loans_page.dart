@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/pages/loans/desktop_layout.dart';
 
+import 'desktop_layout.dart';
 import 'mobile_layout.dart';
 
 class LoansPage extends StatelessWidget {

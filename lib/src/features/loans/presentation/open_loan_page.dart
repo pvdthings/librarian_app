@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:librarian_app/models/borrowers_model.dart';
-import 'package:librarian_app/models/loans_model.dart';
-import 'package:librarian_app/models/things_model.dart';
-import 'package:librarian_app/pages/loans/mobile_layout.dart';
-import 'package:librarian_app/widgets/pick_things_view.dart';
-import 'package:librarian_app/widgets/needs_attention_view.dart';
-import 'package:librarian_app/widgets/loan_details.dart';
-import 'package:librarian_app/widgets/borrowers_list_view.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
+import 'package:librarian_app/src/features/loans/data/loans_model.dart';
+import 'package:librarian_app/src/features/loans/data/things_model.dart';
+import 'package:librarian_app/src/features/loans/presentation/pick_things_view.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
+import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list_view.dart';
 import 'package:provider/provider.dart';
+
+import 'mobile_layout.dart';
 
 class OpenLoanPage extends StatefulWidget {
   const OpenLoanPage({super.key});

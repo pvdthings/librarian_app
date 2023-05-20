@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:librarian_app/api/lending_api.dart';
-import 'package:librarian_app/models/borrowers_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
+import 'package:librarian_app/src/features/common/data/lending_api.dart';
 
-import 'mappers/loans_mapper.dart';
+import 'loans_mapper.dart';
 import 'things_model.dart';
 
 class LoansModel extends ChangeNotifier {

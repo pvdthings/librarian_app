@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/models/borrowers_model.dart';
-import 'package:librarian_app/models/user_model.dart';
-import 'package:librarian_app/pages/open_loan_page.dart';
-import 'package:librarian_app/widgets/borrowers_list_view.dart';
-import 'package:librarian_app/widgets/needs_attention_view.dart';
-import 'package:librarian_app/widgets/searchable_loans_list.dart';
+import 'package:librarian_app/src/features/authentication/data/user_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list_view.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
 import 'package:provider/provider.dart';
 
-import '../loan_details_page.dart';
+import 'loan_details_page.dart';
+import 'open_loan_page.dart';
+import 'searchable_loans_list.dart';
 
 class LoansMobileLayout extends StatefulWidget {
   const LoansMobileLayout({super.key});
