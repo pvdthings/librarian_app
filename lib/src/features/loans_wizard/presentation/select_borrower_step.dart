@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list_view.dart';
+import 'package:librarian_app/src/features/loans_wizard/data/wizard_model.dart';
+import 'package:provider/provider.dart';
+
+class SelectBorrowerStep extends StatelessWidget {
+  const SelectBorrowerStep({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(left: 8, bottom: 16),
+          child: Text(
+            'Select a borrower.',
+            style: Theme.of(context).textTheme.displayLarge,
+            textAlign: TextAlign.left,
+          ),
+        ),
+        Expanded(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 540),
+            child: Card(
+              child: Consumer<WizardModel>(
+                builder: (context, value, child) {
+                  return BorrowersListView(
+                    onTapBorrower: (b) => value.selectBorrower(b),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

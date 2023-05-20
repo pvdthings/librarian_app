@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/loans_wizard/presentation/wizard_page.dart';
 import 'package:provider/provider.dart';
 
 import '../data/loans_model.dart';
@@ -25,7 +26,12 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
       children: [
         NavigationRail(
           leading: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (c) => const WizardPage()),
+                (route) => false,
+              );
+            },
             tooltip: 'New Loan',
             child: const Icon(Icons.add_rounded),
           ),
