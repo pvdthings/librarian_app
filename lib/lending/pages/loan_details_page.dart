@@ -4,7 +4,7 @@ import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/widgets/loan_details.dart';
 import 'package:provider/provider.dart';
 
-import 'lending_page.dart';
+import 'loans/mobile_layout.dart';
 
 class LoanDetailsPage extends StatefulWidget {
   const LoanDetailsPage(this.loan, {super.key});
@@ -75,7 +75,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
                     return Navigator.pushAndRemoveUntil(context,
                         MaterialPageRoute(
                       builder: (context) {
-                        return const LendingPage();
+                        return const LoansMobileLayout();
                       },
                     ), (route) => false);
                   },

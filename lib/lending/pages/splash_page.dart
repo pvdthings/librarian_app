@@ -1,5 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:librarian_app/lending/pages/lending_page.dart';
+import 'package:librarian_app/lending/pages/loans/loans_page.dart';
 import 'package:librarian_app/lending/pages/signin_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,7 +23,7 @@ class _SplashPageState extends State<SplashPage> {
     await Future.delayed(Duration.zero);
 
     final session = Supabase.instance.client.auth.currentSession;
-    if (session == null) {
+    if (session == null && !kDebugMode) {
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const SignInPage()),
@@ -31,7 +32,7 @@ class _SplashPageState extends State<SplashPage> {
     } else {
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const LendingPage()),
+        MaterialPageRoute(builder: (_) => const LoansPage()),
         (route) => false,
       );
     }

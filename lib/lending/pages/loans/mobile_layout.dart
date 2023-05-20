@@ -7,18 +7,18 @@ import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:librarian_app/lending/widgets/searchable_loans_list.dart';
 import 'package:provider/provider.dart';
 
-import 'loan_details_page.dart';
+import '../loan_details_page.dart';
 
-class LendingPage extends StatefulWidget {
-  const LendingPage({super.key});
+class LoansMobileLayout extends StatefulWidget {
+  const LoansMobileLayout({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _LendingPageState();
+    return _LoansMobileLayoutState();
   }
 }
 
-class _LendingPageState extends State<LendingPage> {
+class _LoansMobileLayoutState extends State<LoansMobileLayout> {
   int _viewIndex = 0;
 
   late final _views = [

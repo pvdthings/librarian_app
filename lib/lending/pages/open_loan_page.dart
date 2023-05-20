@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:librarian_app/lending/models/borrowers_model.dart';
 import 'package:librarian_app/lending/models/loans_model.dart';
 import 'package:librarian_app/lending/models/things_model.dart';
-import 'package:librarian_app/lending/pages/lending_page.dart';
+import 'package:librarian_app/lending/pages/loans/mobile_layout.dart';
 import 'package:librarian_app/lending/widgets/pick_things_view.dart';
 import 'package:librarian_app/lending/widgets/needs_attention_view.dart';
 import 'package:librarian_app/lending/widgets/loan_details.dart';
@@ -114,7 +114,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       Duration.zero,
       () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
         builder: (context) {
-          return const LendingPage();
+          return const LoansMobileLayout();
         },
       ), (route) => false),
     );
