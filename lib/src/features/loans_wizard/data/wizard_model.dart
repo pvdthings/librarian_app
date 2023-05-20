@@ -19,7 +19,7 @@ class WizardModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void confirmLoan() {
-    // TODO
+  Future<void> confirmLoan() {
+    return Future.delayed(const Duration(seconds: 2));
   }
 }

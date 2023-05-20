@@ -10,6 +10,8 @@ class ConfirmDetailsStep extends StatefulWidget {
 }
 
 class _ConfirmDetailsStepState extends State<ConfirmDetailsStep> {
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<WizardModel>(context, listen: false);
@@ -38,12 +40,16 @@ class _ConfirmDetailsStepState extends State<ConfirmDetailsStep> {
                 ),
               ),
               FloatingActionButton.extended(
-                onPressed: () {
-                  model.confirmLoan();
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(Icons.check_rounded),
-                label: const Text('Confirm'),
+                onPressed: _isLoading
+                    ? null
+                    : () {
+                        setState(() => _isLoading = true);
+                        model.confirmLoan().whenComplete(() {
+                          Navigator.of(context).pop();
+                        });
+                      },
+                icon: _isLoading ? null : const Icon(Icons.check_rounded),
+                label: Text(_isLoading ? 'Confirming...' : 'Confirm'),
                 backgroundColor: Colors.green,
               ),
             ],
