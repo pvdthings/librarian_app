@@ -18,4 +18,8 @@ class WizardModel extends ChangeNotifier {
     step++;
     notifyListeners();
   }
+
+  void confirmLoan() {
+    // TODO
+  }
 }

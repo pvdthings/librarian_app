@@ -27,10 +27,8 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
         NavigationRail(
           leading: FloatingActionButton(
             onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (c) => const WizardPage()),
-                (route) => false,
-              );
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (c) => const WizardPage()));
             },
             tooltip: 'New Loan',
             child: const Icon(Icons.add_rounded),
