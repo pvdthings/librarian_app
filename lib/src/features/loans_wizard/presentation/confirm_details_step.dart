@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
 import 'package:librarian_app/src/features/loans_wizard/data/wizard_model.dart';
 import 'package:provider/provider.dart';
 
@@ -35,8 +36,14 @@ class _ConfirmDetailsStepState extends State<ConfirmDetailsStep> {
             children: [
               Container(
                 constraints: const BoxConstraints(maxWidth: 540),
-                child: const Card(
-                  child: Center(child: Text('Loan Details')),
+                child: Card(
+                  child: LoanDetails(
+                    borrower: model.borrower!,
+                    things: model.things,
+                    checkedOutDate: DateTime.now(),
+                    dueDate: DateTime.now().add(const Duration(days: 7)),
+                    onDueDateUpdated: (_) {},
+                  ),
                 ),
               ),
               FloatingActionButton.extended(

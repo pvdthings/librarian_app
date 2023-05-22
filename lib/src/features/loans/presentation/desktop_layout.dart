@@ -155,6 +155,7 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
                             things: [_selectedLoan!.thing],
                             checkedOutDate: _selectedLoan!.checkedOutDate,
                             dueDate: _newDueDate ?? _selectedLoan!.dueDate,
+                            isOverdue: _selectedLoan!.isOverdue,
                             onDueDateUpdated: (dueDate) {
                               setState(() => _newDueDate = dueDate);
                             },
