@@ -7,6 +7,15 @@ import 'loans_mapper.dart';
 import 'things_model.dart';
 
 class LoansModel extends ChangeNotifier {
+  Loan? _selectedLoan;
+
+  Loan? get selectedLoan => _selectedLoan;
+
+  set selectedLoan(value) {
+    _selectedLoan = value;
+    notifyListeners();
+  }
+
   Future<List<Loan>> getAll() async {
     final response = await LendingApi.fetchLoans();
     return LoansMapper.map(response.data as List).toList();
@@ -24,6 +33,7 @@ class LoansModel extends ChangeNotifier {
       checkedOutDate: checkedOutDate,
       dueBackDate: dueBackDate,
     ));
+    notifyListeners();
   }
 
   Future<void> closeLoan({

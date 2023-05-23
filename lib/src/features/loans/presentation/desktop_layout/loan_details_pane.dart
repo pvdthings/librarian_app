@@ -56,22 +56,21 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                       ),
                       Row(
                         children: [
-                          if (_editMode)
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CheckinDialog(
-                                      thingNumber: loan.thing.number,
-                                      onCheckin: widget.onCheckIn,
-                                    );
-                                  },
-                                );
-                              },
-                              tooltip: 'Check in',
-                              icon: const Icon(Icons.check_circle_rounded),
-                            ),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CheckinDialog(
+                                    thingNumber: loan.thing.number,
+                                    onCheckin: widget.onCheckIn,
+                                  );
+                                },
+                              );
+                            },
+                            tooltip: 'Check in',
+                            icon: const Icon(Icons.check_circle_rounded),
+                          ),
                           if (_editMode && _newDueDate != null)
                             IconButton(
                               onPressed: () {

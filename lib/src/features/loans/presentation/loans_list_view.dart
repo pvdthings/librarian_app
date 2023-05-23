@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/loans/data/loans_model.dart';
-import 'package:librarian_app/src/features/authentication/data/user_model.dart';
 import 'package:provider/provider.dart';
 
 class LoansListView extends StatefulWidget {
@@ -22,14 +21,14 @@ class LoansListView extends StatefulWidget {
 class _LoansListViewState extends State<LoansListView> {
   final _overdueTextStyle = const TextStyle(color: Colors.orange);
 
-  bool _isLoading = false;
-  List<Loan> _loans = [];
-  String? _errorMessage;
+  late Future<List<Loan>> _loansFuture;
 
   @override
   void initState() {
     super.initState();
-    _fetchLoans();
+
+    final loansModel = Provider.of<LoansModel>(context, listen: false);
+    _loansFuture = loansModel.getAll();
   }
 
   Color? _dueDateColor(Loan loan) {
@@ -38,78 +37,63 @@ class _LoansListViewState extends State<LoansListView> {
     return null;
   }
 
-  Future<void> _fetchLoans() async {
-    await Future.delayed(Duration.zero);
-    setState(() => _isLoading = true);
-
-    // ignore: use_build_context_synchronously
-    final loansModel = Provider.of<LoansModel>(context, listen: false);
-    try {
-      final loans = await loansModel.getAll();
-      setState(() {
-        _loans = loans;
-        _isLoading = false;
-      });
-    } catch (error) {
-      setState(() => _errorMessage = error.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_errorMessage != null) {
-      return Center(child: Text(_errorMessage!));
-    }
+    return Consumer<LoansModel>(
+      builder: (context, loans, child) {
+        return FutureBuilder(
+          initialData: const [],
+          future: _loansFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
+            if (snapshot.hasError) {
+              return Center(child: Text(snapshot.error!.toString()));
+            }
 
-    if (_loans.isEmpty) {
-      final user = Provider.of<UserModel>(context, listen: false);
+            var loans = snapshot.data as List<Loan>;
 
-      return Center(
-        child: Text("No loans, ${user.name}!"),
-      );
-    }
+            if (loans.isNotEmpty &&
+                widget.filter != null &&
+                widget.filter!.isNotEmpty) {
+              loans = loans.where((loan) {
+                final borrowerName = loan.borrower.name.toLowerCase();
+                final filterText = widget.filter!.toLowerCase();
+                return borrowerName.contains(filterText);
+              }).toList();
+            }
 
-    List<Loan> loans = _loans;
+            return ListView.builder(
+              itemCount: loans.length,
+              itemBuilder: (context, index) {
+                final loan = loans[index];
 
-    if (loans.isNotEmpty &&
-        widget.filter != null &&
-        widget.filter!.isNotEmpty) {
-      loans = _loans.where((loan) {
-        final borrowerName = loan.borrower.name.toLowerCase();
-        final filterText = widget.filter!.toLowerCase();
-        return borrowerName.contains(filterText);
-      }).toList();
-    }
-
-    return ListView.builder(
-      itemCount: loans.length,
-      itemBuilder: (context, index) {
-        final loan = loans[index];
-
-        return ListTile(
-          title: Text(
-            loan.thing.name ?? 'Unknown Thing',
-            style: loan.isOverdue ? _overdueTextStyle : null,
-          ),
-          subtitle: Text(loan.borrower.name),
-          trailing: Text(
-            loan.isDueToday
-                ? 'Today'
-                : '${loan.dueDate.month}/${loan.dueDate.day}',
-            style: TextStyle(color: _dueDateColor(loan)),
-          ),
-          selected: loan.id == widget.selectedLoan?.id &&
-              loan.thing.id == widget.selectedLoan?.thing.id,
-          onTap: () => widget.onTap?.call(loan),
-          selectedTileColor: Colors.indigo,
-          selectedColor: Colors.white,
+                return ListTile(
+                  title: Text(
+                    loan.thing.name ?? 'Unknown Thing',
+                    style: loan.isOverdue ? _overdueTextStyle : null,
+                  ),
+                  subtitle: Text(loan.borrower.name),
+                  trailing: Text(
+                    loan.isDueToday
+                        ? 'Today'
+                        : '${loan.dueDate.month}/${loan.dueDate.day}',
+                    style: TextStyle(color: _dueDateColor(loan)),
+                  ),
+                  selected: loan.id == widget.selectedLoan?.id &&
+                      loan.thing.id == widget.selectedLoan?.thing.id,
+                  onTap: () => widget.onTap?.call(loan),
+                  selectedTileColor: Colors.indigoAccent,
+                  selectedColor: Colors.white,
+                );
+              },
+              shrinkWrap: true,
+            );
+          },
         );
       },
-      shrinkWrap: true,
     );
   }
 }
