@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:librarian_app/src/features/loans/data/loans_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
 import 'package:librarian_app/src/features/loans_wizard/data/wizard_model.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +17,8 @@ class _ConfirmDetailsStepState extends State<ConfirmDetailsStep> {
 
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<WizardModel>(context, listen: false);
+    final model = Provider.of<WizardModel>(context, listen: true);
+    final loans = Provider.of<LoansModel>(context, listen: false);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -41,8 +44,9 @@ class _ConfirmDetailsStepState extends State<ConfirmDetailsStep> {
                     borrower: model.borrower!,
                     things: model.things,
                     checkedOutDate: DateTime.now(),
-                    dueDate: DateTime.now().add(const Duration(days: 7)),
-                    onDueDateUpdated: (_) {},
+                    dueDate: model.dueDate,
+                    onDueDateUpdated: (newDueDate) =>
+                        model.updateDueDate(newDueDate),
                   ),
                 ),
               ),
@@ -51,7 +55,16 @@ class _ConfirmDetailsStepState extends State<ConfirmDetailsStep> {
                     ? null
                     : () {
                         setState(() => _isLoading = true);
-                        model.confirmLoan().whenComplete(() {
+
+                        final dateFormat = DateFormat('yyyy-MM-dd');
+                        loans
+                            .openLoan(
+                          borrowerId: model.borrower!.id,
+                          thingIds: model.things.map((e) => e.id).toList(),
+                          checkedOutDate: dateFormat.format(DateTime.now()),
+                          dueBackDate: dateFormat.format(model.dueDate),
+                        )
+                            .whenComplete(() {
                           Navigator.of(context).pop();
                         });
                       },

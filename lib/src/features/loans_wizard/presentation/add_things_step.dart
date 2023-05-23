@@ -53,7 +53,9 @@ class _AddThingsStepState extends State<AddThingsStep> {
                 ),
               ),
               FloatingActionButton.extended(
-                onPressed: () => model.selectThings(_chosenThings),
+                onPressed: _chosenThings.isNotEmpty
+                    ? () => model.selectThings(_chosenThings)
+                    : null,
                 icon: const Icon(Icons.navigate_next),
                 label: const Text('Next'),
               ),

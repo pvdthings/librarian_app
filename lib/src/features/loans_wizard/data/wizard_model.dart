@@ -6,6 +6,7 @@ class WizardModel extends ChangeNotifier {
   int step = 0;
   Borrower? borrower;
   List<Thing> things = [];
+  DateTime dueDate = DateTime.now().add(const Duration(days: 7));
 
   void selectBorrower(Borrower borrower) {
     this.borrower = borrower;
@@ -19,7 +20,8 @@ class WizardModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> confirmLoan() {
-    return Future.delayed(const Duration(seconds: 2));
+  void updateDueDate(DateTime dueDate) {
+    this.dueDate = dueDate;
+    notifyListeners();
   }
 }
