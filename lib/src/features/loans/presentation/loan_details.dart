@@ -52,17 +52,22 @@ class LoanDetails extends StatelessWidget {
               border: OutlineInputBorder(),
             ),
           ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: TextEditingController(
-                text: '${things[0].name ?? 'Unknown'} #${things[0].number}'),
-            enabled: false,
-            decoration: const InputDecoration(
-              icon: Icon(Icons.build_rounded),
-              labelText: 'Thing',
-              border: OutlineInputBorder(),
-            ),
-          ),
+          const SizedBox(height: 32),
+          ...things.map((thing) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              child: TextField(
+                controller: TextEditingController(
+                    text: '${thing.name ?? 'Unknown'} #${thing.number}'),
+                enabled: false,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.build_rounded),
+                  labelText: 'Thing',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            );
+          }),
           const SizedBox(height: 16),
           TextField(
             controller: TextEditingController(
