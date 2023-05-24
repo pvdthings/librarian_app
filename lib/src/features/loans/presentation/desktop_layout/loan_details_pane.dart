@@ -6,8 +6,8 @@ import '../loan_details.dart';
 
 class LoanDetailsPane extends StatefulWidget {
   final Loan? loan;
-  final Function() onSave;
-  final Function() onCheckIn;
+  final void Function(DateTime dueDate) onSave;
+  final void Function() onCheckIn;
 
   const LoanDetailsPane({
     super.key,
@@ -56,25 +56,26 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                       ),
                       Row(
                         children: [
-                          IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return CheckinDialog(
-                                    thingNumber: loan.thing.number,
-                                    onCheckin: widget.onCheckIn,
-                                  );
-                                },
-                              );
-                            },
-                            tooltip: 'Check in',
-                            icon: const Icon(Icons.check_circle_rounded),
-                          ),
+                          if (!_editMode)
+                            IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return CheckinDialog(
+                                      thingNumber: loan.thing.number,
+                                      onCheckin: widget.onCheckIn,
+                                    );
+                                  },
+                                );
+                              },
+                              tooltip: 'Check in',
+                              icon: const Icon(Icons.check_circle_rounded),
+                            ),
                           if (_editMode && _newDueDate != null)
                             IconButton(
                               onPressed: () {
-                                widget.onSave();
+                                widget.onSave(_newDueDate!);
                                 setState(() => _editMode = false);
                               },
                               icon: const Icon(Icons.save_rounded),

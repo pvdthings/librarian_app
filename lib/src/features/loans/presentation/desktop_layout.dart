@@ -65,7 +65,13 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
                     ? const Center(child: Text('Loan Details'))
                     : LoanDetailsPane(
                         loan: loans.selectedLoan,
-                        onSave: () {},
+                        onSave: (newDueDate) {
+                          loans.updateDueDate(
+                            loanId: loans.selectedLoan!.id,
+                            thingId: loans.selectedLoan!.thing.id,
+                            dueBackDate: newDueDate,
+                          );
+                        },
                         onCheckIn: () {
                           loans
                               .closeLoan(
