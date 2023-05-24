@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list_view.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
 import 'package:librarian_app/src/features/loans_wizard/data/wizard_model.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +27,14 @@ class SelectBorrowerStep extends StatelessWidget {
             child: Card(
               child: Consumer<WizardModel>(
                 builder: (context, value, child) {
+                  if (value.borrower != null && !value.borrower!.active) {
+                    return NeedsAttentionView(borrower: value.borrower!);
+                  }
+
                   return BorrowersListView(
-                    onTapBorrower: (b) => value.selectBorrower(b),
+                    onTapBorrower: (b) {
+                      value.selectBorrower(b, stepForward: b.active);
+                    },
                   );
                 },
               ),

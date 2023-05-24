@@ -8,9 +8,12 @@ class WizardModel extends ChangeNotifier {
   List<Thing> things = [];
   DateTime dueDate = DateTime.now().add(const Duration(days: 7));
 
-  void selectBorrower(Borrower borrower) {
+  void selectBorrower(Borrower borrower, {bool stepForward = true}) {
     this.borrower = borrower;
-    step++;
+    if (stepForward) {
+      step++;
+    }
+
     notifyListeners();
   }
 
