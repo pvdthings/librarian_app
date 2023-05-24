@@ -17,6 +17,16 @@ class _WizardPageState extends State<WizardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(Icons.close_rounded),
+          tooltip: 'Cancel',
+        ),
+        title: const Text('New Loan'),
+      ),
       body: ChangeNotifierProvider(
         create: (c) => WizardModel(),
         child: Padding(
