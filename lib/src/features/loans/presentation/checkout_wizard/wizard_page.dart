@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans_wizard/data/wizard_model.dart';
-import 'package:librarian_app/src/features/loans_wizard/presentation/add_things_step.dart';
-import 'package:librarian_app/src/features/loans_wizard/presentation/confirm_details_step.dart';
 import 'package:provider/provider.dart';
 
+import '../../data/wizard_model.dart';
+import 'add_things_step.dart';
+import 'confirm_details_step.dart';
 import 'select_borrower_step.dart';
 
 class WizardPage extends StatefulWidget {

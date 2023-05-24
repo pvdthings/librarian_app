@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/loans/data/loans_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
-import 'package:librarian_app/src/features/loans_wizard/data/wizard_model.dart';
+import 'package:librarian_app/src/features/loans/data/wizard_model.dart';
 import 'package:provider/provider.dart';
 
 class ConfirmDetailsStep extends StatefulWidget {

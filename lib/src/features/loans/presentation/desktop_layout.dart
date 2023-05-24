@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/presentation/desktop_layout/loan_details_pane.dart';
-import 'package:librarian_app/src/features/loans_wizard/presentation/wizard_page.dart';
+import 'package:librarian_app/src/features/loans/presentation/loan_details_pane.dart';
 import 'package:provider/provider.dart';
 
 import '../data/loans_model.dart';
+import 'checkout_wizard/wizard_page.dart';
 import 'searchable_loans_list.dart';
 
 class LoansDesktopLayout extends StatefulWidget {

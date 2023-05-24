@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/loans/data/loans_model.dart';
 
-import '../checkin_dialog.dart';
-import '../loan_details.dart';
+import 'checkin_dialog.dart';
+import 'loan_details.dart';
 
 class LoanDetailsPane extends StatefulWidget {
   final Loan? loan;
