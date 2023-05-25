@@ -5,7 +5,7 @@
 ### Environment variables
 
 ```
-API_HOST=http://localhost:3000/lending (default)
+API_HOST=http://localhost:8088/lending (default)
 SUPABASE_URL
 SUPABASE_PUBLIC_KEY
 ```
