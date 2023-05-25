@@ -28,6 +28,8 @@ class _LoansListViewState extends State<LoansListView> {
   void initState() {
     super.initState();
 
+    // TODO: Move loading bool to model
+    // TODO: Load data when app initially loads
     _isLoading = true;
     final loansModel = Provider.of<LoansModel>(context, listen: false);
     loansModel
