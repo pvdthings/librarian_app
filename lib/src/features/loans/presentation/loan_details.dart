@@ -45,7 +45,7 @@ class LoanDetails extends StatelessWidget {
         children: [
           TextField(
             controller: TextEditingController(text: borrower.name),
-            enabled: false,
+            readOnly: true,
             decoration: const InputDecoration(
               icon: Icon(Icons.person_rounded),
               labelText: 'Borrower',
@@ -59,7 +59,7 @@ class LoanDetails extends StatelessWidget {
               child: TextField(
                 controller: TextEditingController(
                     text: '${thing.name ?? 'Unknown'} #${thing.number}'),
-                enabled: false,
+                readOnly: true,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.build_rounded),
                   labelText: 'Thing',
@@ -72,7 +72,7 @@ class LoanDetails extends StatelessWidget {
           TextField(
             controller: TextEditingController(
                 text: '${checkedOutDate.month}/${checkedOutDate.day}'),
-            enabled: false,
+            readOnly: true,
             decoration: const InputDecoration(
               icon: Icon(Icons.calendar_month_rounded),
               labelText: 'Checked Out',
@@ -83,7 +83,7 @@ class LoanDetails extends StatelessWidget {
           TextField(
             controller:
                 TextEditingController(text: '${dueDate.month}/${dueDate.day}'),
-            enabled: editable,
+            readOnly: !editable,
             onTap: () {
               if (editable) {
                 showDateSelection(context);
@@ -92,6 +92,8 @@ class LoanDetails extends StatelessWidget {
             decoration: InputDecoration(
               icon: const Icon(Icons.calendar_month_rounded),
               iconColor: isOverdue ? Colors.orange : null,
+              suffixIcon:
+                  editable ? const Icon(Icons.edit_calendar_rounded) : null,
               labelText: 'Due Back',
               border: const OutlineInputBorder(),
             ),
