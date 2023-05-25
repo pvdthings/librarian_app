@@ -84,8 +84,12 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                           const SizedBox(width: 4),
                           _editMode
                               ? IconButton(
-                                  onPressed: () =>
-                                      setState(() => _editMode = false),
+                                  onPressed: () {
+                                    setState(() {
+                                      _newDueDate = null;
+                                      _editMode = false;
+                                    });
+                                  },
                                   icon: const Icon(Icons.close_rounded),
                                   tooltip: 'Cancel',
                                 )
