@@ -16,7 +16,7 @@ class LoansMapper {
             name: e['borrower']?['name'] as String? ?? '???',
             issues: [],
           ),
-          checkedOutDate: e['checkedOutData'] != null
+          checkedOutDate: e['checkedOutDate'] != null
               ? DateTime.parse(e['checkedOutDate'] as String)
               : DateTime.now(),
           checkedInDate: e['checkedInDate'] != null
