@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/borrowers_desktop_layout.dart';
 import 'package:librarian_app/src/features/loans/presentation/checkout_wizard/wizard_page.dart';
 import 'package:librarian_app/src/features/loans/presentation/loans_desktop_layout.dart';
 
@@ -13,11 +14,11 @@ class _DesktopLayoutState extends State<DesktopLayout> {
   int _selectedIndex = 0;
 
   Widget get _currentScreen {
-    // if (_selectedIndex == 0) {
-    //   return const LoansDesktopLayout();
-    // }
+    if (_selectedIndex == 0) {
+      return const LoansDesktopLayout();
+    }
 
-    return const LoansDesktopLayout();
+    return const BorrowersDesktopLayout();
   }
 
   @override

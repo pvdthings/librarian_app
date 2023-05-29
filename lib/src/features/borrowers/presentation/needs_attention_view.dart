@@ -6,24 +6,6 @@ class NeedsAttentionView extends StatelessWidget {
 
   const NeedsAttentionView({super.key, required this.borrower});
 
-  static final _reasonMap = <String, Reason>{
-    'duesNotPaid': const Reason(
-      title: "Dues Not Paid",
-      explanation:
-          "Scan the QR code to pay annual dues. \nAlternatively, cash is accepted.",
-      graphicUrl: "qr_givebutter.png",
-    ),
-    'overdueLoan': const Reason(
-      title: "Overdue Loan",
-      explanation:
-          "This borrower has an overdue loan. They will not be eligible to borrow again until the overdue item(s) are returned.",
-    ),
-    'suspended': const Reason(
-      title: "Suspended",
-      explanation: "This person has been suspended from borrowing.",
-    ),
-  };
-
   @override
   Widget build(BuildContext context) {
     if (borrower.issues.isEmpty) {
@@ -35,8 +17,7 @@ class NeedsAttentionView extends StatelessWidget {
       child: ListView.builder(
         itemCount: borrower.issues.length,
         itemBuilder: (context, index) {
-          final reasonCode = borrower.issues[index];
-          final reason = _reasonMap[reasonCode]!;
+          final reason = borrower.issues[index];
 
           return Card(
             child: Padding(
@@ -68,16 +49,4 @@ class NeedsAttentionView extends StatelessWidget {
       ),
     );
   }
-}
-
-class Reason {
-  final String title;
-  final String? explanation;
-  final String? graphicUrl;
-
-  const Reason({
-    required this.title,
-    this.explanation,
-    this.graphicUrl,
-  });
 }
