@@ -4,7 +4,7 @@ import 'package:librarian_app/src/features/loans/data/loans_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
 import 'package:provider/provider.dart';
 
-import 'mobile_layout.dart';
+import 'loans_mobile_layout.dart';
 
 class LoanDetailsPage extends StatefulWidget {
   const LoanDetailsPage(this.loan, {super.key});
