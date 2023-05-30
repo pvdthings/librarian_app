@@ -19,8 +19,6 @@ class LoansListView extends StatefulWidget {
 }
 
 class _LoansListViewState extends State<LoansListView> {
-  final _overdueTextStyle = const TextStyle(color: Colors.orange);
-
   bool _isLoading = false;
   String? _error;
 
@@ -36,12 +34,6 @@ class _LoansListViewState extends State<LoansListView> {
         .refresh()
         .onError((error, _) => setState(() => _error = error?.toString()))
         .whenComplete(() => setState(() => _isLoading = false));
-  }
-
-  Color? _dueDateColor(Loan loan) {
-    if (loan.isOverdue) return Colors.orange[200];
-    if (loan.isDueToday) return Colors.green[200];
-    return null;
   }
 
   @override
