@@ -36,11 +36,13 @@ class Borrower {
 class Issue {
   final String title;
   final String? explanation;
+  final String? instructions;
   final String? graphicUrl;
 
   const Issue({
     required this.title,
     this.explanation,
+    this.instructions,
     this.graphicUrl,
   });
 }

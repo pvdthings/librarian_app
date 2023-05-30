@@ -17,14 +17,15 @@ class BorrowersMapper {
   static final _reasonMap = <String, Issue>{
     'duesNotPaid': const Issue(
       title: "Dues Not Paid",
-      explanation:
-          "Scan the QR code to pay annual dues. \nAlternatively, cash is accepted.",
+      explanation: "Annual dues must be paid before borrowing.",
+      instructions:
+          "The borrower can pay their dues from the library's website or by scanning the QR code.",
       graphicUrl: "qr_givebutter.png",
     ),
     'overdueLoan': const Issue(
       title: "Overdue Loan",
       explanation:
-          "This borrower has an overdue loan. They will not be eligible to borrow again until the overdue item(s) are returned.",
+          "All overdue items must be returned before they can borrow again.",
     ),
     'suspended': const Issue(
       title: "Suspended",
