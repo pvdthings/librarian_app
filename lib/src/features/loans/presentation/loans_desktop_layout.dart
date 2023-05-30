@@ -17,49 +17,49 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Card(
+        Container(
           margin: const EdgeInsets.all(8),
-          child: SizedBox(
-            width: 500,
-            child: Consumer<LoansModel>(
-              builder: (context, loans, child) {
-                return SearchableLoansList(
-                  onLoanTapped: (loan) {
-                    loans.selectedLoan = loan;
-                  },
-                  selectedLoan: loans.selectedLoan,
-                );
-              },
+          child: Card(
+            child: SizedBox(
+              width: 500,
+              child: Consumer<LoansModel>(
+                builder: (context, loans, child) {
+                  return SearchableLoansList(
+                    onLoanTapped: (loan) {
+                      loans.selectedLoan = loan;
+                    },
+                    selectedLoan: loans.selectedLoan,
+                  );
+                },
+              ),
             ),
           ),
         ),
         Expanded(
           child: Consumer<LoansModel>(
             builder: (context, loans, child) {
-              return Card(
+              return Container(
                 margin: const EdgeInsets.all(8),
-                child: loans.selectedLoan == null
-                    ? const Center(child: Text('Loan Details'))
-                    : LoanDetailsPane(
-                        loan: loans.selectedLoan,
-                        onSave: (newDueDate) {
-                          loans.updateDueDate(
-                            loanId: loans.selectedLoan!.id,
-                            thingId: loans.selectedLoan!.thing.id,
-                            dueBackDate: newDueDate,
-                          );
-                        },
-                        onCheckIn: () {
-                          loans
-                              .closeLoan(
-                            loanId: loans.selectedLoan!.id,
-                            thingId: loans.selectedLoan!.thing.id,
-                          )
-                              .whenComplete(() {
-                            setState(() => loans.selectedLoan = null);
-                          });
-                        },
-                      ),
+                child: LoanDetailsPane(
+                  loan: loans.selectedLoan,
+                  onSave: (newDueDate) {
+                    loans.updateDueDate(
+                      loanId: loans.selectedLoan!.id,
+                      thingId: loans.selectedLoan!.thing.id,
+                      dueBackDate: newDueDate,
+                    );
+                  },
+                  onCheckIn: () {
+                    loans
+                        .closeLoan(
+                      loanId: loans.selectedLoan!.id,
+                      thingId: loans.selectedLoan!.thing.id,
+                    )
+                        .whenComplete(() {
+                      setState(() => loans.selectedLoan = null);
+                    });
+                  },
+                ),
               );
             },
           ),

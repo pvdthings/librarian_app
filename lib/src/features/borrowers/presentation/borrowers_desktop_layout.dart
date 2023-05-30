@@ -16,25 +16,31 @@ class _BorrowersDesktopLayoutState extends State<BorrowersDesktopLayout> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Card(
+        Container(
           margin: const EdgeInsets.all(8),
-          child: SizedBox(
-            width: 500,
-            child: Consumer<BorrowersModel>(
-              builder: (context, borrowers, child) {
-                return BorrowersListView(
-                  onTapBorrower: (b) {
-                    borrowers.selectedBorrower = b;
-                  },
-                );
-              },
+          child: Card(
+            child: SizedBox(
+              width: 500,
+              child: Consumer<BorrowersModel>(
+                builder: (context, borrowers, child) {
+                  return BorrowersListView(
+                    onTapBorrower: (b) {
+                      borrowers.selectedBorrower = b;
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ),
         Expanded(
           child: Consumer<BorrowersModel>(
             builder: (context, borrowers, child) {
-              return BorrowerDetailsPane(borrower: borrowers.selectedBorrower);
+              return Container(
+                margin: const EdgeInsets.all(8),
+                child:
+                    BorrowerDetailsPane(borrower: borrowers.selectedBorrower),
+              );
             },
           ),
         ),

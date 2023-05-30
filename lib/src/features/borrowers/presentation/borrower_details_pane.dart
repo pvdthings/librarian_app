@@ -19,16 +19,12 @@ class _BorrowerDetailsPaneState extends State<BorrowerDetailsPane> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(8),
       child: widget.borrower == null
           ? const Center(child: Text('Borrower Details'))
           : Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 16,
-                  ),
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -46,7 +42,7 @@ class _BorrowerDetailsPaneState extends State<BorrowerDetailsPane> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: BorrowerDetails(borrower: widget.borrower!),
                 ),
               ],

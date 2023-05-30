@@ -39,74 +39,71 @@ class LoanDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          TextField(
-            controller: TextEditingController(text: borrower.name),
-            readOnly: true,
-            decoration: const InputDecoration(
-              icon: Icon(Icons.person_rounded),
-              labelText: 'Borrower',
-              border: OutlineInputBorder(),
-            ),
+    return Column(
+      children: [
+        TextField(
+          controller: TextEditingController(text: borrower.name),
+          readOnly: true,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.person_rounded),
+            labelText: 'Borrower',
+            border: OutlineInputBorder(),
           ),
-          const SizedBox(height: 32),
-          ...things.map((thing) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              child: TextField(
-                controller: TextEditingController(
-                    text: '${thing.name ?? 'Unknown'} #${thing.number}'),
-                readOnly: true,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.build_rounded),
-                  labelText: 'Thing',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            );
-          }),
-          const SizedBox(height: 16),
-          TextField(
-            controller: TextEditingController(
-                text: '${checkedOutDate.month}/${checkedOutDate.day}'),
-            readOnly: true,
-            decoration: const InputDecoration(
-              icon: Icon(Icons.calendar_month_rounded),
-              labelText: 'Checked Out',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller:
-                TextEditingController(text: '${dueDate.month}/${dueDate.day}'),
-            readOnly: !editable,
-            onTap: () {
-              if (editable) {
-                showDateSelection(context);
-              }
-            },
-            decoration: InputDecoration(
-              icon: const Icon(Icons.calendar_month_rounded),
-              iconColor: isOverdue ? Colors.orange : null,
-              suffixIcon:
-                  editable ? const Icon(Icons.edit_calendar_rounded) : null,
-              labelText: 'Due Back',
-              border: const OutlineInputBorder(),
-            ),
-          ),
-          if (checkedInDate != null)
-            Card(
-              child: ListTile(
-                leading: const Text("Checked In"),
-                title: Text("${checkedInDate!.month}/${checkedInDate!.day}"),
+        ),
+        const SizedBox(height: 32),
+        ...things.map((thing) {
+          return Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            child: TextField(
+              controller: TextEditingController(
+                  text: '${thing.name ?? 'Unknown'} #${thing.number}'),
+              readOnly: true,
+              decoration: const InputDecoration(
+                icon: Icon(Icons.build_rounded),
+                labelText: 'Thing',
+                border: OutlineInputBorder(),
               ),
             ),
-        ],
-      ),
+          );
+        }),
+        const SizedBox(height: 16),
+        TextField(
+          controller: TextEditingController(
+              text: '${checkedOutDate.month}/${checkedOutDate.day}'),
+          readOnly: true,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.calendar_month_rounded),
+            labelText: 'Checked Out',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        const SizedBox(height: 16),
+        TextField(
+          controller:
+              TextEditingController(text: '${dueDate.month}/${dueDate.day}'),
+          readOnly: !editable,
+          onTap: () {
+            if (editable) {
+              showDateSelection(context);
+            }
+          },
+          decoration: InputDecoration(
+            icon: const Icon(Icons.calendar_month_rounded),
+            iconColor: isOverdue ? Colors.orange : null,
+            suffixIcon:
+                editable ? const Icon(Icons.edit_calendar_rounded) : null,
+            labelText: 'Due Back',
+            border: const OutlineInputBorder(),
+          ),
+        ),
+        if (checkedInDate != null)
+          Card(
+            child: ListTile(
+              leading: const Text("Checked In"),
+              title: Text("${checkedInDate!.month}/${checkedInDate!.day}"),
+            ),
+          ),
+      ],
     );
   }
 }

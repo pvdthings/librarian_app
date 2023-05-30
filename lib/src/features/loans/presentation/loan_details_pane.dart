@@ -29,16 +29,12 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
     final loan = widget.loan;
 
     return Card(
-      margin: const EdgeInsets.all(8),
       child: loan == null
           ? const Center(child: Text('Loan Details'))
           : Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 16,
-                  ),
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -51,7 +47,10 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                             ),
                           ),
                           const SizedBox(width: 16),
-                          Chip(label: Text('#${loan.thing.number}'))
+                          Text(
+                            '#${loan.thing.number}',
+                            style: const TextStyle(fontSize: 16),
+                          ),
                         ],
                       ),
                       Row(
@@ -104,16 +103,19 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                     ],
                   ),
                 ),
-                LoanDetails(
-                  borrower: loan.borrower,
-                  things: [loan.thing],
-                  checkedOutDate: loan.checkedOutDate,
-                  dueDate: _newDueDate ?? loan.dueDate,
-                  isOverdue: loan.isOverdue,
-                  onDueDateUpdated: (dueDate) {
-                    setState(() => _newDueDate = dueDate);
-                  },
-                  editable: _editMode,
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: LoanDetails(
+                    borrower: loan.borrower,
+                    things: [loan.thing],
+                    checkedOutDate: loan.checkedOutDate,
+                    dueDate: _newDueDate ?? loan.dueDate,
+                    isOverdue: loan.isOverdue,
+                    onDueDateUpdated: (dueDate) {
+                      setState(() => _newDueDate = dueDate);
+                    },
+                    editable: _editMode,
+                  ),
                 ),
               ],
             ),
