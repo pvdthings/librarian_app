@@ -52,14 +52,17 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
         break;
       case OpenLoanView.confirmLoan:
         _viewTitle = "Confirm Loan";
-        _body = LoanDetails(
-          borrower: _borrower,
-          things: _things,
-          checkedOutDate: DateTime.now(),
-          dueDate: _dueDate,
-          onDueDateUpdated: (newDate) {
-            setState(() => _dueDate = newDate);
-          },
+        _body = Padding(
+          padding: const EdgeInsets.all(16),
+          child: LoanDetails(
+            borrower: _borrower,
+            things: _things,
+            checkedOutDate: DateTime.now(),
+            dueDate: _dueDate,
+            onDueDateUpdated: (newDate) {
+              setState(() => _dueDate = newDate);
+            },
+          ),
         );
         _floatingActionButton = FloatingActionButton.extended(
           onPressed: _onTapCreate,

@@ -116,20 +116,23 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
                 ),
         ],
       ),
-      body: LoanDetails(
-        borrower: loan.borrower,
-        things: [loan.thing],
-        checkedOutDate: loan.checkedOutDate,
-        dueDate: _newDueDate ?? loan.dueDate,
-        checkedInDate: loan.checkedInDate,
-        isOverdue: loan.isOverdue,
-        editable: _editMode,
-        onDueDateUpdated: (newDueDate) {
-          setState(() {
-            _newDueDate = newDueDate;
-            _changesMade = true;
-          });
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: LoanDetails(
+          borrower: loan.borrower,
+          things: [loan.thing],
+          checkedOutDate: loan.checkedOutDate,
+          dueDate: _newDueDate ?? loan.dueDate,
+          checkedInDate: loan.checkedInDate,
+          isOverdue: loan.isOverdue,
+          editable: _editMode,
+          onDueDateUpdated: (newDueDate) {
+            setState(() {
+              _newDueDate = newDueDate;
+              _changesMade = true;
+            });
+          },
+        ),
       ),
       floatingActionButton: _editMode
           ? null
