@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/presentation/loans_page.dart';
+import 'package:librarian_app/src/features/dashboard/presentation/dashboard_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInPage extends StatefulWidget {
@@ -17,14 +17,14 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<void> _signIn() async {
     if (kDebugMode) {
-      _navigateToLendingPage();
+      _navigateToDashboard();
       return;
     }
 
     try {
       await Supabase.instance.client.auth
           .signInWithOAuth(Provider.discord)
-          .whenComplete(_navigateToLendingPage);
+          .whenComplete(_navigateToDashboard);
     } on AuthException catch (error) {
       setState(() => _errorMessage = error.message);
     } catch (error) {
@@ -32,9 +32,9 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
-  void _navigateToLendingPage() {
+  void _navigateToDashboard() {
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const LoansPage()),
+      MaterialPageRoute(builder: (_) => const DashboardPage()),
       (route) => false,
     );
   }
