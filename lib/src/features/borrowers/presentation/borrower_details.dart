@@ -24,6 +24,28 @@ class BorrowerDetails extends StatelessWidget {
             border: OutlineInputBorder(),
           ),
         ),
+        const SizedBox(height: 16),
+        TextField(
+          controller: TextEditingController(text: borrower.email),
+          readOnly: true,
+          enabled: borrower.email != null,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.person_rounded),
+            labelText: 'Email',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        const SizedBox(height: 16),
+        TextField(
+          controller: TextEditingController(text: borrower.phone),
+          readOnly: true,
+          enabled: borrower.phone != null,
+          decoration: const InputDecoration(
+            icon: Icon(Icons.person_rounded),
+            labelText: 'Phone',
+            border: OutlineInputBorder(),
+          ),
+        ),
         const SizedBox(height: 32),
         Text(
           'Issues (${borrower.issues.length})',

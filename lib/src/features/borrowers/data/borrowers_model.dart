@@ -22,6 +22,8 @@ class BorrowersModel extends ChangeNotifier {
 class Borrower {
   final String id;
   final String name;
+  final String? email;
+  final String? phone;
   final List<Issue> issues;
 
   bool get active => issues.isEmpty;
@@ -30,6 +32,8 @@ class Borrower {
     required this.id,
     required this.name,
     required this.issues,
+    this.email,
+    this.phone,
   });
 }
 

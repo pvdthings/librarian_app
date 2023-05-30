@@ -2,11 +2,12 @@ import 'borrowers_model.dart';
 
 class BorrowersMapper {
   static Iterable<Borrower> map(Iterable<dynamic> data) {
-    // TODO: map contact info
     return data
         .map((e) => Borrower(
               id: e['id'] as String? ?? '???',
               name: e['name'] as String? ?? '???',
+              email: e['contact']?['email'] as String?,
+              phone: e['contact']?['phone'] as String?,
               issues: (e['issues'] as List? ?? [])
                   .map((e) => _reasonMap[e as String]!)
                   .toList(),
