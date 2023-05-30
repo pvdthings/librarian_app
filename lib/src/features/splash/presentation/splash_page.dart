@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/authentication/presentation/signin_page.dart';
-import 'package:librarian_app/src/features/loans/presentation/loans_page.dart';
+import 'package:librarian_app/src/features/dashboard/presentation/dashboard_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashPage extends StatefulWidget {
@@ -32,7 +32,7 @@ class _SplashPageState extends State<SplashPage> {
     } else {
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const LoansPage()),
+        MaterialPageRoute(builder: (_) => const DashboardPage()),
         (route) => false,
       );
     }

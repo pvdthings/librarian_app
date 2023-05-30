@@ -51,6 +51,9 @@ class _BorrowersListViewState extends State<BorrowersListView> {
 
   @override
   Widget build(BuildContext context) {
+    final borrowersModel = Provider.of<BorrowersModel>(context, listen: false);
+    final Borrower? selectedBorrower = borrowersModel.selectedBorrower;
+
     if (_errorMessage != null) {
       return Center(child: Text(_errorMessage!));
     }
@@ -92,20 +95,9 @@ class _BorrowersListViewState extends State<BorrowersListView> {
 
               return ListTile(
                 title: Text(b.name),
-                subtitle: b.active
-                    ? const Text(
-                        "Active",
-                        style: TextStyle(
-                          color: Colors.green,
-                        ),
-                      )
-                    : const Text(
-                        "Inactive",
-                        style: TextStyle(
-                          color: Colors.orange,
-                        ),
-                      ),
+                trailing: b.active ? null : const Icon(Icons.warning_rounded),
                 onTap: () => widget.onTapBorrower(b),
+                selected: selectedBorrower == b,
               );
             },
             shrinkWrap: true,

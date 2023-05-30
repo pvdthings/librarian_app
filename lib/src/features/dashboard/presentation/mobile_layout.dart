@@ -5,20 +5,20 @@ import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list
 import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
 import 'package:provider/provider.dart';
 
-import 'loan_details_page.dart';
-import 'open_loan_page.dart';
-import 'searchable_loans_list.dart';
+import '../../loans/presentation/loan_details_page.dart';
+import '../../loans/presentation/open_loan_page.dart';
+import '../../loans/presentation/searchable_loans_list.dart';
 
-class LoansMobileLayout extends StatefulWidget {
-  const LoansMobileLayout({super.key});
+class DashboardMobileLayout extends StatefulWidget {
+  const DashboardMobileLayout({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _LoansMobileLayoutState();
+    return _DashboardMobileLayoutState();
   }
 }
 
-class _LoansMobileLayoutState extends State<LoansMobileLayout> {
+class _DashboardMobileLayoutState extends State<DashboardMobileLayout> {
   int _viewIndex = 0;
 
   late final _views = [

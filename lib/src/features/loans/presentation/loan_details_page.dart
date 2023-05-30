@@ -4,7 +4,7 @@ import 'package:librarian_app/src/features/loans/data/loans_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
 import 'package:provider/provider.dart';
 
-import 'mobile_layout.dart';
+import '../../dashboard/presentation/mobile_layout.dart';
 
 class LoanDetailsPage extends StatefulWidget {
   const LoanDetailsPage(this.loan, {super.key});
@@ -75,7 +75,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
                     return Navigator.pushAndRemoveUntil(context,
                         MaterialPageRoute(
                       builder: (context) {
-                        return const LoansMobileLayout();
+                        return const DashboardMobileLayout();
                       },
                     ), (route) => false);
                   },
@@ -116,20 +116,23 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
                 ),
         ],
       ),
-      body: LoanDetails(
-        borrower: loan.borrower,
-        things: [loan.thing],
-        checkedOutDate: loan.checkedOutDate,
-        dueDate: _newDueDate ?? loan.dueDate,
-        checkedInDate: loan.checkedInDate,
-        isOverdue: loan.isOverdue,
-        editable: _editMode,
-        onDueDateUpdated: (newDueDate) {
-          setState(() {
-            _newDueDate = newDueDate;
-            _changesMade = true;
-          });
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: LoanDetails(
+          borrower: loan.borrower,
+          things: [loan.thing],
+          checkedOutDate: loan.checkedOutDate,
+          dueDate: _newDueDate ?? loan.dueDate,
+          checkedInDate: loan.checkedInDate,
+          isOverdue: loan.isOverdue,
+          editable: _editMode,
+          onDueDateUpdated: (newDueDate) {
+            setState(() {
+              _newDueDate = newDueDate;
+              _changesMade = true;
+            });
+          },
+        ),
       ),
       floatingActionButton: _editMode
           ? null
