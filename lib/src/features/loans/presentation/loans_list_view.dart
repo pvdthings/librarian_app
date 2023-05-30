@@ -74,22 +74,25 @@ class _LoansListViewState extends State<LoansListView> {
             final loan = localLoans[index];
 
             return ListTile(
-              title: Text(
-                loan.thing.name ?? 'Unknown Thing',
-                style: loan.isOverdue ? _overdueTextStyle : null,
-              ),
+              title: Text(loan.thing.name ?? 'Unknown Thing'),
               subtitle: Text(loan.borrower.name),
-              trailing: Text(
-                loan.isDueToday
-                    ? 'Today'
-                    : '${loan.dueDate.month}/${loan.dueDate.day}',
-                style: TextStyle(color: _dueDateColor(loan)),
-              ),
+              trailing: loan.isOverdue
+                  ? const Tooltip(
+                      message: 'Overdue',
+                      child: Icon(Icons.warning_rounded),
+                    )
+                  : Text(
+                      loan.isDueToday
+                          ? 'Today'
+                          : '${loan.dueDate.month}/${loan.dueDate.day}',
+                      style: TextStyle(
+                        fontSize:
+                            Theme.of(context).textTheme.bodyMedium?.fontSize,
+                      ),
+                    ),
               selected: loan.id == widget.selectedLoan?.id &&
                   loan.thing.id == widget.selectedLoan?.thing.id,
               onTap: () => widget.onTap?.call(loan),
-              selectedTileColor: Colors.indigoAccent,
-              selectedColor: Colors.white,
             );
           },
           shrinkWrap: true,
