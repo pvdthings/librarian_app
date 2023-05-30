@@ -95,19 +95,6 @@ class _BorrowersListViewState extends State<BorrowersListView> {
 
               return ListTile(
                 title: Text(b.name),
-                // subtitle: b.active
-                //     ? const Text(
-                //         "Active",
-                //         style: TextStyle(
-                //           color: Colors.green,
-                //         ),
-                //       )
-                //     : const Text(
-                //         "Inactive",
-                //         style: TextStyle(
-                //           color: Colors.orange,
-                //         ),
-                //       ),
                 trailing: b.active ? null : const Icon(Icons.warning_rounded),
                 onTap: () => widget.onTapBorrower(b),
                 selected: selectedBorrower == b,
