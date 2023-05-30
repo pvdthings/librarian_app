@@ -30,7 +30,7 @@ class BorrowerDetails extends StatelessWidget {
           readOnly: true,
           enabled: borrower.email != null,
           decoration: const InputDecoration(
-            icon: Icon(Icons.person_rounded),
+            icon: Icon(Icons.email_rounded),
             labelText: 'Email',
             border: OutlineInputBorder(),
           ),
@@ -41,7 +41,7 @@ class BorrowerDetails extends StatelessWidget {
           readOnly: true,
           enabled: borrower.phone != null,
           decoration: const InputDecoration(
-            icon: Icon(Icons.person_rounded),
+            icon: Icon(Icons.phone_rounded),
             labelText: 'Phone',
             border: OutlineInputBorder(),
           ),
