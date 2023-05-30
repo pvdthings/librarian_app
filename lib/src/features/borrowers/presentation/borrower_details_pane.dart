@@ -16,8 +16,6 @@ class BorrowerDetailsPane extends StatefulWidget {
 }
 
 class _BorrowerDetailsPaneState extends State<BorrowerDetailsPane> {
-  bool _editMode = false;
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -44,33 +42,6 @@ class _BorrowerDetailsPaneState extends State<BorrowerDetailsPane> {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          if (_editMode)
-                            IconButton(
-                              onPressed: () {
-                                setState(() => _editMode = false);
-                              },
-                              icon: const Icon(Icons.save_rounded),
-                              tooltip: 'Save',
-                            ),
-                          const SizedBox(width: 4),
-                          _editMode
-                              ? IconButton(
-                                  onPressed: () {
-                                    setState(() => _editMode = false);
-                                  },
-                                  icon: const Icon(Icons.close_rounded),
-                                  tooltip: 'Cancel',
-                                )
-                              : IconButton(
-                                  onPressed: () =>
-                                      setState(() => _editMode = true),
-                                  icon: const Icon(Icons.edit_rounded),
-                                  tooltip: 'Edit',
-                                ),
-                        ],
-                      )
                     ],
                   ),
                 ),
