@@ -3,14 +3,14 @@ import 'package:librarian_app/src/features/borrowers/presentation/borrowers_desk
 import 'package:librarian_app/src/features/loans/presentation/checkout_wizard/wizard_page.dart';
 import 'package:librarian_app/src/features/loans/presentation/loans_desktop_layout.dart';
 
-class DesktopLayout extends StatefulWidget {
-  const DesktopLayout({super.key});
+class DashboardDesktopLayout extends StatefulWidget {
+  const DashboardDesktopLayout({super.key});
 
   @override
-  State<DesktopLayout> createState() => _DesktopLayoutState();
+  State<DashboardDesktopLayout> createState() => _DashboardDesktopLayoutState();
 }
 
-class _DesktopLayoutState extends State<DesktopLayout> {
+class _DashboardDesktopLayoutState extends State<DashboardDesktopLayout> {
   int _selectedIndex = 0;
 
   Widget get _currentScreen {

@@ -9,7 +9,7 @@ import 'package:librarian_app/src/features/loans/presentation/loan_details.dart'
 import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list_view.dart';
 import 'package:provider/provider.dart';
 
-import 'loans_mobile_layout.dart';
+import '../../dashboard/presentation/mobile_layout.dart';
 
 class OpenLoanPage extends StatefulWidget {
   const OpenLoanPage({super.key});
@@ -115,7 +115,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
       Duration.zero,
       () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
         builder: (context) {
-          return const LoansMobileLayout();
+          return const DashboardMobileLayout();
         },
       ), (route) => false),
     );
