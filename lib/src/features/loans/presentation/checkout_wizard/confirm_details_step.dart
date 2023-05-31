@@ -40,13 +40,16 @@ class _ConfirmDetailsStepState extends State<ConfirmDetailsStep> {
               Container(
                 constraints: const BoxConstraints(maxWidth: 540),
                 child: Card(
-                  child: LoanDetails(
-                    borrower: model.borrower!,
-                    things: model.things,
-                    checkedOutDate: DateTime.now(),
-                    dueDate: model.dueDate,
-                    onDueDateUpdated: (newDueDate) =>
-                        model.updateDueDate(newDueDate),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: LoanDetails(
+                      borrower: model.borrower!,
+                      things: model.things,
+                      checkedOutDate: DateTime.now(),
+                      dueDate: model.dueDate,
+                      onDueDateUpdated: (newDueDate) =>
+                          model.updateDueDate(newDueDate),
+                    ),
                   ),
                 ),
               ),
