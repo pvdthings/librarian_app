@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/record_payment_dialog.dart';
 
 import '../data/borrowers_model.dart';
 
@@ -81,6 +82,19 @@ class BorrowerDetails extends StatelessWidget {
                                 ],
                               ),
                               actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return const RecordPaymentDialog();
+                                      },
+                                    );
+                                  },
+                                  child: const Text('Record Payment'),
+                                ),
                                 ElevatedButton(
                                   onPressed: () => Navigator.of(context).pop(),
                                   child: const Text('OK'),
