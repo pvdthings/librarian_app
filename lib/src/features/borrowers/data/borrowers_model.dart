@@ -38,6 +38,7 @@ class Borrower {
 }
 
 class Issue {
+  final IssueType type;
   final String title;
   final String? explanation;
   final String? instructions;
@@ -48,5 +49,13 @@ class Issue {
     this.explanation,
     this.instructions,
     this.graphicUrl,
+    required this.type,
   });
+}
+
+enum IssueType{
+  duesNotPaid,
+  overdueLoan,
+  suspended,
+  needsLiabilityWaiver,
 }
