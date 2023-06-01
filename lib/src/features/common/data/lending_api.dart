@@ -47,7 +47,10 @@ class LendingApi {
     return await _client.get('/things/$number');
   }
 
-  static Future<Response> recordCashPayment({required float cash, required String borrowerId}) async {
+  static Future<Response> recordCashPayment({
+    required double cash,
+    required String borrowerId,
+  }) async {
     return await _client.put('/payments/$borrowerId', data: {
       'cash': cash,
     });
