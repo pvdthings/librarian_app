@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/record_payment_dialog.dart';
+import 'package:provider/provider.dart';
 
 import '../data/borrowers_model.dart';
 
@@ -82,18 +83,36 @@ class BorrowerDetails extends StatelessWidget {
                                 ],
                               ),
                               actions: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return const RecordPaymentDialog();
+                                Consumer<BorrowersModel>(
+                                  builder: (context, model, child) {
+                                    return ElevatedButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (_) {
+                                            return RecordPaymentDialog(
+                                              onConfirmPayment: (cash) {
+                                                model
+                                                    .recordCashPayment(
+                                                        borrowerId: borrower.id,
+                                                        cash: cash)
+                                                    .then((success) {
+                                                  Navigator.of(context).pop();
+                                                  Navigator.of(context).pop();
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                          content: Text(success
+                                                              ? 'Success!'
+                                                              : 'Failed.')));
+                                                });
+                                              },
+                                            );
+                                          },
+                                        );
                                       },
+                                      child: const Text('Record Payment'),
                                     );
                                   },
-                                  child: const Text('Record Payment'),
                                 ),
                                 ElevatedButton(
                                   onPressed: () => Navigator.of(context).pop(),

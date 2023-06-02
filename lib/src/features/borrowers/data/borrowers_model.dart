@@ -17,6 +17,23 @@ class BorrowersModel extends ChangeNotifier {
     final response = await LendingApi.fetchBorrowers();
     return BorrowersMapper.map(response.data as List).toList();
   }
+
+  Future<bool> recordCashPayment({
+    required String borrowerId,
+    required double cash,
+  }) async {
+    try {
+      await LendingApi.recordCashPayment(
+        cash: cash,
+        borrowerId: borrowerId,
+      );
+    } catch (error) {
+      return false;
+    }
+
+    notifyListeners();
+    return true;
+  }
 }
 
 class Borrower {
@@ -53,7 +70,7 @@ class Issue {
   });
 }
 
-enum IssueType{
+enum IssueType {
   duesNotPaid,
   overdueLoan,
   suspended,
