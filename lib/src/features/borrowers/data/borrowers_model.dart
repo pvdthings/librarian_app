@@ -32,8 +32,9 @@ class BorrowersModel extends ChangeNotifier {
   }
 
   Future<void> refresh() async {
-    isLoading = true;
-    _borrowers = await getAll().whenComplete(() => isLoading = false);
+    _isLoading = true;
+    _borrowers = await getAll().whenComplete(() => _isLoading = false);
+    notifyListeners();
   }
 
   Future<List<Borrower>> getAll() async {
