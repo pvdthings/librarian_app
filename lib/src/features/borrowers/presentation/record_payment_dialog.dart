@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
 
-class RecordPaymentDialog extends StatelessWidget {
-  final _cashController = TextEditingController();
-
+class RecordPaymentDialog extends StatefulWidget {
   final void Function(double cash) onConfirmPayment;
 
-  RecordPaymentDialog({
+  const RecordPaymentDialog({
     super.key,
     required this.onConfirmPayment,
   });
 
   @override
+  State<RecordPaymentDialog> createState() => _RecordPaymentDialogState();
+}
+
+class _RecordPaymentDialogState extends State<RecordPaymentDialog> {
+  final _cashController = TextEditingController();
+
+  bool _confirm = false;
+
+  @override
   Widget build(BuildContext context) {
+    if (_confirm) {
+      return _ConfirmDialog(
+        content: Text(
+            'Are you sure you want to record a \$${_cashController.text} cash payment?'),
+        onConfirm: () {
+          widget.onConfirmPayment(double.parse(_cashController.text));
+          Navigator.pop(context, true);
+        },
+        onCancel: () => Navigator.pop(context, false),
+      );
+    }
+
     return AlertDialog(
       title: const Text('Record Cash Payment'),
       content: Column(
@@ -29,25 +48,12 @@ class RecordPaymentDialog extends StatelessWidget {
       ),
       actions: [
         ElevatedButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pop(context, false),
           child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pop();
-
-            showDialog(
-              context: context,
-              builder: (context) {
-                return _ConfirmDialog(
-                  content: Text(
-                      'Are you sure you want to record a \$${_cashController.text} cash payment?'),
-                  onConfirm: () =>
-                      onConfirmPayment(double.parse(_cashController.text)),
-                  onCancel: () => Navigator.of(context).pop(),
-                );
-              },
-            );
+            setState(() => _confirm = true);
           },
           child: const Text('OK'),
         ),

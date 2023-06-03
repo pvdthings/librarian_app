@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/record_payment_dialog.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/dues_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../data/borrowers_model.dart';
@@ -58,69 +58,21 @@ class BorrowerDetails extends StatelessWidget {
         ...borrower.issues.map((issue) {
           return ListTile(
             leading: IconButton(
-              onPressed: issue.instructions != null
+              onPressed: issue.type == IssueType.duesNotPaid
                   ? () {
                       showDialog(
                           context: context,
                           builder: (context) {
-                            return AlertDialog(
-                              title: Text(issue.title),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    issue.instructions!,
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                  if (issue.graphicUrl != null)
-                                    Center(
-                                      child: Image.asset(
-                                        issue.graphicUrl!,
-                                        width: 500,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                              actions: [
-                                Consumer<BorrowersModel>(
-                                  // TODO: should not use consumer from here
-                                  builder: (context, model, child) {
-                                    return ElevatedButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (_) {
-                                            return RecordPaymentDialog(
-                                              onConfirmPayment: (cash) {
-                                                model
-                                                    .recordCashPayment(
-                                                        borrowerId: borrower.id,
-                                                        cash: cash)
-                                                    .then((success) {
-                                                  Navigator.of(context).pop();
-                                                  Navigator.of(context).pop();
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                          content: Text(success
-                                                              ? 'Success!'
-                                                              : 'Failed.')));
-                                                });
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: const Text('Record Payment'),
-                                    );
-                                  },
-                                ),
-                                ElevatedButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
+                            return DuesNotPaidDialog(
+                                instructions: issue.instructions!,
+                                imageUrl: issue.graphicUrl,
+                                onConfirmPayment: (cash) {
+                                  Provider.of<BorrowersModel>(
+                                    context,
+                                    listen: false,
+                                  ).recordCashPayment(
+                                      borrowerId: borrower.id, cash: cash);
+                                });
                           });
                     }
                   : null,
