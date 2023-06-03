@@ -33,7 +33,15 @@ class BorrowersModel extends ChangeNotifier {
 
   Future<void> refresh() async {
     _isLoading = true;
-    _borrowers = await getAll().whenComplete(() => _isLoading = false);
+    _borrowers = await getAll();
+
+    if (_selectedBorrower != null) {
+      _selectedBorrower =
+          _borrowers.firstWhere((b) => b.id == _selectedBorrower!.id);
+    }
+
+    _isLoading = false;
+
     notifyListeners();
   }
 
