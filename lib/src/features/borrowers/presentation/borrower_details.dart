@@ -84,6 +84,7 @@ class BorrowerDetails extends StatelessWidget {
                               ),
                               actions: [
                                 Consumer<BorrowersModel>(
+                                  // TODO: should not use consumer from here
                                   builder: (context, model, child) {
                                     return ElevatedButton(
                                       onPressed: () {

@@ -4,13 +4,36 @@ import 'package:librarian_app/src/features/common/data/lending_api.dart';
 import 'borrowers_mapper.dart';
 
 class BorrowersModel extends ChangeNotifier {
-  Borrower? _selectedBorrower;
+  String? _refreshErrorMessage;
+  String? get refreshErrorMessage => _refreshErrorMessage;
 
+  set refreshErrorMessage(value) {
+    _refreshErrorMessage = value;
+    notifyListeners();
+  }
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  set isLoading(value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  List<Borrower> _borrowers = [];
+  List<Borrower> get borrowers => _borrowers;
+
+  Borrower? _selectedBorrower;
   Borrower? get selectedBorrower => _selectedBorrower;
 
   set selectedBorrower(value) {
     _selectedBorrower = value;
     notifyListeners();
+  }
+
+  Future<void> refresh() async {
+    isLoading = true;
+    _borrowers = await getAll().whenComplete(() => isLoading = false);
   }
 
   Future<List<Borrower>> getAll() async {
@@ -28,10 +51,11 @@ class BorrowersModel extends ChangeNotifier {
         borrowerId: borrowerId,
       );
     } catch (error) {
+      refreshErrorMessage = error.toString();
       return false;
     }
 
-    notifyListeners();
+    refresh();
     return true;
   }
 }
