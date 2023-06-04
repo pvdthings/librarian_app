@@ -4,12 +4,12 @@ import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list
 import 'package:provider/provider.dart';
 
 class ConnectedBorrowersList extends StatelessWidget {
-  final bool selectOnTap;
+  final void Function(Borrower)? onTap;
   final String? filter;
 
   const ConnectedBorrowersList({
     super.key,
-    this.selectOnTap = false,
+    this.onTap,
     this.filter,
   });
 
@@ -34,10 +34,11 @@ class ConnectedBorrowersList extends StatelessWidget {
 
         return BorrowersList(
           borrowers: localBorrowers,
-          onTap: selectOnTap
-              ? (borrower) => model.selectedBorrower = borrower
-              : null,
-          selected: selectOnTap ? model.selectedBorrower : null,
+          onTap: (b) {
+            model.selectedBorrower = b;
+            onTap?.call(b);
+          },
+          selected: onTap == null ? model.selectedBorrower : null,
         );
       },
     );

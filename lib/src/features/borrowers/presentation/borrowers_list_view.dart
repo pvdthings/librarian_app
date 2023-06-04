@@ -5,12 +5,12 @@ import 'package:librarian_app/src/features/borrowers/presentation/connected_borr
 import '../../common/presentation/submit_text_field.dart';
 
 class BorrowersListView extends StatefulWidget {
+  final void Function(Borrower borrower)? onTapBorrower;
+
   const BorrowersListView({
     super.key,
-    required this.onTapBorrower,
+    this.onTapBorrower,
   });
-
-  final void Function(Borrower borrower) onTapBorrower;
 
   @override
   State<BorrowersListView> createState() => _BorrowersListViewState();
@@ -40,7 +40,7 @@ class _BorrowersListViewState extends State<BorrowersListView> {
         ),
         Expanded(
           child: ConnectedBorrowersList(
-            selectOnTap: true,
+            onTap: widget.onTapBorrower,
             filter: _searchText,
           ),
         ),

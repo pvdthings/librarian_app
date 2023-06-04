@@ -20,14 +20,10 @@ class _BorrowersDesktopLayoutState extends State<BorrowersDesktopLayout> {
           children: [
             Container(
               margin: const EdgeInsets.all(8),
-              child: Card(
+              child: const Card(
                 child: SizedBox(
                   width: 500,
-                  child: BorrowersListView(
-                    onTapBorrower: (b) {
-                      borrowers.selectedBorrower = b;
-                    },
-                  ),
+                  child: BorrowersListView(),
                 ),
               ),
             ),
