@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../data/borrowers_model.dart';
 
-class BorrowerDetails extends StatelessWidget {
+class BorrowerDetails extends StatefulWidget {
   final Borrower borrower;
 
   const BorrowerDetails({
@@ -13,12 +13,25 @@ class BorrowerDetails extends StatelessWidget {
   });
 
   @override
+  State<BorrowerDetails> createState() => _BorrowerDetailsState();
+}
+
+class _BorrowerDetailsState extends State<BorrowerDetails> {
+  void _showPaymentSnackBar(bool success) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(success ? 'Success!' : 'Failed to record payment'),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextField(
-          controller: TextEditingController(text: borrower.name),
+          controller: TextEditingController(text: widget.borrower.name),
           readOnly: true,
           decoration: const InputDecoration(
             icon: Icon(Icons.person_rounded),
@@ -28,9 +41,9 @@ class BorrowerDetails extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         TextField(
-          controller: TextEditingController(text: borrower.email),
+          controller: TextEditingController(text: widget.borrower.email),
           readOnly: true,
-          enabled: borrower.email != null,
+          enabled: widget.borrower.email != null,
           decoration: const InputDecoration(
             icon: Icon(Icons.email_rounded),
             labelText: 'Email',
@@ -39,9 +52,9 @@ class BorrowerDetails extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         TextField(
-          controller: TextEditingController(text: borrower.phone),
+          controller: TextEditingController(text: widget.borrower.phone),
           readOnly: true,
-          enabled: borrower.phone != null,
+          enabled: widget.borrower.phone != null,
           decoration: const InputDecoration(
             icon: Icon(Icons.phone_rounded),
             labelText: 'Phone',
@@ -50,12 +63,12 @@ class BorrowerDetails extends StatelessWidget {
         ),
         const SizedBox(height: 32),
         Text(
-          'Issues (${borrower.issues.length})',
+          'Issues (${widget.borrower.issues.length})',
           style: Theme.of(context).textTheme.titleLarge,
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 8),
-        ...borrower.issues.map((issue) {
+        ...widget.borrower.issues.map((issue) {
           return ListTile(
             leading: IconButton(
               onPressed: issue.type == IssueType.duesNotPaid
@@ -70,8 +83,11 @@ class BorrowerDetails extends StatelessWidget {
                                   Provider.of<BorrowersModel>(
                                     context,
                                     listen: false,
-                                  ).recordCashPayment(
-                                      borrowerId: borrower.id, cash: cash);
+                                  )
+                                      .recordCashPayment(
+                                          borrowerId: widget.borrower.id,
+                                          cash: cash)
+                                      .then(_showPaymentSnackBar);
                                 });
                           });
                     }
@@ -87,7 +103,7 @@ class BorrowerDetails extends StatelessWidget {
                 issue.explanation != null ? Text(issue.explanation!) : null,
           );
         }),
-        if (borrower.active)
+        if (widget.borrower.active)
           Text(
             'Ready to borrow!',
             style: Theme.of(context).textTheme.bodyLarge,
