@@ -4,8 +4,26 @@ import 'package:librarian_app/src/features/common/data/lending_api.dart';
 import 'borrowers_mapper.dart';
 
 class BorrowersModel extends ChangeNotifier {
-  Borrower? _selectedBorrower;
+  String? _refreshErrorMessage;
+  String? get refreshErrorMessage => _refreshErrorMessage;
 
+  set refreshErrorMessage(value) {
+    _refreshErrorMessage = value;
+    notifyListeners();
+  }
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  set isLoading(value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  List<Borrower> _borrowers = [];
+  List<Borrower> get borrowers => _borrowers;
+
+  Borrower? _selectedBorrower;
   Borrower? get selectedBorrower => _selectedBorrower;
 
   set selectedBorrower(value) {
@@ -13,9 +31,41 @@ class BorrowersModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> refresh() async {
+    _isLoading = true;
+    _borrowers = await getAll();
+
+    if (_selectedBorrower != null) {
+      _selectedBorrower =
+          _borrowers.firstWhere((b) => b.id == _selectedBorrower!.id);
+    }
+
+    _isLoading = false;
+
+    notifyListeners();
+  }
+
   Future<List<Borrower>> getAll() async {
     final response = await LendingApi.fetchBorrowers();
     return BorrowersMapper.map(response.data as List).toList();
+  }
+
+  Future<bool> recordCashPayment({
+    required String borrowerId,
+    required double cash,
+  }) async {
+    try {
+      await LendingApi.recordCashPayment(
+        cash: cash,
+        borrowerId: borrowerId,
+      );
+    } catch (error) {
+      refreshErrorMessage = error.toString();
+      return false;
+    }
+
+    refresh();
+    return true;
   }
 }
 
@@ -38,6 +88,7 @@ class Borrower {
 }
 
 class Issue {
+  final IssueType type;
   final String title;
   final String? explanation;
   final String? instructions;
@@ -48,5 +99,13 @@ class Issue {
     this.explanation,
     this.instructions,
     this.graphicUrl,
+    required this.type,
   });
+}
+
+enum IssueType {
+  duesNotPaid,
+  overdueLoan,
+  suspended,
+  needsLiabilityWaiver,
 }

@@ -3,7 +3,7 @@ import 'package:librarian_app/src/features/borrowers/presentation/borrower_detai
 
 import '../data/borrowers_model.dart';
 
-class BorrowerDetailsPane extends StatefulWidget {
+class BorrowerDetailsPane extends StatelessWidget {
   final Borrower? borrower;
 
   const BorrowerDetailsPane({
@@ -12,14 +12,9 @@ class BorrowerDetailsPane extends StatefulWidget {
   });
 
   @override
-  State<BorrowerDetailsPane> createState() => _BorrowerDetailsPaneState();
-}
-
-class _BorrowerDetailsPaneState extends State<BorrowerDetailsPane> {
-  @override
   Widget build(BuildContext context) {
     return Card(
-      child: widget.borrower == null
+      child: borrower == null
           ? const Center(child: Text('Borrower Details'))
           : Column(
               children: [
@@ -31,7 +26,7 @@ class _BorrowerDetailsPaneState extends State<BorrowerDetailsPane> {
                       Row(
                         children: [
                           Text(
-                            widget.borrower!.name,
+                            borrower!.name,
                             style: const TextStyle(
                               fontSize: 24,
                             ),
@@ -43,7 +38,7 @@ class _BorrowerDetailsPaneState extends State<BorrowerDetailsPane> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: BorrowerDetails(borrower: widget.borrower!),
+                  child: BorrowerDetails(borrower: borrower!),
                 ),
               ],
             ),

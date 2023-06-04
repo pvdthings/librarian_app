@@ -1,75 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
-import 'package:provider/provider.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/connected_borrowers_list.dart';
 
 import '../../common/presentation/submit_text_field.dart';
 
 class BorrowersListView extends StatefulWidget {
+  final void Function(Borrower borrower)? onTapBorrower;
+
   const BorrowersListView({
     super.key,
-    required this.onTapBorrower,
+    this.onTapBorrower,
   });
-
-  final void Function(Borrower borrower) onTapBorrower;
 
   @override
   State<BorrowersListView> createState() => _BorrowersListViewState();
 }
 
 class _BorrowersListViewState extends State<BorrowersListView> {
-  bool _isLoading = false;
-  List<Borrower> _borrowers = [];
-  String? _errorMessage;
-
   final _searchController = TextEditingController();
   String? _searchText;
 
-  final _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchBorrowers();
-  }
-
-  Future<void> _fetchBorrowers() async {
-    await Future.delayed(Duration.zero);
-    setState(() => _isLoading = true);
-
-    // ignore: use_build_context_synchronously
-    final borrowersModel = Provider.of<BorrowersModel>(context, listen: false);
-    try {
-      final borrowers = await borrowersModel.getAll();
-      setState(() {
-        _borrowers = borrowers;
-        _isLoading = false;
-      });
-    } catch (error) {
-      setState(() => _errorMessage = error.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final borrowersModel = Provider.of<BorrowersModel>(context, listen: false);
-    final Borrower? selectedBorrower = borrowersModel.selectedBorrower;
-
-    if (_errorMessage != null) {
-      return Center(child: Text(_errorMessage!));
-    }
-
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    var borrowers = _borrowers;
-
-    if (_searchText != null) {
-      borrowers = borrowers
-          .where((b) => b.name.toLowerCase().contains(_searchText!))
-          .toList();
-    }
-
     return Column(
       children: [
         Padding(
@@ -87,22 +39,11 @@ class _BorrowersListViewState extends State<BorrowersListView> {
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            controller: _scrollController,
-            itemCount: borrowers.length,
-            itemBuilder: (context, index) {
-              final b = borrowers[index];
-
-              return ListTile(
-                title: Text(b.name),
-                trailing: b.active ? null : const Icon(Icons.warning_rounded),
-                onTap: () => widget.onTapBorrower(b),
-                selected: selectedBorrower == b,
-              );
-            },
-            shrinkWrap: true,
+          child: ConnectedBorrowersList(
+            onTap: widget.onTapBorrower,
+            filter: _searchText,
           ),
-        )
+        ),
       ],
     );
   }

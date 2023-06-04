@@ -14,37 +14,29 @@ class BorrowersDesktopLayout extends StatefulWidget {
 class _BorrowersDesktopLayoutState extends State<BorrowersDesktopLayout> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.all(8),
-          child: Card(
-            child: SizedBox(
-              width: 500,
-              child: Consumer<BorrowersModel>(
-                builder: (context, borrowers, child) {
-                  return BorrowersListView(
-                    onTapBorrower: (b) {
-                      borrowers.selectedBorrower = b;
-                    },
-                  );
-                },
+    return Consumer<BorrowersModel>(
+      builder: (context, borrowers, child) {
+        return Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(8),
+              child: const Card(
+                child: SizedBox(
+                  width: 500,
+                  child: BorrowersListView(),
+                ),
               ),
             ),
-          ),
-        ),
-        Expanded(
-          child: Consumer<BorrowersModel>(
-            builder: (context, borrowers, child) {
-              return Container(
+            Expanded(
+              child: Container(
                 margin: const EdgeInsets.all(8),
                 child:
                     BorrowerDetailsPane(borrower: borrowers.selectedBorrower),
-              );
-            },
-          ),
-        ),
-      ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
