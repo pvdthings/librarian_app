@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/dues_dialog.dart';
-import 'package:provider/provider.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/borrower_issues.dart';
 
 import '../data/borrowers_model.dart';
 
@@ -27,6 +26,8 @@ class _BorrowerDetailsState extends State<BorrowerDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final borrower = widget.borrower;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -68,41 +69,11 @@ class _BorrowerDetailsState extends State<BorrowerDetails> {
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 8),
-        ...widget.borrower.issues.map((issue) {
-          return ListTile(
-            leading: IconButton(
-              onPressed: issue.type == IssueType.duesNotPaid
-                  ? () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return DuesNotPaidDialog(
-                                instructions: issue.instructions!,
-                                imageUrl: issue.graphicUrl,
-                                onConfirmPayment: (cash) {
-                                  Provider.of<BorrowersModel>(
-                                    context,
-                                    listen: false,
-                                  )
-                                      .recordCashPayment(
-                                          borrowerId: widget.borrower.id,
-                                          cash: cash)
-                                      .then(_showPaymentSnackBar);
-                                });
-                          });
-                    }
-                  : null,
-              icon: const Icon(
-                Icons.warning_rounded,
-                color: Colors.amber,
-              ),
-              tooltip: issue.instructions != null ? 'More Info' : null,
-            ),
-            title: Text(issue.title),
-            subtitle:
-                issue.explanation != null ? Text(issue.explanation!) : null,
-          );
-        }),
+        BorrowerIssues(
+          borrowerId: borrower.id,
+          issues: borrower.issues,
+          onRecordCashPayment: _showPaymentSnackBar,
+        ),
         if (widget.borrower.active)
           Text(
             'Ready to borrow!',
