@@ -23,7 +23,9 @@ class _RecordPaymentDialogState extends State<RecordPaymentDialog> {
     if (_confirm) {
       return _ConfirmDialog(
         content: Text(
-            'Are you sure you want to record a \$${_cashController.text} cash payment?'),
+          'Are you sure you want to record a \$${_cashController.text} cash payment?',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         onConfirm: () {
           widget.onConfirmPayment(double.parse(_cashController.text));
           Navigator.pop(context, true);
@@ -58,11 +60,11 @@ class _RecordPaymentDialogState extends State<RecordPaymentDialog> {
         ),
       ),
       actions: [
-        ElevatedButton(
+        OutlinedButton(
           onPressed: () => Navigator.pop(context, false),
           child: const Text('Cancel'),
         ),
-        ElevatedButton(
+        FilledButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               setState(() => _confirm = true);
@@ -91,11 +93,11 @@ class _ConfirmDialog extends StatelessWidget {
     return AlertDialog(
       content: content,
       actions: [
-        FilledButton(
+        OutlinedButton(
           onPressed: onCancel,
           child: const Text('NO'),
         ),
-        ElevatedButton(
+        FilledButton(
           onPressed: onConfirm,
           child: const Text('YES'),
         ),

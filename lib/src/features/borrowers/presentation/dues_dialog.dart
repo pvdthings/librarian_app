@@ -37,6 +37,7 @@ class _DuesNotPaidDialogState extends State<DuesNotPaidDialog> {
             widget.instructions,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
+          const SizedBox(height: 16),
           if (widget.imageUrl != null)
             Center(
               child: Image.asset(
@@ -47,13 +48,13 @@ class _DuesNotPaidDialogState extends State<DuesNotPaidDialog> {
         ],
       ),
       actions: [
-        ElevatedButton(
+        OutlinedButton(
           onPressed: () {
             setState(() => _recordPayment = true);
           },
           child: const Text('Record Payment'),
         ),
-        ElevatedButton(
+        FilledButton(
           onPressed: () => Navigator.pop(context, false),
           child: const Text('OK'),
         ),
