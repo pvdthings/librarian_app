@@ -13,6 +13,7 @@ class RecordPaymentDialog extends StatefulWidget {
 }
 
 class _RecordPaymentDialogState extends State<RecordPaymentDialog> {
+  final _formKey = GlobalKey<FormState>();
   final _cashController = TextEditingController();
 
   bool _confirm = false;
@@ -33,18 +34,28 @@ class _RecordPaymentDialogState extends State<RecordPaymentDialog> {
 
     return AlertDialog(
       title: const Text('Record Cash Payment'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _cashController,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.currency_exchange_rounded),
-              labelText: 'Cash',
-              border: OutlineInputBorder(),
+      content: Form(
+        key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: _cashController,
+              validator: (value) {
+                final doubleValue = double.tryParse(value ?? '');
+                return doubleValue != null
+                    ? null
+                    : 'Must be a valid dollar amount';
+              },
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.currency_exchange_rounded),
+                labelText: 'Cash',
+                border: OutlineInputBorder(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       actions: [
         ElevatedButton(
@@ -53,7 +64,9 @@ class _RecordPaymentDialogState extends State<RecordPaymentDialog> {
         ),
         ElevatedButton(
           onPressed: () {
-            setState(() => _confirm = true);
+            if (_formKey.currentState!.validate()) {
+              setState(() => _confirm = true);
+            }
           },
           child: const Text('OK'),
         ),
