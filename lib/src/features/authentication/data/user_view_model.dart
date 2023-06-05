@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class UserModel extends ChangeNotifier {
+class UserViewModel extends ChangeNotifier {
   static SupabaseClient get _supabase => Supabase.instance.client;
   static User? get _currentUser => _supabase.auth.currentUser;
 
