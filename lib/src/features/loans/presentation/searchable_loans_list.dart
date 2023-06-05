@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
+import 'package:librarian_app/src/features/loans/data/loan_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/connected_loans_list.dart';
 import 'package:librarian_app/src/features/common/presentation/submit_text_field.dart';
 

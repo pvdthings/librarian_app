@@ -1,5 +1,5 @@
 import '../../borrowers/data/borrower_model.dart';
-import 'loans_view_model.dart';
+import 'loan_model.dart';
 import 'things_model.dart';
 
 class LoansMapper {

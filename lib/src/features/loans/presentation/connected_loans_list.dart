@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/loans/presentation/loans_list.dart';
 import 'package:provider/provider.dart';
 
+import '../data/loan_model.dart';
 import '../data/loans_view_model.dart';
 
 class ConnectedLoansList extends StatelessWidget {

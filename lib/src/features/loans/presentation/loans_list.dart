@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../data/loans_view_model.dart';
+import '../data/loan_model.dart';
 
 class LoansList extends StatelessWidget {
   final List<LoanModel> loans;

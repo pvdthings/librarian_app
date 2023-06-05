@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
 
+import '../data/loan_model.dart';
 import 'checkin_dialog.dart';
 import 'loan_details.dart';
 
