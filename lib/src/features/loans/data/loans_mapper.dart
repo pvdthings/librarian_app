@@ -1,12 +1,12 @@
 import '../../borrowers/data/borrower_model.dart';
 import 'loan_model.dart';
-import 'things_model.dart';
+import 'thing_model.dart';
 
 class LoansMapper {
   static Iterable<LoanModel> map(Iterable<dynamic> data) {
     return data.map((e) => LoanModel(
           id: e['id'] as String? ?? '?',
-          thing: Thing(
+          thing: ThingModel(
             name: e['thing']?['name'] as String? ?? '???',
             id: e['thing']?['id'] as String? ?? '???',
             number: e['thing']?['number'] as int? ?? 0,

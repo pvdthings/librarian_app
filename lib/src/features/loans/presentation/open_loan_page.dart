@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
-import 'package:librarian_app/src/features/loans/data/things_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/pick_things_view.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
@@ -10,6 +9,7 @@ import 'package:librarian_app/src/features/borrowers/presentation/searchable_bor
 import 'package:provider/provider.dart';
 
 import '../../dashboard/presentation/mobile_layout.dart';
+import '../data/thing_model.dart';
 
 class OpenLoanPage extends StatefulWidget {
   const OpenLoanPage({super.key});
@@ -26,7 +26,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   Widget? _floatingActionButton;
 
   BorrowerModel _borrower = BorrowerModel(id: '', name: "Borrower", issues: []);
-  final List<Thing> _things = [];
+  final List<ThingModel> _things = [];
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
   void _configureView() {
@@ -93,7 +93,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     setState(() => _currentView = OpenLoanView.borrowerNeedsAttention);
   }
 
-  void _onTapThing(Thing thing) {
+  void _onTapThing(ThingModel thing) {
     setState(() {
       if (_things.contains(thing)) {
         _things.remove(thing);

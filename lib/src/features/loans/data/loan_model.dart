@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 
-import 'things_model.dart';
+import 'thing_model.dart';
 
 class LoanModel {
   final String id;
-  final Thing thing;
+  final ThingModel thing;
   final BorrowerModel borrower;
   final DateTime checkedOutDate;
   DateTime dueDate;
