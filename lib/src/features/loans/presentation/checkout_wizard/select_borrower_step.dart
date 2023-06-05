@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list_view.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
 import 'package:librarian_app/src/features/loans/data/wizard_model.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +31,7 @@ class SelectBorrowerStep extends StatelessWidget {
                     return NeedsAttentionView(borrower: value.borrower!);
                   }
 
-                  return BorrowersListView(
+                  return SearchableBorrowersList(
                     onTapBorrower: (b) {
                       value.selectBorrower(b, stepForward: b.active);
                     },

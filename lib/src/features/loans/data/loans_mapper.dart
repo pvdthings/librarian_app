@@ -1,10 +1,10 @@
 import '../../borrowers/data/borrowers_model.dart';
-import 'loans_model.dart';
+import 'loans_view_model.dart';
 import 'things_model.dart';
 
 class LoansMapper {
-  static Iterable<Loan> map(Iterable<dynamic> data) {
-    return data.map((e) => Loan(
+  static Iterable<LoanModel> map(Iterable<dynamic> data) {
+    return data.map((e) => LoanModel(
           id: e['id'] as String? ?? '?',
           thing: Thing(
             name: e['thing']?['name'] as String? ?? '???',

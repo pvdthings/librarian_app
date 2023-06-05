@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/constants.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
-import 'package:librarian_app/src/features/loans/data/loans_model.dart';
+import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
 import 'package:librarian_app/src/features/authentication/data/user_model.dart';
 import 'package:librarian_app/src/features/splash/presentation/splash_page.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +22,8 @@ Future<void> main() async {
       ChangeNotifierProvider<UserModel>(
         create: (context) => UserModel(),
       ),
-      ChangeNotifierProvider<LoansModel>(
-        create: (context) => LoansModel(),
+      ChangeNotifierProvider<LoansViewModel>(
+        create: (context) => LoansViewModel(),
       ),
       ChangeNotifierProvider<BorrowersModel>(
         create: (context) => BorrowersModel(),

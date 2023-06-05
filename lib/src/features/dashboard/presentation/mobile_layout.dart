@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/authentication/data/user_model.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list_view.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +32,7 @@ class _DashboardMobileLayoutState extends State<DashboardMobileLayout> {
         );
       },
     ),
-    BorrowersListView(
+    SearchableBorrowersList(
       onTapBorrower: _onTapBorrower,
     ),
   ];

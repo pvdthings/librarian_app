@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/data/loans_model.dart';
-import 'package:librarian_app/src/features/loans/presentation/loans_list_view.dart';
+import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
+import 'package:librarian_app/src/features/loans/presentation/connected_loans_list.dart';
 import 'package:librarian_app/src/features/common/presentation/submit_text_field.dart';
 
 class SearchableLoansList extends StatefulWidget {
-  final Function(Loan)? onLoanTapped;
-  final Loan? selectedLoan;
+  final Function(LoanModel)? onLoanTapped;
 
   const SearchableLoansList({
     super.key,
     this.onLoanTapped,
-    this.selectedLoan,
   });
 
   @override
@@ -42,10 +40,9 @@ class _SearchableLoansListState extends State<SearchableLoansList> {
           ),
         ),
         Expanded(
-          child: LoansListView(
+          child: ConnectedLoansList(
             filter: _searchText,
             onTap: widget.onLoanTapped,
-            selectedLoan: widget.selectedLoan,
           ),
         ),
       ],

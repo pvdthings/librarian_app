@@ -4,19 +4,20 @@ import 'package:librarian_app/src/features/borrowers/presentation/connected_borr
 
 import '../../common/presentation/submit_text_field.dart';
 
-class BorrowersListView extends StatefulWidget {
+class SearchableBorrowersList extends StatefulWidget {
   final void Function(Borrower borrower)? onTapBorrower;
 
-  const BorrowersListView({
+  const SearchableBorrowersList({
     super.key,
     this.onTapBorrower,
   });
 
   @override
-  State<BorrowersListView> createState() => _BorrowersListViewState();
+  State<SearchableBorrowersList> createState() =>
+      _SearchableBorrowersListState();
 }
 
-class _BorrowersListViewState extends State<BorrowersListView> {
+class _SearchableBorrowersListState extends State<SearchableBorrowersList> {
   final _searchController = TextEditingController();
   String? _searchText;
 
