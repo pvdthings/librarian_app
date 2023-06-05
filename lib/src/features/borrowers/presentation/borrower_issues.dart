@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../data/borrower_model.dart';
+import '../data/borrowers_view_model.dart';
 import 'dues_dialog.dart';
 
 class BorrowerIssues extends StatelessWidget {

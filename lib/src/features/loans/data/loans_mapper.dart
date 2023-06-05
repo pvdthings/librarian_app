@@ -1,4 +1,4 @@
-import '../../borrowers/data/borrowers_view_model.dart';
+import '../../borrowers/data/borrower_model.dart';
 import 'loans_view_model.dart';
 import 'things_model.dart';
 

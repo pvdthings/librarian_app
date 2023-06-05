@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
 
 import 'loans_mapper.dart';

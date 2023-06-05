@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/authentication/data/user_model.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
 import 'package:provider/provider.dart';

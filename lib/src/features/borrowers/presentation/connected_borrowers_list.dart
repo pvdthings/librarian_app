@@ -3,6 +3,8 @@ import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.d
 import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list.dart';
 import 'package:provider/provider.dart';
 
+import '../data/borrower_model.dart';
+
 class ConnectedBorrowersList extends StatelessWidget {
   final void Function(BorrowerModel)? onTap;
   final String? filter;

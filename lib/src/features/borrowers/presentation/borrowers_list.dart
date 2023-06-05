@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../data/borrowers_view_model.dart';
+import '../data/borrower_model.dart';
 
 class BorrowersList extends StatefulWidget {
   final List<BorrowerModel> borrowers;

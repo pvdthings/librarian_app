@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
 import 'package:librarian_app/src/features/loans/data/things_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/pick_things_view.dart';
