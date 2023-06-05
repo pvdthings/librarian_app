@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/loans/data/thing_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/pick_things_view.dart';
-import 'package:librarian_app/src/features/loans/data/wizard_model.dart';
+import 'package:librarian_app/src/features/loans/data/wizard_view_model.dart';
 import 'package:provider/provider.dart';
 
 class AddThingsStep extends StatefulWidget {
@@ -16,7 +16,7 @@ class _AddThingsStepState extends State<AddThingsStep> {
 
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<WizardModel>(context, listen: false);
+    final model = Provider.of<WizardViewModel>(context, listen: false);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

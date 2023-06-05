@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
-import 'package:librarian_app/src/features/loans/data/wizard_model.dart';
+import 'package:librarian_app/src/features/loans/data/wizard_view_model.dart';
 import 'package:provider/provider.dart';
 
 class SelectBorrowerStep extends StatelessWidget {
@@ -25,7 +25,7 @@ class SelectBorrowerStep extends StatelessWidget {
           child: Container(
             constraints: const BoxConstraints(maxWidth: 540),
             child: Card(
-              child: Consumer<WizardModel>(
+              child: Consumer<WizardViewModel>(
                 builder: (context, value, child) {
                   if (value.borrower != null && !value.borrower!.active) {
                     return NeedsAttentionView(borrower: value.borrower!);

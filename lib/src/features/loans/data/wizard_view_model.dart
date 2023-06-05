@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 import 'package:librarian_app/src/features/loans/data/thing_model.dart';
 
-class WizardModel extends ChangeNotifier {
+class WizardViewModel extends ChangeNotifier {
   int step = 0;
   BorrowerModel? borrower;
   List<ThingModel> things = [];

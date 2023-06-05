@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
-import 'package:librarian_app/src/features/loans/data/wizard_model.dart';
+import 'package:librarian_app/src/features/loans/data/wizard_view_model.dart';
 import 'package:provider/provider.dart';
 
 class ConfirmDetailsStep extends StatefulWidget {
@@ -17,7 +17,7 @@ class _ConfirmDetailsStepState extends State<ConfirmDetailsStep> {
 
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<WizardModel>(context, listen: true);
+    final model = Provider.of<WizardViewModel>(context, listen: true);
     final loans = Provider.of<LoansViewModel>(context, listen: false);
 
     return Column(
