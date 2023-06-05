@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/data/loans_model.dart';
 
+import '../data/loan_model.dart';
 import 'checkin_dialog.dart';
 import 'loan_details.dart';
 
 class LoanDetailsPane extends StatefulWidget {
-  final Loan? loan;
+  final LoanModel? loan;
   final void Function(DateTime dueDate) onSave;
   final void Function() onCheckIn;
 

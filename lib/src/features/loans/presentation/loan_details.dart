@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
-import 'package:librarian_app/src/features/loans/data/things_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
+import 'package:librarian_app/src/features/loans/data/thing_model.dart';
 
 class LoanDetails extends StatelessWidget {
   const LoanDetails({
@@ -16,8 +16,8 @@ class LoanDetails extends StatelessWidget {
   });
 
   final bool editable;
-  final Borrower borrower;
-  final List<Thing> things;
+  final BorrowerModel borrower;
+  final List<ThingModel> things;
   final DateTime checkedOutDate;
   final DateTime dueDate;
   final DateTime? checkedInDate;

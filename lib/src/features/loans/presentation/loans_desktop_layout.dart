@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details_pane.dart';
 import 'package:provider/provider.dart';
 
-import '../data/loans_model.dart';
+import '../data/loans_view_model.dart';
 import 'searchable_loans_list.dart';
 
 class LoansDesktopLayout extends StatefulWidget {
@@ -19,24 +19,15 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
       children: [
         Container(
           margin: const EdgeInsets.all(8),
-          child: Card(
+          child: const Card(
             child: SizedBox(
               width: 500,
-              child: Consumer<LoansModel>(
-                builder: (context, loans, child) {
-                  return SearchableLoansList(
-                    onLoanTapped: (loan) {
-                      loans.selectedLoan = loan;
-                    },
-                    selectedLoan: loans.selectedLoan,
-                  );
-                },
-              ),
+              child: SearchableLoansList(),
             ),
           ),
         ),
         Expanded(
-          child: Consumer<LoansModel>(
+          child: Consumer<LoansViewModel>(
             builder: (context, loans, child) {
               return Container(
                 margin: const EdgeInsets.all(8),

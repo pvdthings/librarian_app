@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../data/wizard_model.dart';
+import '../../data/wizard_view_model.dart';
 import 'add_things_step.dart';
 import 'confirm_details_step.dart';
 import 'select_borrower_step.dart';
@@ -28,10 +28,10 @@ class _WizardPageState extends State<WizardPage> {
         title: const Text('New Loan'),
       ),
       body: ChangeNotifierProvider(
-        create: (c) => WizardModel(),
+        create: (c) => WizardViewModel(),
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Consumer<WizardModel>(
+          child: Consumer<WizardViewModel>(
             builder: (context, value, child) {
               if (value.step == 0) {
                 return const SelectBorrowerStep();

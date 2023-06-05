@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/authentication/data/user_model.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list_view.dart';
+import 'package:librarian_app/src/features/authentication/data/user_view_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
+import 'package:librarian_app/src/features/loans/presentation/loan_details_page.dart';
+import 'package:librarian_app/src/features/loans/presentation/open_loan_page.dart';
+import 'package:librarian_app/src/features/loans/presentation/searchable_loans_list.dart';
 import 'package:provider/provider.dart';
-
-import '../../loans/presentation/loan_details_page.dart';
-import '../../loans/presentation/open_loan_page.dart';
-import '../../loans/presentation/searchable_loans_list.dart';
 
 class DashboardMobileLayout extends StatefulWidget {
   const DashboardMobileLayout({super.key});
@@ -32,12 +31,12 @@ class _DashboardMobileLayoutState extends State<DashboardMobileLayout> {
         );
       },
     ),
-    BorrowersListView(
+    SearchableBorrowersList(
       onTapBorrower: _onTapBorrower,
     ),
   ];
 
-  void _onTapBorrower(Borrower borrower) {
+  void _onTapBorrower(BorrowerModel borrower) {
     Navigator.push(context, MaterialPageRoute(builder: (_) {
       return Scaffold(
         appBar: AppBar(title: Text(borrower.name)),
@@ -53,7 +52,7 @@ class _DashboardMobileLayoutState extends State<DashboardMobileLayout> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserModel>(context);
+    final user = Provider.of<UserViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(

@@ -1,9 +1,9 @@
-import 'borrowers_model.dart';
+import 'borrower_model.dart';
 
 class BorrowersMapper {
-  static Iterable<Borrower> map(Iterable<dynamic> data) {
+  static Iterable<BorrowerModel> map(Iterable<dynamic> data) {
     return data
-        .map((e) => Borrower(
+        .map((e) => BorrowerModel(
               id: e['id'] as String? ?? '???',
               name: e['name'] as String? ?? '???',
               email: e['contact']?['email'] as String?,

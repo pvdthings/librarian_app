@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:librarian_app/src/features/loans/data/things_model.dart';
+import 'package:librarian_app/src/features/loans/data/things_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/presentation/submit_text_field.dart';
+import '../data/thing_model.dart';
 import 'thing_list_tile.dart';
 
 class PickThingsView extends StatefulWidget {
@@ -13,8 +14,8 @@ class PickThingsView extends StatefulWidget {
     required this.onThingPicked,
   });
 
-  final List<Thing> pickedThings;
-  final Function(Thing) onThingPicked;
+  final List<ThingModel> pickedThings;
+  final Function(ThingModel) onThingPicked;
 
   @override
   State<StatefulWidget> createState() {
@@ -29,7 +30,7 @@ class _PickThingsViewState extends State<PickThingsView> {
   Future<void> _onSearchSubmitted(String value) async {
     setState(() => _isLoading = true);
 
-    final thingsModel = Provider.of<ThingsModel>(context, listen: false);
+    final thingsModel = Provider.of<ThingsViewModel>(context, listen: false);
     final match = await thingsModel.getOne(number: int.parse(value));
 
     setState(() => _isLoading = false);
@@ -47,7 +48,7 @@ class _PickThingsViewState extends State<PickThingsView> {
     _searchController.clear();
   }
 
-  void _showThingCheckedOutDialog(Thing thing) {
+  void _showThingCheckedOutDialog(ThingModel thing) {
     showDialog(
       context: context,
       builder: (context) {

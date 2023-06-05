@@ -1,15 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/data/loans_model.dart';
+import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
 import 'package:provider/provider.dart';
 
 import '../../dashboard/presentation/mobile_layout.dart';
+import '../data/loan_model.dart';
 
 class LoanDetailsPage extends StatefulWidget {
   const LoanDetailsPage(this.loan, {super.key});
 
-  final Loan loan;
+  final LoanModel loan;
 
   @override
   State<LoanDetailsPage> createState() => _LoanDetailsPageState();
@@ -30,7 +31,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
   }
 
   Future<void> _updateDueDate(String loanId, String thingId) async {
-    final loans = Provider.of<LoansModel>(context, listen: false);
+    final loans = Provider.of<LoansViewModel>(context, listen: false);
     try {
       await loans.updateDueDate(
         loanId: loanId,
@@ -45,7 +46,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
   }
 
   Future<void> _closeLoan(String loanId, String thingId) async {
-    final loans = Provider.of<LoansModel>(context, listen: false);
+    final loans = Provider.of<LoansViewModel>(context, listen: false);
     await loans.closeLoan(loanId: loanId, thingId: thingId);
   }
 

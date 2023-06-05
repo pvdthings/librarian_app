@@ -1,33 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
 
+import 'loan_model.dart';
 import 'loans_mapper.dart';
-import 'things_model.dart';
 
-class LoansModel extends ChangeNotifier {
-  List<Loan> _loans = [];
+class LoansViewModel extends ChangeNotifier {
+  LoansViewModel() {
+    refresh();
+  }
 
-  List<Loan> get loans => _loans;
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
 
-  Future<void> refresh() async {
-    _loans = await getAll();
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  set isLoading(value) {
+    _isLoading = value;
     notifyListeners();
   }
 
-  Loan? _selectedLoan;
+  List<LoanModel> _loans = [];
+  List<LoanModel> get loans => _loans;
 
-  Loan? get selectedLoan => _selectedLoan;
+  Future<void> refresh() async {
+    isLoading = true;
+    try {
+      _loans = await getLoans();
+    } catch (error) {
+      _errorMessage = error.toString();
+    }
+
+    isLoading = false;
+  }
+
+  Future<List<LoanModel>> getLoans() async {
+    final response = await LendingApi.fetchLoans();
+    return LoansMapper.map(response.data as List).toList();
+  }
+
+  LoanModel? _selectedLoan;
+  LoanModel? get selectedLoan => _selectedLoan;
 
   set selectedLoan(value) {
     _selectedLoan = value;
     notifyListeners();
-  }
-
-  Future<List<Loan>> getAll() async {
-    final response = await LendingApi.fetchLoans();
-    return LoansMapper.map(response.data as List).toList();
   }
 
   Future<void> openLoan({
@@ -75,29 +93,4 @@ class LoansModel extends ChangeNotifier {
 
     await refresh();
   }
-}
-
-class Loan {
-  final String id;
-  final Thing thing;
-  final Borrower borrower;
-  final DateTime checkedOutDate;
-  DateTime dueDate;
-  DateTime? checkedInDate;
-
-  bool get isOverdue {
-    final now = DateTime.now();
-    return DateUtils.dateOnly(dueDate).isBefore(DateUtils.dateOnly(now));
-  }
-
-  bool get isDueToday => DateUtils.isSameDay(DateTime.now(), dueDate);
-
-  Loan({
-    required this.id,
-    required this.thing,
-    required this.borrower,
-    required this.checkedOutDate,
-    required this.dueDate,
-    this.checkedInDate,
-  });
 }

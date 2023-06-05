@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
-import 'package:librarian_app/src/features/loans/data/things_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
+import 'package:librarian_app/src/features/loans/data/thing_model.dart';
 
-class WizardModel extends ChangeNotifier {
+class WizardViewModel extends ChangeNotifier {
   int step = 0;
-  Borrower? borrower;
-  List<Thing> things = [];
+  BorrowerModel? borrower;
+  List<ThingModel> things = [];
   DateTime dueDate = DateTime.now().add(const Duration(days: 7));
 
-  void selectBorrower(Borrower borrower, {bool stepForward = true}) {
+  void selectBorrower(BorrowerModel borrower, {bool stepForward = true}) {
     this.borrower = borrower;
     if (stepForward) {
       step++;
@@ -17,7 +17,7 @@ class WizardModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void selectThings(Iterable<Thing> things) {
+  void selectThings(Iterable<ThingModel> things) {
     this.things.addAll(things);
     step++;
     notifyListeners();

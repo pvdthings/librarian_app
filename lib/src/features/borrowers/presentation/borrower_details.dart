@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrower_issues.dart';
 
-import '../data/borrowers_model.dart';
+import '../data/borrower_model.dart';
 
 class BorrowerDetails extends StatefulWidget {
-  final Borrower borrower;
+  final BorrowerModel borrower;
 
   const BorrowerDetails({
     super.key,

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
-import 'package:librarian_app/src/features/loans/data/loans_model.dart';
-import 'package:librarian_app/src/features/loans/data/things_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
+import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/pick_things_view.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/needs_attention_view.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list_view.dart';
+import 'package:librarian_app/src/features/borrowers/presentation/searchable_borrowers_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../dashboard/presentation/mobile_layout.dart';
+import '../data/thing_model.dart';
 
 class OpenLoanPage extends StatefulWidget {
   const OpenLoanPage({super.key});
@@ -25,15 +25,15 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   late Widget _body;
   Widget? _floatingActionButton;
 
-  Borrower _borrower = Borrower(id: '', name: "Borrower", issues: []);
-  final List<Thing> _things = [];
+  BorrowerModel _borrower = BorrowerModel(id: '', name: "Borrower", issues: []);
+  final List<ThingModel> _things = [];
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
   void _configureView() {
     switch (_currentView) {
       case OpenLoanView.selectBorrower:
         _viewTitle = "Select Borrower";
-        _body = BorrowersListView(onTapBorrower: _onTapBorrower);
+        _body = SearchableBorrowersList(onTapBorrower: _onTapBorrower);
         break;
       case OpenLoanView.addThings:
         _viewTitle = "Add Things";
@@ -83,7 +83,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     }
   }
 
-  void _onTapBorrower(Borrower borrower) {
+  void _onTapBorrower(BorrowerModel borrower) {
     _borrower = borrower;
     if (borrower.active) {
       setState(() => _currentView = OpenLoanView.addThings);
@@ -93,7 +93,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     setState(() => _currentView = OpenLoanView.borrowerNeedsAttention);
   }
 
-  void _onTapThing(Thing thing) {
+  void _onTapThing(ThingModel thing) {
     setState(() {
       if (_things.contains(thing)) {
         _things.remove(thing);
@@ -104,7 +104,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   }
 
   Future<void> _onTapCreate() async {
-    final loans = Provider.of<LoansModel>(context, listen: false);
+    final loans = Provider.of<LoansViewModel>(context, listen: false);
     final dateFormat = DateFormat('yyyy-MM-dd');
 
     await loans.openLoan(

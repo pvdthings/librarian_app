@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrower_details.dart';
 
-import '../data/borrowers_model.dart';
+import '../data/borrower_model.dart';
 
 class BorrowerDetailsPane extends StatelessWidget {
-  final Borrower? borrower;
+  final BorrowerModel? borrower;
 
   const BorrowerDetailsPane({
     super.key,
