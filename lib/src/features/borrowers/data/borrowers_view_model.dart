@@ -3,12 +3,16 @@ import 'package:librarian_app/src/features/common/data/lending_api.dart';
 
 import 'borrowers_mapper.dart';
 
-class BorrowersModel extends ChangeNotifier {
-  String? _refreshErrorMessage;
-  String? get refreshErrorMessage => _refreshErrorMessage;
+class BorrowersViewModel extends ChangeNotifier {
+  BorrowersViewModel() {
+    refresh();
+  }
 
-  set refreshErrorMessage(value) {
-    _refreshErrorMessage = value;
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
+
+  set errorMessage(value) {
+    _errorMessage = value;
     notifyListeners();
   }
 
@@ -20,11 +24,11 @@ class BorrowersModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Borrower> _borrowers = [];
-  List<Borrower> get borrowers => _borrowers;
+  List<BorrowerModel> _borrowers = [];
+  List<BorrowerModel> get borrowers => _borrowers;
 
-  Borrower? _selectedBorrower;
-  Borrower? get selectedBorrower => _selectedBorrower;
+  BorrowerModel? _selectedBorrower;
+  BorrowerModel? get selectedBorrower => _selectedBorrower;
 
   set selectedBorrower(value) {
     _selectedBorrower = value;
@@ -32,20 +36,18 @@ class BorrowersModel extends ChangeNotifier {
   }
 
   Future<void> refresh() async {
-    _isLoading = true;
-    _borrowers = await getAll();
+    isLoading = true;
+    _borrowers = await getBorrowers();
 
     if (_selectedBorrower != null) {
       _selectedBorrower =
           _borrowers.firstWhere((b) => b.id == _selectedBorrower!.id);
     }
 
-    _isLoading = false;
-
-    notifyListeners();
+    isLoading = false;
   }
 
-  Future<List<Borrower>> getAll() async {
+  Future<List<BorrowerModel>> getBorrowers() async {
     final response = await LendingApi.fetchBorrowers();
     return BorrowersMapper.map(response.data as List).toList();
   }
@@ -60,7 +62,7 @@ class BorrowersModel extends ChangeNotifier {
         borrowerId: borrowerId,
       );
     } catch (error) {
-      refreshErrorMessage = error.toString();
+      errorMessage = error.toString();
       return false;
     }
 
@@ -69,7 +71,7 @@ class BorrowersModel extends ChangeNotifier {
   }
 }
 
-class Borrower {
+class BorrowerModel {
   final String id;
   final String name;
   final String? email;
@@ -78,7 +80,7 @@ class Borrower {
 
   bool get active => issues.isEmpty;
 
-  Borrower({
+  BorrowerModel({
     required this.id,
     required this.name,
     required this.issues,

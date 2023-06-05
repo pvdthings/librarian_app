@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list.dart';
 import 'package:provider/provider.dart';
 
 class ConnectedBorrowersList extends StatelessWidget {
-  final void Function(Borrower)? onTap;
+  final void Function(BorrowerModel)? onTap;
   final String? filter;
 
   const ConnectedBorrowersList({
@@ -15,10 +15,10 @@ class ConnectedBorrowersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BorrowersModel>(
+    return Consumer<BorrowersViewModel>(
       builder: (context, model, child) {
-        if (model.refreshErrorMessage != null) {
-          return Center(child: Text(model.refreshErrorMessage!));
+        if (model.errorMessage != null) {
+          return Center(child: Text(model.errorMessage!));
         }
 
         if (model.isLoading) {

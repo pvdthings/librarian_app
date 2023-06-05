@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
 import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
 import 'package:librarian_app/src/features/loans/data/things_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/pick_things_view.dart';
@@ -25,7 +25,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   late Widget _body;
   Widget? _floatingActionButton;
 
-  Borrower _borrower = Borrower(id: '', name: "Borrower", issues: []);
+  BorrowerModel _borrower = BorrowerModel(id: '', name: "Borrower", issues: []);
   final List<Thing> _things = [];
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
@@ -83,7 +83,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     }
   }
 
-  void _onTapBorrower(Borrower borrower) {
+  void _onTapBorrower(BorrowerModel borrower) {
     _borrower = borrower;
     if (borrower.active) {
       setState(() => _currentView = OpenLoanView.addThings);

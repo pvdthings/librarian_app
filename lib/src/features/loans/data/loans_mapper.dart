@@ -1,4 +1,4 @@
-import '../../borrowers/data/borrowers_model.dart';
+import '../../borrowers/data/borrowers_view_model.dart';
 import 'loans_view_model.dart';
 import 'things_model.dart';
 
@@ -11,7 +11,7 @@ class LoansMapper {
             id: e['thing']?['id'] as String? ?? '???',
             number: e['thing']?['number'] as int? ?? 0,
           ),
-          borrower: Borrower(
+          borrower: BorrowerModel(
             id: e['borrower']?['id'] as String? ?? '?',
             name: e['borrower']?['name'] as String? ?? '???',
             issues: [],

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../data/borrowers_model.dart';
+import '../data/borrowers_view_model.dart';
 
 class BorrowersList extends StatefulWidget {
-  final List<Borrower> borrowers;
-  final Borrower? selected;
-  final void Function(Borrower borrower)? onTap;
+  final List<BorrowerModel> borrowers;
+  final BorrowerModel? selected;
+  final void Function(BorrowerModel borrower)? onTap;
 
   const BorrowersList({
     super.key,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrower_details_pane.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/searchable_borrowers_list.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,7 @@ class BorrowersDesktopLayout extends StatefulWidget {
 class _BorrowersDesktopLayoutState extends State<BorrowersDesktopLayout> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<BorrowersModel>(
+    return Consumer<BorrowersViewModel>(
       builder: (context, borrowers, child) {
         return Row(
           children: [
