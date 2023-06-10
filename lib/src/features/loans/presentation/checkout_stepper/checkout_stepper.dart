@@ -30,6 +30,11 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
   Widget build(BuildContext context) {
     return Stepper(
       currentStep: _index,
+      onStepTapped: (value) {
+        if (value < _index) {
+          setState(() => _index = value);
+        }
+      },
       onStepContinue: () {
         if (_canContinue) {
           setState(() => _index++);
