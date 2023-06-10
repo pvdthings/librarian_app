@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrowers_desktop_layout.dart';
+import 'package:librarian_app/src/features/loans/presentation/checkout_stepper/checkout_page.dart';
 import 'package:librarian_app/src/features/loans/presentation/checkout_wizard/wizard_page.dart';
 import 'package:librarian_app/src/features/loans/presentation/loans_desktop_layout.dart';
 
@@ -28,8 +29,8 @@ class _DashboardDesktopLayoutState extends State<DashboardDesktopLayout> {
         NavigationRail(
           leading: FloatingActionButton(
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (c) => const WizardPage()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (c) => const CheckoutPage()));
             },
             tooltip: 'New Loan',
             child: const Icon(Icons.add_rounded),
