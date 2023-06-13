@@ -4,29 +4,40 @@ import 'package:librarian_app/src/features/loans/data/things_view_model.dart';
 import 'package:provider/provider.dart';
 
 class ConnectedThingSearchField extends StatelessWidget {
-  final _textController = TextEditingController();
-
   final ThingSearchController controller;
-
-  bool get isLoading => controller.isLoading;
 
   ConnectedThingSearchField({
     super.key,
     required this.controller,
   });
 
+  final _textController = TextEditingController();
+
+  bool get isLoading => controller.isLoading;
+
+  void _submit() {
+    if (_textController.text.isEmpty) {
+      return;
+    }
+
+    controller.search(_textController.text);
+    _textController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: _textController,
-      onSubmitted: (value) {
-        controller.search(value);
-        _textController.clear();
-      },
-      decoration: const InputDecoration(
+      onSubmitted: (_) => _submit(),
+      decoration: InputDecoration(
         hintText: 'Enter Thing #',
         prefixText: '#',
-        prefixIcon: Icon(Icons.build_rounded),
+        prefixIcon: const Icon(Icons.build_rounded),
+        suffix: IconButton(
+          tooltip: 'Add Thing',
+          onPressed: () => _submit(),
+          icon: const Icon(Icons.add_rounded),
+        ),
       ),
     );
   }
