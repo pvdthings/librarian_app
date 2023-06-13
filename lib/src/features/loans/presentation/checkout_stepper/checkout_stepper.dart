@@ -46,11 +46,13 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
 
   void _finish() {
     final controller = CheckoutController(context);
-    controller.checkOut(
-      borrowerId: _borrower!.id,
-      thingIds: _things.map((e) => e.id).toList(),
-      dueBackDate: _dueDate,
-    );
+    controller
+        .checkOut(
+          borrowerId: _borrower!.id,
+          thingIds: _things.map((e) => e.id).toList(),
+          dueBackDate: _dueDate,
+        )
+        .whenComplete(() => Navigator.of(context).pop());
   }
 
   @override
