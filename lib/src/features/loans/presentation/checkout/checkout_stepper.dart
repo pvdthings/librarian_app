@@ -3,8 +3,8 @@ import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrower_issues.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrower_search_delegate.dart';
 import 'package:librarian_app/src/features/loans/data/thing_model.dart';
-import 'package:librarian_app/src/features/loans/presentation/checkout_stepper/checkout_controller.dart';
-import 'package:librarian_app/src/features/loans/presentation/checkout_stepper/connected_thing_search_field.dart';
+import 'package:librarian_app/src/features/loans/presentation/checkout/checkout_controller.dart';
+import 'package:librarian_app/src/features/loans/presentation/checkout/connected_thing_search_field.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
 
 class CheckoutStepper extends StatefulWidget {
