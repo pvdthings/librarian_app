@@ -20,8 +20,27 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
 
   final List<ThingModel> _things = [];
 
-  bool get _canContinue {
-    return _borrower != null && (_borrower?.active ?? false) && _index < 2;
+  void Function()? _onStepContinueFactory(int index) {
+    switch (index) {
+      case 0:
+        if (_borrower == null || !_borrower!.active) {
+          return null;
+        }
+
+        return () {
+          setState(() => _index++);
+        };
+      case 1:
+        if (_things.isEmpty) {
+          return null;
+        }
+
+        return () {
+          setState(() => _index++);
+        };
+      default:
+        return _finish;
+    }
   }
 
   void _finish() {}
@@ -30,21 +49,25 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
   Widget build(BuildContext context) {
     return Stepper(
       currentStep: _index,
+      controlsBuilder: (context, details) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: Row(
+            children: [
+              FilledButton(
+                onPressed: details.onStepContinue,
+                child: Text(details.stepIndex == 2 ? 'Confirm' : 'Continue'),
+              ),
+            ],
+          ),
+        );
+      },
       onStepTapped: (value) {
         if (value < _index) {
           setState(() => _index = value);
         }
       },
-      onStepContinue: () {
-        if (_canContinue) {
-          setState(() => _index++);
-          return;
-        }
-
-        if (_index == 2) {
-          _finish();
-        }
-      },
+      onStepContinue: _onStepContinueFactory(_index),
       onStepCancel: _index > 0
           ? () {
               setState(() => _index--);
@@ -58,6 +81,7 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
             children: [
               TextField(
                 controller: TextEditingController(text: _borrower?.name),
+                canRequestFocus: false,
                 decoration: const InputDecoration(
                   labelText: 'Borrower',
                   prefixIcon: Icon(Icons.person_rounded),
