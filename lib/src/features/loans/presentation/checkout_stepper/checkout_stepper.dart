@@ -3,6 +3,7 @@ import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrower_issues.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrower_search_delegate.dart';
 import 'package:librarian_app/src/features/loans/data/thing_model.dart';
+import 'package:librarian_app/src/features/loans/presentation/checkout_stepper/checkout_controller.dart';
 import 'package:librarian_app/src/features/loans/presentation/checkout_stepper/connected_thing_search_field.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
 
@@ -43,7 +44,14 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
     }
   }
 
-  void _finish() {}
+  void _finish() {
+    final controller = CheckoutController(context);
+    controller.checkOut(
+      borrowerId: _borrower!.id,
+      thingIds: _things.map((e) => e.id).toList(),
+      dueBackDate: _dueDate,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
