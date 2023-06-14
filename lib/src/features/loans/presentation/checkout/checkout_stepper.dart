@@ -50,11 +50,18 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
     final controller = CheckoutController(context);
     controller
         .checkOut(
-          borrowerId: _borrower!.id,
-          thingIds: _things.map((e) => e.id).toList(),
-          dueBackDate: _dueDate,
-        )
-        .whenComplete(() => Navigator.of(context).pop());
+      borrowerId: _borrower!.id,
+      thingIds: _things.map((e) => e.id).toList(),
+      dueBackDate: _dueDate,
+    )
+        .then((success) {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(success ? 'Success!' : 'Failed to create loan records'),
+        ),
+      );
+    });
   }
 
   @override

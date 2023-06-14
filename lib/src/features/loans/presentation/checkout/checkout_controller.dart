@@ -11,12 +11,12 @@ class CheckoutController {
     _model = Provider.of<LoansViewModel>(context, listen: false);
   }
 
-  Future<void> checkOut({
+  Future<bool> checkOut({
     required String borrowerId,
     required List<String> thingIds,
     required DateTime dueBackDate,
   }) async {
-    await _model.openLoan(
+    return await _model.openLoan(
       borrowerId: borrowerId,
       thingIds: thingIds,
       checkedOutDate: dateFormat.format(DateTime.now()),
