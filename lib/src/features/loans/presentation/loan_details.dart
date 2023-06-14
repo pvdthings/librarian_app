@@ -16,14 +16,14 @@ class LoanDetails extends StatelessWidget {
   });
 
   final bool editable;
-  final BorrowerModel borrower;
+  final BorrowerModel? borrower;
   final List<ThingModel> things;
   final DateTime checkedOutDate;
   final DateTime dueDate;
   final DateTime? checkedInDate;
   final bool isOverdue;
 
-  final Function(DateTime) onDueDateUpdated;
+  final void Function(DateTime) onDueDateUpdated;
 
   void showDateSelection(BuildContext context) async {
     showDatePicker(
@@ -42,7 +42,7 @@ class LoanDetails extends StatelessWidget {
     return Column(
       children: [
         TextField(
-          controller: TextEditingController(text: borrower.name),
+          controller: TextEditingController(text: borrower?.name),
           readOnly: true,
           decoration: const InputDecoration(
             icon: Icon(Icons.person_rounded),

@@ -67,7 +67,7 @@ class BorrowersViewModel extends ChangeNotifier {
       return false;
     }
 
-    refresh();
+    await refresh();
     return true;
   }
 }

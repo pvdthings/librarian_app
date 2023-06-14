@@ -15,7 +15,7 @@ class PickThingsView extends StatefulWidget {
   });
 
   final List<ThingModel> pickedThings;
-  final Function(ThingModel) onThingPicked;
+  final Function(ThingModel thing) onThingPicked;
 
   @override
   State<StatefulWidget> createState() {

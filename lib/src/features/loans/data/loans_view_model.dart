@@ -48,19 +48,26 @@ class LoansViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> openLoan({
+  Future<bool> openLoan({
     required String borrowerId,
     required List<String> thingIds,
     required String checkedOutDate,
     required String dueBackDate,
   }) async {
-    await LendingApi.createLoan(NewLoan(
-      borrowerId: borrowerId,
-      thingIds: thingIds,
-      checkedOutDate: checkedOutDate,
-      dueBackDate: dueBackDate,
-    ));
-    await refresh();
+    try {
+      await LendingApi.createLoan(NewLoan(
+        borrowerId: borrowerId,
+        thingIds: thingIds,
+        checkedOutDate: checkedOutDate,
+        dueBackDate: dueBackDate,
+      ));
+      await refresh();
+    } catch (error) {
+      _errorMessage = error.toString();
+      return false;
+    }
+
+    return true;
   }
 
   Future<void> closeLoan({
