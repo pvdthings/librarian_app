@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrower_issues.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrower_search_delegate.dart';
 import 'package:librarian_app/src/features/loans/data/thing_model.dart';
 import 'package:librarian_app/src/features/loans/presentation/checkout/checkout_controller.dart';
 import 'package:librarian_app/src/features/loans/presentation/checkout/connected_thing_search_field.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
+import 'package:provider/provider.dart';
 
 class CheckoutStepper extends StatefulWidget {
   const CheckoutStepper({super.key});
@@ -113,7 +115,22 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
                 BorrowerIssues(
                   borrowerId: _borrower!.id,
                   issues: _borrower!.issues,
-                  onRecordCashPayment: (_) {},
+                  onRecordCashPayment: (success) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            success ? 'Success!' : 'Failed to record payment'),
+                      ),
+                    );
+
+                    if (success) {
+                      final data = Provider.of<BorrowersViewModel>(context,
+                          listen: false);
+                      final refreshedBorrower = data.borrowers
+                          .firstWhere((b) => b.id == _borrower!.id);
+                      setState(() => _borrower = refreshedBorrower);
+                    }
+                  },
                 ),
               ],
             ],
