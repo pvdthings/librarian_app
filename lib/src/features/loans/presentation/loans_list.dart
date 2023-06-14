@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/utils/media_query.dart';
 
 import '../data/loan_model.dart';
 
@@ -37,8 +38,9 @@ class LoansList extends StatelessWidget {
                     fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
                   ),
                 ),
-          selected:
-              loan.id == selected?.id && loan.thing.id == selected?.thing.id,
+          selected: isMobile(context)
+              ? false
+              : loan.id == selected?.id && loan.thing.id == selected?.thing.id,
           onTap: () => onTap?.call(loan),
         );
       },

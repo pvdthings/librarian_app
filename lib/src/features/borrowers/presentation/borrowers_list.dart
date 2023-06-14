@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/utils/media_query.dart';
 
 import '../data/borrower_model.dart';
 
@@ -33,7 +34,7 @@ class _BorrowersListState extends State<BorrowersList> {
           title: Text(b.name),
           trailing: b.active ? null : const Icon(Icons.warning_rounded),
           onTap: () => widget.onTap?.call(b),
-          selected: widget.selected == b,
+          selected: isMobile(context) ? false : widget.selected == b,
         );
       },
       shrinkWrap: true,
