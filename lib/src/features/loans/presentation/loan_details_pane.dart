@@ -24,6 +24,11 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
   bool _editMode = false;
   DateTime? _newDueDate;
 
+  void _reset() {
+    _editMode = false;
+    _newDueDate = null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final loan = widget.loan;
@@ -75,7 +80,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                             IconButton(
                               onPressed: () {
                                 widget.onSave(_newDueDate!);
-                                setState(() => _editMode = false);
+                                setState(_reset);
                               },
                               icon: const Icon(Icons.save_rounded),
                               tooltip: 'Save',
@@ -83,12 +88,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                           const SizedBox(width: 4),
                           _editMode
                               ? IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _newDueDate = null;
-                                      _editMode = false;
-                                    });
-                                  },
+                                  onPressed: () => setState(_reset),
                                   icon: const Icon(Icons.close_rounded),
                                   tooltip: 'Cancel',
                                 )
