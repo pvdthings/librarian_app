@@ -32,6 +32,10 @@ class LoansViewModel extends ChangeNotifier {
       _errorMessage = error.toString();
     }
 
+    if (_selectedLoan != null) {
+      _selectedLoan = _loans.firstWhere((l) => l.id == _selectedLoan!.id);
+    }
+
     isLoading = false;
   }
 
