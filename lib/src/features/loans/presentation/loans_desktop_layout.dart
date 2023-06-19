@@ -54,6 +54,7 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
                                     model.clearSelectedLoan();
                                   },
                                   icon: const Icon(Icons.clear_rounded),
+                                  tooltip: 'Clear Search',
                                 ),
                         ),
                       ),

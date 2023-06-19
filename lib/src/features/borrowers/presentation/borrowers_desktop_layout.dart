@@ -55,6 +55,7 @@ class _BorrowersDesktopLayoutState extends State<BorrowersDesktopLayout> {
                                         model.clearSelectedBorrower();
                                       },
                                       icon: const Icon(Icons.clear_rounded),
+                                      tooltip: 'Clear Search',
                                     ),
                             ),
                           ),
