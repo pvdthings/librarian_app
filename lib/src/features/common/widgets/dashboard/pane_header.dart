@@ -11,7 +11,7 @@ class PaneHeader extends StatelessWidget {
       decoration:
           BoxDecoration(color: Theme.of(context).primaryColor.withAlpha(155)),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: SizedBox(
           height: 48,
           child: Center(child: child),
