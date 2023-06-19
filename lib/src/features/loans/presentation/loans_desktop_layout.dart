@@ -37,7 +37,12 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Search...',
-                          icon: const Icon(Icons.search_rounded),
+                          icon: Icon(
+                            Icons.search_rounded,
+                            color: _searchFilter.isEmpty
+                                ? null
+                                : Theme.of(context).primaryIconTheme.color,
+                          ),
                           suffixIcon: _searchFilter.isEmpty
                               ? null
                               : IconButton(
