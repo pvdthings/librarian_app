@@ -29,6 +29,16 @@ class BorrowersViewModel extends ChangeNotifier {
   List<BorrowerModel> _borrowers = [];
   List<BorrowerModel> get borrowers => _borrowers;
 
+  List<BorrowerModel> filtered(String filter) {
+    if (filter.isEmpty) {
+      return _borrowers;
+    }
+
+    return _borrowers
+        .where((b) => b.name.toLowerCase().contains(filter.toLowerCase()))
+        .toList();
+  }
+
   BorrowerModel? _selectedBorrower;
   BorrowerModel? get selectedBorrower => _selectedBorrower;
 
@@ -36,6 +46,8 @@ class BorrowersViewModel extends ChangeNotifier {
     _selectedBorrower = value;
     notifyListeners();
   }
+
+  void clearSelectedBorrower() => selectedBorrower = null;
 
   Future<void> refresh() async {
     isLoading = true;
