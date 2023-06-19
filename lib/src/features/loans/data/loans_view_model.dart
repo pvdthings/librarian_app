@@ -24,6 +24,18 @@ class LoansViewModel extends ChangeNotifier {
   List<LoanModel> _loans = [];
   List<LoanModel> get loans => _loans;
 
+  List<LoanModel> filtered(String? filter) {
+    if (filter == null || filter.isEmpty) {
+      return _loans;
+    }
+
+    return _loans
+        .where((l) =>
+            l.borrower.name.toLowerCase().contains(filter.toLowerCase()) ||
+            l.thing.name!.toLowerCase().contains(filter.toLowerCase()))
+        .toList();
+  }
+
   Future<void> refresh() async {
     isLoading = true;
 
@@ -55,6 +67,8 @@ class LoansViewModel extends ChangeNotifier {
     _selectedLoan = value;
     notifyListeners();
   }
+
+  void clearSelectedLoan() => selectedLoan = null;
 
   Future<bool> openLoan({
     required String borrowerId,

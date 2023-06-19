@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.dart';
 
 import '../data/loan_model.dart';
 import 'checkin_dialog.dart';
@@ -38,8 +39,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
           ? const Center(child: Text('Loan Details'))
           : Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
+                PaneHeader(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -47,9 +47,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                         children: [
                           Text(
                             widget.loan!.thing.name!,
-                            style: const TextStyle(
-                              fontSize: 24,
-                            ),
+                            style: const TextStyle(fontSize: 24),
                           ),
                           const SizedBox(width: 16),
                           Text(
@@ -103,6 +101,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                     ],
                   ),
                 ),
+                const Divider(),
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: LoanDetails(

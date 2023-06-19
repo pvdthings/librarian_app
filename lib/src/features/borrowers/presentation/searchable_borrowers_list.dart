@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/connected_borrowers_list.dart';
 
-import '../../common/presentation/submit_text_field.dart';
+import '../../common/widgets/submit_text_field.dart';
 
 class SearchableBorrowersList extends StatefulWidget {
   final void Function(BorrowerModel borrower)? onTapBorrower;
