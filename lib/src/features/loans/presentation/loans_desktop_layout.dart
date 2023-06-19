@@ -22,6 +22,7 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
     return Row(
       children: [
         Card(
+          clipBehavior: Clip.antiAlias,
           child: SizedBox(
             width: 500,
             child: Consumer<LoansViewModel>(
@@ -59,7 +60,6 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
                         ),
                       ),
                     ),
-                    const Divider(),
                     LoansList(
                       loans: model.filtered(_searchFilter),
                       selected: model.selectedLoan,

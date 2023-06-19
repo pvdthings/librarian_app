@@ -35,6 +35,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
     final loan = widget.loan;
 
     return Card(
+      clipBehavior: Clip.antiAlias,
       child: loan == null
           ? const Center(child: Text('Loan Details'))
           : Column(
@@ -101,7 +102,6 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                     ],
                   ),
                 ),
-                const Divider(),
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: LoanDetails(

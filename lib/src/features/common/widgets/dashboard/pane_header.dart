@@ -7,11 +7,15 @@ class PaneHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, top: 8, right: 16),
-      child: SizedBox(
-        height: 48,
-        child: Center(child: child),
+    return Container(
+      decoration:
+          BoxDecoration(color: Theme.of(context).primaryColor.withAlpha(155)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: SizedBox(
+          height: 48,
+          child: Center(child: child),
+        ),
       ),
     );
   }

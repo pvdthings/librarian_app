@@ -15,6 +15,7 @@ class BorrowerDetailsPane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      clipBehavior: Clip.antiAlias,
       child: borrower == null
           ? const Center(child: Text('Borrower Details'))
           : Column(
@@ -36,7 +37,6 @@ class BorrowerDetailsPane extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Divider(),
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: BorrowerDetails(borrower: borrower!),
