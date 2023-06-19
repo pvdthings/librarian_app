@@ -51,10 +51,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                             style: const TextStyle(fontSize: 24),
                           ),
                           const SizedBox(width: 16),
-                          Text(
-                            '#${loan.thing.number}',
-                            style: const TextStyle(fontSize: 16),
-                          ),
+                          Chip(label: Text('#${loan.thing.number}')),
                         ],
                       ),
                       Row(
