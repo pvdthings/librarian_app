@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
@@ -10,8 +11,7 @@ class LoansViewModel extends ChangeNotifier {
     refresh();
   }
 
-  String? _errorMessage;
-  String? get errorMessage => _errorMessage;
+  String? errorMessage;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -26,14 +26,18 @@ class LoansViewModel extends ChangeNotifier {
 
   Future<void> refresh() async {
     isLoading = true;
+
     try {
       _loans = await getLoans();
-    } catch (error) {
-      _errorMessage = error.toString();
-    }
 
-    if (_selectedLoan != null) {
-      _selectedLoan = _loans.firstWhere((l) => l.id == _selectedLoan!.id);
+      if (_selectedLoan != null) {
+        _selectedLoan = _loans.firstWhere((l) => l.id == _selectedLoan!.id);
+      }
+    } on DioError {
+      errorMessage =
+          'Unable to refresh loans. You might not be connected to the internet.';
+    } catch (_) {
+      errorMessage = 'An unexpected error occurred.';
     }
 
     isLoading = false;
@@ -67,7 +71,7 @@ class LoansViewModel extends ChangeNotifier {
       ));
       await refresh();
     } catch (error) {
-      _errorMessage = error.toString();
+      errorMessage = error.toString();
       return false;
     }
 

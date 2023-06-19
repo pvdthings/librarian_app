@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
 
@@ -38,11 +39,19 @@ class BorrowersViewModel extends ChangeNotifier {
 
   Future<void> refresh() async {
     isLoading = true;
-    _borrowers = await getBorrowers();
 
-    if (_selectedBorrower != null) {
-      _selectedBorrower =
-          _borrowers.firstWhere((b) => b.id == _selectedBorrower!.id);
+    try {
+      _borrowers = await getBorrowers();
+
+      if (_selectedBorrower != null) {
+        _selectedBorrower =
+            _borrowers.firstWhere((b) => b.id == _selectedBorrower!.id);
+      }
+    } on DioError {
+      _errorMessage =
+          'Unable to refresh borrowers. You might not be connected to the internet.';
+    } catch (_) {
+      _errorMessage = 'An unexpected error occurred.';
     }
 
     isLoading = false;
