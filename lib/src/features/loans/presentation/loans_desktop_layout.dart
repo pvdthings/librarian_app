@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.dart';
+import 'package:librarian_app/src/features/common/widgets/search_field.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details_pane.dart';
 import 'package:librarian_app/src/features/loans/presentation/loans_list.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,6 @@ class LoansDesktopLayout extends StatefulWidget {
 }
 
 class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
-  final _searchController = TextEditingController();
   String _searchFilter = '';
 
   @override
@@ -30,34 +30,14 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
                 return Column(
                   children: [
                     PaneHeader(
-                      child: TextField(
-                        controller: _searchController,
+                      child: SearchField(
                         onChanged: (value) {
                           setState(() => _searchFilter = value);
                         },
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Search...',
-                          icon: Icon(
-                            Icons.search_rounded,
-                            color: _searchFilter.isEmpty
-                                ? null
-                                : Theme.of(context).primaryIconTheme.color,
-                          ),
-                          suffixIcon: _searchFilter.isEmpty
-                              ? null
-                              : IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _searchController.clear();
-                                      _searchFilter = '';
-                                    });
-                                    model.clearSelectedLoan();
-                                  },
-                                  icon: const Icon(Icons.clear_rounded),
-                                  tooltip: 'Clear Search',
-                                ),
-                        ),
+                        onClearPressed: () {
+                          setState(() => _searchFilter = '');
+                          model.clearSelectedLoan();
+                        },
                       ),
                     ),
                     LoansList(
