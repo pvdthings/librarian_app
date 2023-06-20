@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
 
+import '../data/borrower_model.dart';
 import '../presentation/borrowers_list.dart';
 
 class BorrowersView extends StatelessWidget {
@@ -8,10 +9,12 @@ class BorrowersView extends StatelessWidget {
     super.key,
     required this.model,
     required this.searchFilter,
+    this.onTap,
   });
 
   final BorrowersViewModel model;
   final String searchFilter;
+  final void Function(BorrowerModel)? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +37,7 @@ class BorrowersView extends StatelessWidget {
       selected: model.selectedBorrower,
       onTap: (borrower) {
         model.selectedBorrower = borrower;
+        onTap?.call(borrower);
       },
     );
   }

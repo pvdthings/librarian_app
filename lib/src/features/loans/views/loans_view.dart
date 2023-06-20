@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../data/loan_model.dart';
 import '../data/loans_view_model.dart';
 import '../presentation/loans_list.dart';
 
@@ -8,10 +9,12 @@ class LoansView extends StatelessWidget {
     super.key,
     required this.model,
     required this.searchFilter,
+    this.onTap,
   });
 
   final LoansViewModel model;
   final String searchFilter;
+  final void Function(LoanModel)? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,10 @@ class LoansView extends StatelessWidget {
     return LoansList(
       loans: loans,
       selected: model.selectedLoan,
-      onTap: (loan) => model.selectedLoan = loan,
+      onTap: (loan) {
+        model.selectedLoan = loan;
+        onTap?.call(loan);
+      },
     );
   }
 }
