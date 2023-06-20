@@ -46,6 +46,7 @@ class LibrarianApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
+        primaryColor: Colors.deepPurple,
         brightness: Brightness.dark,
         useMaterial3: true,
       ),

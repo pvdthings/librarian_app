@@ -50,7 +50,12 @@ class _DashboardDesktopLayoutState extends State<DashboardDesktopLayout> {
             setState(() => _selectedIndex = index);
           },
         ),
-        Expanded(child: Container(child: _currentScreen)),
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.only(top: 8, right: 8, bottom: 8),
+            child: _currentScreen,
+          ),
+        ),
       ],
     );
   }

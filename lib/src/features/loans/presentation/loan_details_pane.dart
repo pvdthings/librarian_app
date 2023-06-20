@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.dart';
 
 import '../data/loan_model.dart';
 import 'checkin_dialog.dart';
 import 'loan_details.dart';
+import 'thing_number.dart';
 
 class LoanDetailsPane extends StatefulWidget {
   final LoanModel? loan;
@@ -34,27 +36,22 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
     final loan = widget.loan;
 
     return Card(
+      clipBehavior: Clip.antiAlias,
       child: loan == null
           ? const Center(child: Text('Loan Details'))
           : Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
+                PaneHeader(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
-                          Text(
-                            widget.loan!.thing.name!,
-                            style: const TextStyle(
-                              fontSize: 24,
-                            ),
-                          ),
+                          ThingNumber(number: loan.thing.number),
                           const SizedBox(width: 16),
                           Text(
-                            '#${loan.thing.number}',
-                            style: const TextStyle(fontSize: 16),
+                            widget.loan!.thing.name!,
+                            style: const TextStyle(fontSize: 24),
                           ),
                         ],
                       ),
