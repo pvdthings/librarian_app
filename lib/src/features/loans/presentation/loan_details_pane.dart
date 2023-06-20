@@ -4,6 +4,7 @@ import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.
 import '../data/loan_model.dart';
 import 'checkin_dialog.dart';
 import 'loan_details.dart';
+import 'thing_number.dart';
 
 class LoanDetailsPane extends StatefulWidget {
   final LoanModel? loan;
@@ -46,12 +47,12 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                     children: [
                       Row(
                         children: [
+                          ThingNumber(number: loan.thing.number),
+                          const SizedBox(width: 16),
                           Text(
                             widget.loan!.thing.name!,
                             style: const TextStyle(fontSize: 24),
                           ),
-                          const SizedBox(width: 16),
-                          Chip(label: Text('#${loan.thing.number}')),
                         ],
                       ),
                       Row(
