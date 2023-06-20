@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/presentation/loans_list.dart';
+import 'package:librarian_app/src/features/loans/views/loans_view.dart';
 import 'package:provider/provider.dart';
 
 import '../data/loan_model.dart';
@@ -19,31 +19,10 @@ class ConnectedLoansList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<LoansViewModel>(
       builder: (context, model, child) {
-        if (model.errorMessage != null) {
-          return Center(child: Text(model.errorMessage!));
-        }
-
-        if (model.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        var localLoans = model.loans;
-
-        if (localLoans.isNotEmpty && filter != null && filter!.isNotEmpty) {
-          localLoans = localLoans.where((loan) {
-            final borrowerName = loan.borrower.name.toLowerCase();
-            final filterText = filter!.toLowerCase();
-            return borrowerName.contains(filterText);
-          }).toList();
-        }
-
-        return LoansList(
-          loans: localLoans,
-          selected: model.selectedLoan,
-          onTap: (l) {
-            model.selectedLoan = l;
-            onTap?.call(l);
-          },
+        return LoansView(
+          model: model,
+          searchFilter: filter ?? '',
+          onTap: onTap,
         );
       },
     );

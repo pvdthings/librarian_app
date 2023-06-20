@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
 import 'package:librarian_app/src/features/borrowers/presentation/borrower_details_pane.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/borrowers_list.dart';
+import 'package:librarian_app/src/features/borrowers/views/borrowers_view.dart';
 import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.dart';
 import 'package:librarian_app/src/features/common/widgets/search_field.dart';
 import 'package:provider/provider.dart';
@@ -41,12 +41,11 @@ class _BorrowersDesktopLayoutState extends State<BorrowersDesktopLayout> {
                             },
                           ),
                         ),
-                        BorrowersList(
-                          borrowers: model.filtered(_searchFilter),
-                          selected: model.selectedBorrower,
-                          onTap: (borrower) {
-                            model.selectedBorrower = borrower;
-                          },
+                        Expanded(
+                          child: BorrowersView(
+                            model: model,
+                            searchFilter: _searchFilter,
+                          ),
                         ),
                       ],
                     );
