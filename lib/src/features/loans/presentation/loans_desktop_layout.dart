@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.dart';
 import 'package:librarian_app/src/features/common/widgets/search_field.dart';
 import 'package:librarian_app/src/features/loans/presentation/loan_details_pane.dart';
-import 'package:librarian_app/src/features/loans/presentation/loans_list.dart';
+import 'package:librarian_app/src/features/loans/views/loans_view.dart';
 import 'package:provider/provider.dart';
 
 import '../data/loans_view_model.dart';
@@ -40,10 +40,11 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
                         },
                       ),
                     ),
-                    LoansList(
-                      loans: model.filtered(_searchFilter),
-                      selected: model.selectedLoan,
-                      onTap: (loan) => model.selectedLoan = loan,
+                    Expanded(
+                      child: LoansView(
+                        model: model,
+                        searchFilter: _searchFilter,
+                      ),
                     ),
                   ],
                 );
