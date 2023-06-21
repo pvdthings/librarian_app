@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/authentication/presentation/signin_page.dart';
+import 'package:librarian_app/src/features/authentication/views/signin_page.dart';
 import 'package:librarian_app/src/features/dashboard/views/dashboard_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
