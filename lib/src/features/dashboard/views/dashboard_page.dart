@@ -3,6 +3,7 @@ import 'package:librarian_app/src/features/authentication/data/user_view_model.d
 import 'package:librarian_app/src/features/borrowers/views/dashboard/borrowers_desktop_layout.dart';
 import 'package:librarian_app/src/features/borrowers/views/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.dart';
+import 'package:librarian_app/src/features/inventory/views/dashboard/inventory_desktop_layout.dart';
 import 'package:librarian_app/src/features/loans/views/checkout/checkout_page.dart';
 import 'package:librarian_app/src/features/loans/views/loan_details_page.dart';
 import 'package:librarian_app/src/features/loans/views/searchable_loans_list.dart';
@@ -64,7 +65,7 @@ class _DashboardPageState extends State<DashboardPage> {
     ),
     const DashboardModule(
       title: 'Inventory',
-      desktopLayout: Center(child: Text('Inventory Desktop Layout')),
+      desktopLayout: InventoryDesktopLayout(),
       mobileLayout: Center(child: Text('Inventory Mobile Layout')),
     ),
   ];
