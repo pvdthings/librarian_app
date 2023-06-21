@@ -5,7 +5,7 @@ import 'package:librarian_app/src/features/loans/views/dashboard/loan_details_pa
 import 'package:librarian_app/src/features/loans/views/loans_view.dart';
 import 'package:provider/provider.dart';
 
-import '../data/loans_view_model.dart';
+import '../../data/loans_view_model.dart';
 
 class LoansDesktopLayout extends StatefulWidget {
   const LoansDesktopLayout({super.key});

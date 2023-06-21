@@ -104,6 +104,7 @@ class LoansViewModel extends ChangeNotifier {
       checkedInDate: dateFormat.format(DateTime.now()),
     ));
 
+    clearSelectedLoan();
     await refresh();
   }
 
