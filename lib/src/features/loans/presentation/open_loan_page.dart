@@ -8,7 +8,7 @@ import 'package:librarian_app/src/features/loans/presentation/loan_details.dart'
 import 'package:librarian_app/src/features/borrowers/views/searchable_borrowers_list.dart';
 import 'package:provider/provider.dart';
 
-import '../../dashboard/presentation/mobile_layout.dart';
+import '../../dashboard/views/mobile_layout.dart';
 import '../data/thing_model.dart';
 
 class OpenLoanPage extends StatefulWidget {
