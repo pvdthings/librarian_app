@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/connected_borrowers_list.dart';
+import 'package:librarian_app/src/features/borrowers/views/connected_borrowers_list.dart';
 
 import '../../common/widgets/submit_text_field.dart';
 

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/connected_borrowers_list.dart';
 
 import '../data/borrower_model.dart';
+import '../data/borrowers_view_model.dart';
+import 'borrowers_view.dart';
 
 class BorrowerSearchDelegate extends SearchDelegate<BorrowerModel?> {
+  BorrowerSearchDelegate({required this.model});
+
+  final BorrowersViewModel model;
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -27,16 +32,18 @@ class BorrowerSearchDelegate extends SearchDelegate<BorrowerModel?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return ConnectedBorrowersList(
-      filter: query,
+    return BorrowersView(
+      model: model,
+      searchFilter: query,
       onTap: (borrower) => close(context, borrower),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return ConnectedBorrowersList(
-      filter: query,
+    return BorrowersView(
+      model: model,
+      searchFilter: query,
       onTap: (borrower) => close(context, borrower),
     );
   }

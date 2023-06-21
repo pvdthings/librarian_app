@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/borrowers_desktop_layout.dart';
+import 'package:librarian_app/src/features/borrowers/views/dashboard/borrowers_desktop_layout.dart';
 import 'package:librarian_app/src/features/loans/presentation/checkout/checkout_page.dart';
 import 'package:librarian_app/src/features/loans/presentation/loans_desktop_layout.dart';
 
