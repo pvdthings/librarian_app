@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.dart';
 
-import '../data/loan_model.dart';
-import 'checkin_dialog.dart';
-import 'loan_details.dart';
-import 'thing_number.dart';
+import '../../data/loan_model.dart';
+import '../../widgets/checkin_dialog.dart';
+import '../../widgets/loan_details.dart';
+import '../../widgets/thing_number.dart';
 
 class LoanDetailsPane extends StatefulWidget {
   final LoanModel? loan;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/views/dashboard/borrowers_desktop_layout.dart';
-import 'package:librarian_app/src/features/loans/presentation/checkout/checkout_page.dart';
-import 'package:librarian_app/src/features/loans/presentation/loans_desktop_layout.dart';
+import 'package:librarian_app/src/features/loans/views/checkout/checkout_page.dart';
+import 'package:librarian_app/src/features/loans/widgets/loans_desktop_layout.dart';
 
 class DashboardDesktopLayout extends StatefulWidget {
   const DashboardDesktopLayout({super.key});

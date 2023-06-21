@@ -4,9 +4,9 @@ import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.d
 import 'package:librarian_app/src/features/borrowers/views/borrower_issues.dart';
 import 'package:librarian_app/src/features/borrowers/views/borrower_search_delegate.dart';
 import 'package:librarian_app/src/features/loans/data/thing_model.dart';
-import 'package:librarian_app/src/features/loans/presentation/checkout/checkout_controller.dart';
-import 'package:librarian_app/src/features/loans/presentation/checkout/connected_thing_search_field.dart';
-import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
+import 'package:librarian_app/src/features/loans/views/checkout/checkout_controller.dart';
+import 'package:librarian_app/src/features/loans/views/checkout/connected_thing_search_field.dart';
+import 'package:librarian_app/src/features/loans/widgets/loan_details.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutStepper extends StatefulWidget {

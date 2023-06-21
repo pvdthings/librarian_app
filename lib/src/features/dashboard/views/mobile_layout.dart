@@ -3,9 +3,9 @@ import 'package:librarian_app/src/features/authentication/data/user_view_model.d
 import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 import 'package:librarian_app/src/features/borrowers/views/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.dart';
-import 'package:librarian_app/src/features/loans/presentation/checkout/checkout_page.dart';
-import 'package:librarian_app/src/features/loans/presentation/loan_details_page.dart';
-import 'package:librarian_app/src/features/loans/presentation/searchable_loans_list.dart';
+import 'package:librarian_app/src/features/loans/views/checkout/checkout_page.dart';
+import 'package:librarian_app/src/features/loans/views/loan_details_page.dart';
+import 'package:librarian_app/src/features/loans/views/searchable_loans_list.dart';
 import 'package:provider/provider.dart';
 
 class DashboardMobileLayout extends StatefulWidget {

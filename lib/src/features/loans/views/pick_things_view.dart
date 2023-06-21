@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../common/widgets/submit_text_field.dart';
 import '../data/thing_model.dart';
-import 'thing_list_tile.dart';
+import '../widgets/thing_list_tile.dart';
 
 class PickThingsView extends StatefulWidget {
   const PickThingsView({
