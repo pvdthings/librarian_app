@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/loan_model.dart';
 import '../data/loans_view_model.dart';
-import '../presentation/loans_list.dart';
+import '../widgets/loans_list.dart';
 
 class LoansView extends StatelessWidget {
   const LoansView({

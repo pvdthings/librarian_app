@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
 
 import '../data/borrower_model.dart';
-import '../presentation/borrowers_list.dart';
+import '../widgets/borrowers_list.dart';
 
 class BorrowersView extends StatelessWidget {
   const BorrowersView({

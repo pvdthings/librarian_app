@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../data/borrower_model.dart';
 import '../data/borrowers_view_model.dart';
-import 'dues_dialog.dart';
+import '../widgets/dues_dialog.dart';
 
 class BorrowerIssues extends StatelessWidget {
   final String borrowerId;

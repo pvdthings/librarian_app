@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/borrower_issues.dart';
-import 'package:librarian_app/src/features/borrowers/presentation/borrower_search_delegate.dart';
+import 'package:librarian_app/src/features/borrowers/views/borrower_issues.dart';
+import 'package:librarian_app/src/features/borrowers/views/borrower_search_delegate.dart';
 import 'package:librarian_app/src/features/loans/data/thing_model.dart';
-import 'package:librarian_app/src/features/loans/presentation/checkout/checkout_controller.dart';
-import 'package:librarian_app/src/features/loans/presentation/checkout/connected_thing_search_field.dart';
-import 'package:librarian_app/src/features/loans/presentation/loan_details.dart';
+import 'package:librarian_app/src/features/loans/views/checkout/checkout_controller.dart';
+import 'package:librarian_app/src/features/loans/views/checkout/connected_thing_search_field.dart';
+import 'package:librarian_app/src/features/loans/widgets/loan_details.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutStepper extends StatefulWidget {
@@ -96,51 +96,54 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
         Step(
           title: const Text('Select Borrower'),
           subtitle: _borrower != null ? Text(_borrower!.name) : null,
-          content: Column(
-            children: [
-              TextField(
-                controller: TextEditingController(text: _borrower?.name),
-                canRequestFocus: false,
-                decoration: const InputDecoration(
-                  labelText: 'Borrower',
-                  prefixIcon: Icon(Icons.person_rounded),
-                ),
-                onTap: () async {
-                  final borrower = await showSearch(
-                    context: context,
-                    delegate: BorrowerSearchDelegate(),
-                    useRootNavigator: true,
-                  );
+          content: Consumer<BorrowersViewModel>(
+            builder: (context, model, child) {
+              return Column(
+                children: [
+                  TextField(
+                    controller: TextEditingController(text: _borrower?.name),
+                    canRequestFocus: false,
+                    decoration: const InputDecoration(
+                      labelText: 'Borrower',
+                      prefixIcon: Icon(Icons.person_rounded),
+                    ),
+                    onTap: () async {
+                      final borrower = await showSearch(
+                        context: context,
+                        delegate: BorrowerSearchDelegate(model: model),
+                        useRootNavigator: true,
+                      );
 
-                  if (borrower != null) {
-                    setState(() => _borrower = borrower);
-                  }
-                },
-              ),
-              if (_borrower != null && !_borrower!.active) ...[
-                const SizedBox(height: 16),
-                BorrowerIssues(
-                  borrowerId: _borrower!.id,
-                  issues: _borrower!.issues,
-                  onRecordCashPayment: (success) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            success ? 'Success!' : 'Failed to record payment'),
-                      ),
-                    );
+                      if (borrower != null) {
+                        setState(() => _borrower = borrower);
+                      }
+                    },
+                  ),
+                  if (_borrower != null && !_borrower!.active) ...[
+                    const SizedBox(height: 16),
+                    BorrowerIssues(
+                      borrowerId: _borrower!.id,
+                      issues: _borrower!.issues,
+                      onRecordCashPayment: (success) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(success
+                                ? 'Success!'
+                                : 'Failed to record payment'),
+                          ),
+                        );
 
-                    if (success) {
-                      final data = Provider.of<BorrowersViewModel>(context,
-                          listen: false);
-                      final refreshedBorrower = data.borrowers
-                          .firstWhere((b) => b.id == _borrower!.id);
-                      setState(() => _borrower = refreshedBorrower);
-                    }
-                  },
-                ),
-              ],
-            ],
+                        if (success) {
+                          final refreshedBorrower = model.borrowers
+                              .firstWhere((b) => b.id == _borrower!.id);
+                          setState(() => _borrower = refreshedBorrower);
+                        }
+                      },
+                    ),
+                  ],
+                ],
+              );
+            },
           ),
           isActive: _index >= 0,
         ),

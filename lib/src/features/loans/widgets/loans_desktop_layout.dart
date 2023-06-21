@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.dart';
 import 'package:librarian_app/src/features/common/widgets/search_field.dart';
-import 'package:librarian_app/src/features/loans/presentation/loan_details_pane.dart';
+import 'package:librarian_app/src/features/loans/views/dashboard/loan_details_pane.dart';
 import 'package:librarian_app/src/features/loans/views/loans_view.dart';
 import 'package:provider/provider.dart';
 
