@@ -12,6 +12,14 @@ SUPABASE_PUBLIC_KEY
 
 Without a `SUPABASE_URL`, attempting signin will result in a 404 error.
 
+## Project Structure
+
+The app is broken down into features or modules, each containing directories for `data`, `widgets`, and `views`.
+
+- `data` contains Models, ViewModels, Repostories, or any other business logic.
+- `widgets` contains UI components that have no knowledge of the ViewModel.
+- `views` contains UI components that _do_ have knowledge of the ViewModel. Pages are the most common, but there may be smaller views that compose a page.
+
 ## Background
 
 [PVD Things](https://www.pvdthings.coop) is a non-profit & cooperative tool-lending library based in Providence, RI.
