@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/inventory_view_model.dart';
+import '../data/thing_model.dart';
 import '../widgets/inventory_list.dart';
 
 class InventoryView extends StatelessWidget {
@@ -25,6 +26,11 @@ class InventoryView extends StatelessWidget {
 
     return InventoryList(
       things: things,
+      selected: model.selected,
+      onTap: (thing) {
+        model.select(thing);
+        onTap?.call(thing);
+      },
     );
   }
 }

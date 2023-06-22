@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 
-import '../data/inventory_view_model.dart';
+import '../data/thing_model.dart';
 
 class InventoryList extends StatelessWidget {
   const InventoryList({
@@ -13,7 +13,7 @@ class InventoryList extends StatelessWidget {
 
   final List<ThingModel> things;
   final ThingModel? selected;
-  final void Function(ThingModel loan)? onTap;
+  final void Function(ThingModel thing)? onTap;
 
   @override
   Widget build(BuildContext context) {

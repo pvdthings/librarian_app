@@ -1,37 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/inventory/data/inventory_repository.dart';
+
+import 'thing_model.dart';
 
 class InventoryViewModel extends ChangeNotifier {
-  List<ThingModel> _things = [];
+  InventoryViewModel() {
+    refresh();
+  }
+
+  final _repository = InventoryRepository();
+
+  List<ThingModel> get things => _repository.things;
+
+  String? _selectedId;
+
+  ThingModel? get selected => _selectedId != null
+      ? things.firstWhere((t) => t.id == _selectedId)
+      : null;
 
   List<ThingModel> filtered(String filter) {
     if (filter.isEmpty) {
-      return _things;
+      return things;
     }
 
-    return _things;
+    return things
+        .where((t) => t.name.toLowerCase().contains(filter.toLowerCase()))
+        .toList();
   }
 
-  ThingModel? _selected;
-
-  ThingModel? get selected => _selected;
-
   void select(ThingModel thing) {
-    _selected = thing;
+    _selectedId = thing.id;
     notifyListeners();
   }
 
   void clearSelection() {
-    _selected = null;
+    _selectedId = null;
     notifyListeners();
   }
-}
 
-class ThingModel {
-  ThingModel({
-    required this.id,
-    required this.name,
-  });
-
-  final String id;
-  final String name;
+  Future<void> refresh() async {
+    await _repository.refresh();
+    notifyListeners();
+  }
 }

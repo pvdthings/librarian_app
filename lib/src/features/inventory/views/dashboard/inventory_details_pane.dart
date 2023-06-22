@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.dart';
 
-import '../../data/inventory_view_model.dart';
+import '../../data/thing_model.dart';
 import '../../widgets/inventory_details.dart';
 
 class InventoryDetailsPane extends StatefulWidget {
