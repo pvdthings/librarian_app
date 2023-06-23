@@ -55,7 +55,10 @@ class _InventoryDesktopLayoutState extends State<InventoryDesktopLayout> {
         Expanded(
           child: Consumer<InventoryViewModel>(
             builder: (context, inventory, child) {
-              return InventoryDetailsPane(thing: inventory.selected);
+              return InventoryDetailsPane(
+                thing: inventory.selected,
+                model: inventory,
+              );
             },
           ),
         ),

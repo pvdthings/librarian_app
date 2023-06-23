@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/inventory/data/detailed_thing_model.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory_repository.dart';
 
 import 'thing_model.dart';
@@ -12,11 +13,10 @@ class InventoryViewModel extends ChangeNotifier {
 
   List<ThingModel> get things => _repository.things;
 
-  String? _selectedId;
+  String? selectedId;
 
-  ThingModel? get selected => _selectedId != null
-      ? things.firstWhere((t) => t.id == _selectedId)
-      : null;
+  ThingModel? get selected =>
+      selectedId != null ? things.firstWhere((t) => t.id == selectedId) : null;
 
   List<ThingModel> filtered(String filter) {
     if (filter.isEmpty) {
@@ -28,13 +28,17 @@ class InventoryViewModel extends ChangeNotifier {
         .toList();
   }
 
+  Future<DetailedThingModel> getThingDetails({required String id}) async {
+    return await _repository.getThingDetails(id: id);
+  }
+
   void select(ThingModel thing) {
-    _selectedId = thing.id;
+    selectedId = thing.id;
     notifyListeners();
   }
 
   void clearSelection() {
-    _selectedId = null;
+    selectedId = null;
     notifyListeners();
   }
 

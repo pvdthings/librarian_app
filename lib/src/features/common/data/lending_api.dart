@@ -47,6 +47,10 @@ class LendingApi {
     return await _client.get('/things');
   }
 
+  static Future<Response> fetchThing({required String id}) async {
+    return await _client.get('/things/$id');
+  }
+
   static Future<Response> fetchInventoryItem({required int number}) async {
     return await _client.get('/inventory/$number');
   }
