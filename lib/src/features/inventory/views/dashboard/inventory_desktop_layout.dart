@@ -30,14 +30,24 @@ class _InventoryDesktopLayoutState extends State<InventoryDesktopLayout> {
                 return Column(
                   children: [
                     PaneHeader(
-                      child: SearchField(
-                        onChanged: (value) {
-                          setState(() => _searchFilter = value);
-                        },
-                        onClearPressed: () {
-                          setState(() => _searchFilter = '');
-                          model.clearSelection();
-                        },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SearchField(
+                            onChanged: (value) {
+                              setState(() => _searchFilter = value);
+                            },
+                            onClearPressed: () {
+                              setState(() => _searchFilter = '');
+                              model.clearSelection();
+                            },
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.add),
+                            tooltip: 'New Thing',
+                          ),
+                        ],
                       ),
                     ),
                     Expanded(

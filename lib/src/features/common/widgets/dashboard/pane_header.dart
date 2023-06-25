@@ -19,7 +19,8 @@ class PaneHeader extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: SizedBox(
           height: 48,
-          child: Center(child: child),
+          width: double.infinity,
+          child: child,
         ),
       ),
     );
