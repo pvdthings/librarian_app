@@ -64,7 +64,7 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     ),
     const DashboardModule(
-      title: 'Inventory',
+      title: 'Things',
       desktopLayout: InventoryDesktopLayout(),
       mobileLayout: Center(child: Text('Inventory Mobile Layout')),
     ),
@@ -121,7 +121,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Icons.build_rounded),
-                        label: "Inventory",
+                        label: "Things",
                       ),
                     ],
                     showSelectedLabels: false,

@@ -31,7 +31,7 @@ class DesktopDashboard extends StatelessWidget {
             ),
             NavigationRailDestination(
               icon: Icon(Icons.build_rounded),
-              label: Text('Inventory'),
+              label: Text('Things'),
               padding: EdgeInsets.symmetric(vertical: 8),
             ),
           ],

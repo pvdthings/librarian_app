@@ -43,6 +43,8 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
                   return const Center(child: CircularProgressIndicator());
                 }
 
+                final thingDetails = snapshot.data;
+
                 return Column(
                   children: [
                     PaneHeader(
@@ -52,7 +54,7 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
                           Row(
                             children: [
                               Text(
-                                thing.name,
+                                thingDetails!.name,
                                 style: const TextStyle(fontSize: 24),
                               ),
                             ],
@@ -85,9 +87,9 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
                         ],
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(16),
-                      child: InventoryDetails(),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: InventoryDetails(details: thingDetails),
                     ),
                   ],
                 );
