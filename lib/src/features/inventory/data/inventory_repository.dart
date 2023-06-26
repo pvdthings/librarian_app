@@ -17,4 +17,16 @@ class InventoryRepository {
     final response = await LendingApi.fetchThing(id: id);
     return DetailedThingModel.fromJson(response.data as Map<String, dynamic>);
   }
+
+  Future<ThingModel> createThing({
+    required String name,
+    String? spanishName,
+  }) async {
+    final response = await LendingApi.createThing(
+      name: name,
+      spanishName: spanishName,
+    );
+
+    return ThingModel.fromJson(response.data as Map<String, dynamic>);
+  }
 }

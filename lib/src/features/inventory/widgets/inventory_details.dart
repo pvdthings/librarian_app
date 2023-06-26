@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/common/widgets/input_decoration.dart';
 import 'package:librarian_app/src/features/inventory/data/detailed_thing_model.dart';
 
 class InventoryDetails extends StatelessWidget {
@@ -70,6 +71,7 @@ class InventoryDetails extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final item = details.items[index];
                         return ListTile(
+                          dense: true,
                           leading:
                               item.available ? checkedInIcon : checkedOutIcon,
                           title: Text('#${item.number}'),
@@ -91,17 +93,12 @@ class InventoryDetails extends StatelessWidget {
   }
 }
 
-const inputDecoration = InputDecoration(
-  border: OutlineInputBorder(),
-  constraints: BoxConstraints(maxWidth: 500),
-);
-
 const checkedInIcon = Tooltip(
   message: 'Available',
-  child: Icon(Icons.circle, color: Colors.green),
+  child: Icon(Icons.circle, color: Colors.green, size: 16),
 );
 
 const checkedOutIcon = Tooltip(
   message: 'Checked out',
-  child: Icon(Icons.circle, color: Colors.amber),
+  child: Icon(Icons.circle, color: Colors.amber, size: 16),
 );
