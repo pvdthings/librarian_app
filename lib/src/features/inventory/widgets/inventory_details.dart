@@ -35,60 +35,50 @@ class InventoryDetails extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 32),
-          SizedBox(
-            width: 500,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Card(
-                  elevation: 0,
-                  margin: EdgeInsets.zero,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Column(
-                      children: [
-                        DetailsCardHeader(
-                          title: 'Inventory',
-                          trailing: TextButton.icon(
-                            onPressed: () {},
-                            icon: const Icon(Icons.add),
-                            label: const Text('Add items'),
-                          ),
-                          children: [
-                            Row(
-                              children: [
-                                Text('Stock: ${details.stock}'),
-                                const SizedBox(width: 16),
-                                Text('Available: ${details.available}'),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        if (details.items.isNotEmpty)
-                          ListView.separated(
-                            shrinkWrap: true,
-                            itemCount: details.items.length,
-                            itemBuilder: (context, index) {
-                              final item = details.items[index];
-                              return ListTile(
-                                leading: item.available
-                                    ? checkedInIcon
-                                    : checkedOutIcon,
-                                title: Text('#${item.number}'),
-                                trailing: Text(item.brand ?? 'Generic'),
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return const Divider();
-                            },
-                          ),
-                      ],
+          Card(
+            elevation: 0,
+            margin: EdgeInsets.zero,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Column(
+                children: [
+                  DetailsCardHeader(
+                    title: 'Inventory',
+                    trailing: TextButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add items'),
                     ),
+                    children: [
+                      Row(
+                        children: [
+                          Text('Stock: ${details.stock}'),
+                          const SizedBox(width: 16),
+                          Text('Available: ${details.available}'),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  if (details.items.isNotEmpty)
+                    ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: details.items.length,
+                      itemBuilder: (context, index) {
+                        final item = details.items[index];
+                        return ListTile(
+                          leading:
+                              item.available ? checkedInIcon : checkedOutIcon,
+                          title: Text('#${item.number}'),
+                          trailing: Text(item.brand ?? 'Generic'),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Divider();
+                      },
+                    ),
+                ],
+              ),
             ),
           ),
         ],
