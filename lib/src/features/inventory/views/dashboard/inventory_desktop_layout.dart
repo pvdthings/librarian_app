@@ -100,43 +100,61 @@ class CreateThingDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Padding(
+      child: Container(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: 48,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.close),
+        child: IntrinsicWidth(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'New Thing',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _name,
+                decoration: inputDecoration.copyWith(
+                  labelText: 'Name',
+                  icon: const Icon(Icons.build),
+                  constraints: const BoxConstraints(minWidth: 500),
+                  ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: _spanishName,
+                decoration: inputDecoration.copyWith(
+                  labelText: 'Name (Spanish)',
+                  icon: const Icon(Icons.build),
+                  constraints: const BoxConstraints(minWidth: 500),
                 ),
               ),
-            ),
-            TextField(
-              controller: _name,
-              decoration: inputDecoration.copyWith(labelText: 'Name'),
-            ),
-            TextField(
-              controller: _spanishName,
-              decoration: inputDecoration.copyWith(labelText: 'Name (Spanish)'),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                FilledButton(
-                  onPressed: () {},
-                  child: const Text('Cancel'),
-                ),
-                FilledButton(
-                  onPressed: () {},
-                  child: const Text('Create'),
-                ),
-              ],
-            ),
-          ],
+              const SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  OutlinedButton(
+                    onPressed: () {},
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 16),
+                  FilledButton(
+                    onPressed: () {},
+                    child: const Text('Create'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
