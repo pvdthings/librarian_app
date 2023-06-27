@@ -60,30 +60,31 @@ class InventoryDetails extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Card(
-                  elevation: 0,
-                  margin: EdgeInsets.zero,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: details.items.length,
-                      itemBuilder: (context, index) {
-                        final item = details.items[index];
-                        return ListTile(
-                          dense: true,
-                          leading:
-                              item.available ? checkedInIcon : checkedOutIcon,
-                          title: Text('#${item.number}'),
-                          trailing: Text(item.brand ?? 'Generic'),
-                        );
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const Divider();
-                      },
+                if (details.items.isNotEmpty)
+                  Card(
+                    elevation: 0,
+                    margin: EdgeInsets.zero,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemCount: details.items.length,
+                        itemBuilder: (context, index) {
+                          final item = details.items[index];
+                          return ListTile(
+                            dense: true,
+                            leading:
+                                item.available ? checkedInIcon : checkedOutIcon,
+                            title: Text('#${item.number}'),
+                            trailing: Text(item.brand ?? 'Generic'),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider();
+                        },
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
