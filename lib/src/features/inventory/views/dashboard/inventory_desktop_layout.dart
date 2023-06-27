@@ -49,8 +49,15 @@ class _InventoryDesktopLayoutState extends State<InventoryDesktopLayout> {
                                 context: context,
                                 builder: (context) {
                                   return CreateThingDialog(
-                                    context,
-                                    onCreate: (name, spanishName) {},
+                                    onCreate: (name, spanishName) {
+                                      model
+                                          .createThing(
+                                            name: name,
+                                            spanishName: spanishName,
+                                          )
+                                          .then((value) =>
+                                              Navigator.of(context).pop());
+                                    },
                                   );
                                 },
                               );
@@ -89,9 +96,8 @@ class _InventoryDesktopLayoutState extends State<InventoryDesktopLayout> {
 }
 
 class CreateThingDialog extends StatelessWidget {
-  CreateThingDialog(this.parentContext, {super.key, this.onCreate});
+  CreateThingDialog({super.key, this.onCreate});
 
-  final BuildContext parentContext;
   final void Function(String name, String? spanishName)? onCreate;
 
   final _name = TextEditingController();
@@ -115,7 +121,9 @@ class CreateThingDialog extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     icon: const Icon(Icons.close),
                   ),
                 ],
@@ -127,7 +135,7 @@ class CreateThingDialog extends StatelessWidget {
                   labelText: 'Name',
                   icon: const Icon(Icons.build),
                   constraints: const BoxConstraints(minWidth: 500),
-                  ),
+                ),
               ),
               const SizedBox(height: 16),
               TextField(
@@ -143,12 +151,16 @@ class CreateThingDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                     child: const Text('Cancel'),
                   ),
                   const SizedBox(width: 16),
                   FilledButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      onCreate?.call(_name.text, _spanishName.text);
+                    },
                     child: const Text('Create'),
                   ),
                 ],

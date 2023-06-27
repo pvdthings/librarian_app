@@ -55,7 +55,10 @@ class LendingApi {
     required String name,
     String? spanishName,
   }) async {
-    return await _client.put('/things');
+    return await _client.put('/things', data: {
+      'name': name,
+      'spanishName': spanishName,
+    });
   }
 
   static Future<Response> fetchInventoryItem({required int number}) async {

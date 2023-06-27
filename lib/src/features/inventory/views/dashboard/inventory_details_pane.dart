@@ -39,6 +39,12 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
           : FutureBuilder<DetailedThingModel>(
               future: widget.model.getThingDetails(id: thing.id),
               builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
+                }
+
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }
