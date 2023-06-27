@@ -52,11 +52,18 @@ class _InventoryDesktopLayoutState extends State<InventoryDesktopLayout> {
                                     onCreate: (name, spanishName) {
                                       model
                                           .createThing(
-                                            name: name,
-                                            spanishName: spanishName,
-                                          )
-                                          .then((value) =>
-                                              Navigator.of(context).pop());
+                                              name: name,
+                                              spanishName: spanishName)
+                                          .then((value) {
+                                        Navigator.of(context).pop();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content:
+                                                Text('${value.name} created'),
+                                          ),
+                                        );
+                                      });
                                     },
                                   );
                                 },
