@@ -93,9 +93,13 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: InventoryDetails(details: thingDetails),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: InventoryDetails(details: thingDetails),
+                        ),
+                      ),
                     ),
                   ],
                 );
