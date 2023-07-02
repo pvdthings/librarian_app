@@ -65,6 +65,22 @@ class LendingApi {
     return await _client.get('/inventory/$number');
   }
 
+  static Future<Response> createInventoryItems(
+    String thingId, {
+    required int quantity,
+    required String? brand,
+    required String? description,
+    required double? estimatedValue,
+  }) async {
+    return await _client.put('/inventory', data: {
+      'thingId': thingId,
+      'quantity': quantity,
+      'brand': brand,
+      'description': description,
+      'estimatedValue': estimatedValue,
+    });
+  }
+
   static Future<Response> recordCashPayment({
     required double cash,
     required String borrowerId,

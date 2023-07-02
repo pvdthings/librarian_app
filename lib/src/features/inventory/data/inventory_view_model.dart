@@ -46,6 +46,24 @@ class InventoryViewModel extends ChangeNotifier {
     return thing;
   }
 
+  Future<void> createItems({
+    required String thingId,
+    required int quantity,
+    required String? brand,
+    required String? description,
+    required double? estimatedValue,
+  }) async {
+    await _repository.createItems(
+      thingId: thingId,
+      quantity: quantity,
+      brand: brand,
+      description: description,
+      estimatedValue: estimatedValue,
+    );
+
+    notifyListeners();
+  }
+
   void select(ThingModel thing) {
     selectedId = thing.id;
     notifyListeners();

@@ -29,4 +29,20 @@ class InventoryRepository {
 
     return ThingModel.fromJson(response.data as Map<String, dynamic>);
   }
+
+  Future<void> createItems({
+    required String thingId,
+    required int quantity,
+    required String? brand,
+    required String? description,
+    required double? estimatedValue,
+  }) async {
+    await LendingApi.createInventoryItems(
+      thingId,
+      quantity: quantity,
+      brand: brand,
+      description: description,
+      estimatedValue: estimatedValue,
+    );
+  }
 }

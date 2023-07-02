@@ -6,9 +6,20 @@ import 'package:librarian_app/src/features/inventory/widgets/add_inventory_dialo
 import 'details_card_header.dart';
 
 class InventoryDetails extends StatelessWidget {
-  const InventoryDetails({super.key, required this.details});
+  const InventoryDetails({
+    super.key,
+    required this.details,
+    this.onAddItems,
+  });
 
   final DetailedThingModel details;
+
+  final void Function(
+    String? brand,
+    String? description,
+    double? estimatedValue,
+    int quantity,
+  )? onAddItems;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +59,9 @@ class InventoryDetails extends StatelessWidget {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) => AddInventoryDialog(),
+                        builder: (context) => AddInventoryDialog(
+                          onCreate: onAddItems,
+                        ),
                       );
                     },
                     icon: const Icon(Icons.add),

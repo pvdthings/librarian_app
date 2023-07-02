@@ -97,7 +97,21 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
                       child: SingleChildScrollView(
                         child: Padding(
                           padding: const EdgeInsets.all(16),
-                          child: InventoryDetails(details: thingDetails),
+                          child: InventoryDetails(
+                            details: thingDetails,
+                            onAddItems:
+                                (brand, description, estimatedValue, quantity) {
+                              widget.model
+                                  .createItems(
+                                    thingId: thing.id,
+                                    quantity: quantity,
+                                    brand: brand,
+                                    description: description,
+                                    estimatedValue: estimatedValue,
+                                  )
+                                  .then((_) => Navigator.of(context).pop());
+                            },
+                          ),
                         ),
                       ),
                     ),
