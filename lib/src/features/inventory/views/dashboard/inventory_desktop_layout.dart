@@ -5,7 +5,6 @@ import 'package:librarian_app/src/features/inventory/views/dashboard/inventory_d
 import 'package:provider/provider.dart';
 
 import '../../data/inventory_view_model.dart';
-import '../../widgets/create_thing_dialog.dart';
 import '../inventory_view.dart';
 
 class InventoryDesktopLayout extends StatefulWidget {
@@ -31,48 +30,14 @@ class _InventoryDesktopLayoutState extends State<InventoryDesktopLayout> {
                 return Column(
                   children: [
                     PaneHeader(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SearchField(
-                            onChanged: (value) {
-                              setState(() => _searchFilter = value);
-                            },
-                            onClearPressed: () {
-                              setState(() => _searchFilter = '');
-                              model.clearSelection();
-                            },
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return CreateThingDialog(
-                                    onCreate: (name, spanishName) {
-                                      model
-                                          .createThing(
-                                              name: name,
-                                              spanishName: spanishName)
-                                          .then((value) {
-                                        Navigator.of(context).pop();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content:
-                                                Text('${value.name} created'),
-                                          ),
-                                        );
-                                      });
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(Icons.add),
-                            tooltip: 'New Thing',
-                          ),
-                        ],
+                      child: SearchField(
+                        onChanged: (value) {
+                          setState(() => _searchFilter = value);
+                        },
+                        onClearPressed: () {
+                          setState(() => _searchFilter = '');
+                          model.clearSelection();
+                        },
                       ),
                     ),
                     Expanded(

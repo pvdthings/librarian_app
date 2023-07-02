@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/views/dashboard/borrowers_desktop_layout.dart';
 import 'package:librarian_app/src/features/borrowers/views/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.dart';
+import 'package:librarian_app/src/features/inventory/data/inventory_view_model.dart';
 import 'package:librarian_app/src/features/inventory/views/dashboard/inventory_desktop_layout.dart';
+import 'package:librarian_app/src/features/inventory/widgets/create_thing_dialog.dart';
 import 'package:librarian_app/src/features/loans/views/checkout/checkout_page.dart';
 import 'package:librarian_app/src/features/loans/views/loan_details_page.dart';
 import 'package:librarian_app/src/features/loans/views/searchable_loans_list.dart';
 import 'package:librarian_app/src/features/loans/views/dashboard/loans_desktop_layout.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
+import 'package:provider/provider.dart';
 
 import 'desktop_dashboard.dart';
 
@@ -20,6 +23,9 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   int _moduleIndex = 0;
+
+  late final _inventory =
+      Provider.of<InventoryViewModel>(context, listen: false);
 
   late final List<DashboardModule> _modules = [
     DashboardModule(
@@ -35,16 +41,14 @@ class _DashboardPageState extends State<DashboardPage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: getFloatingActionButton(
+        tooltip: 'New Loan',
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const CheckoutPage()),
           );
         },
-        child: const Icon(
-          Icons.add_rounded,
-        ),
       ),
     ),
     DashboardModule(
@@ -60,11 +64,39 @@ class _DashboardPageState extends State<DashboardPage> {
           }));
         },
       ),
+      floatingActionButton: getFloatingActionButton(
+        tooltip: 'DISABLED',
+        onPressed: () {},
+      ),
     ),
-    const DashboardModule(
+    DashboardModule(
       title: 'Things',
-      desktopLayout: InventoryDesktopLayout(),
-      mobileLayout: Center(child: Text('Inventory Mobile Layout')),
+      desktopLayout: const InventoryDesktopLayout(),
+      mobileLayout: const Center(child: Text('Inventory Mobile Layout')),
+      floatingActionButton: getFloatingActionButton(
+        tooltip: 'New Thing',
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return CreateThingDialog(
+                onCreate: (name, spanishName) {
+                  _inventory
+                      .createThing(name: name, spanishName: spanishName)
+                      .then((value) {
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('${value.name} created'),
+                      ),
+                    );
+                  });
+                },
+              );
+            },
+          );
+        },
+      ),
     ),
   ];
 
@@ -97,6 +129,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   onDestinationSelected: (index) {
                     setState(() => _moduleIndex = index);
                   },
+                  leading: module.floatingActionButton,
                   child: module.desktopLayout,
                 ),
           bottomNavigationBar: mobile
@@ -146,4 +179,17 @@ class DashboardModule {
   final Widget desktopLayout;
   final Widget mobileLayout;
   final Widget? floatingActionButton;
+}
+
+FloatingActionButton getFloatingActionButton({
+  required void Function() onPressed,
+  String? tooltip,
+}) {
+  return FloatingActionButton.small(
+    onPressed: onPressed,
+    tooltip: tooltip,
+    child: const Icon(
+      Icons.add_rounded,
+    ),
+  );
 }

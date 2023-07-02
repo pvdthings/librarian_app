@@ -4,11 +4,13 @@ class DesktopDashboard extends StatelessWidget {
   const DesktopDashboard({
     super.key,
     required this.child,
+    this.leading,
     this.selectedIndex = 0,
     this.onDestinationSelected,
   });
 
   final Widget child;
+  final Widget? leading;
   final int selectedIndex;
   final void Function(int)? onDestinationSelected;
 
@@ -18,6 +20,7 @@ class DesktopDashboard extends StatelessWidget {
       children: [
         NavigationRail(
           labelType: NavigationRailLabelType.selected,
+          leading: leading,
           destinations: const [
             NavigationRailDestination(
               icon: Icon(Icons.handshake_rounded),
