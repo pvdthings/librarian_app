@@ -67,7 +67,7 @@ class _DashboardPageState extends State<DashboardPage> {
         },
       ),
       floatingActionButton: getFloatingActionButton(
-        tooltip: 'DISABLED',
+        tooltip: 'Coming Soon',
         onPressed: () {},
       ),
     ),
