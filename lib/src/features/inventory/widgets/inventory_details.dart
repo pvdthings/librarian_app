@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/widgets/input_decoration.dart';
 import 'package:librarian_app/src/features/inventory/data/detailed_thing_model.dart';
 import 'package:librarian_app/src/features/inventory/widgets/add_inventory_dialog.dart';
+import 'package:librarian_app/src/utils/media_query.dart';
 
 import 'details_card_header.dart';
 
@@ -46,7 +47,7 @@ class InventoryDetails extends StatelessWidget {
         ),
         const SizedBox(height: 32),
         Card(
-          elevation: 0,
+          elevation: isMobile(context) ? 1 : 0,
           margin: EdgeInsets.zero,
           clipBehavior: Clip.antiAlias,
           child: Padding(

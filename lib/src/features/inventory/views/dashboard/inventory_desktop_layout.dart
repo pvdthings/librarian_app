@@ -42,7 +42,6 @@ class _InventoryDesktopLayoutState extends State<InventoryDesktopLayout> {
                     ),
                     Expanded(
                       child: InventoryView(
-                        model: model,
                         searchFilter: _searchFilter,
                       ),
                     ),
