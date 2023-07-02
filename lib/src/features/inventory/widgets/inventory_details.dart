@@ -71,9 +71,9 @@ class InventoryDetails extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text('Stock: ${details.stock}'),
-                        const SizedBox(width: 16),
                         Text('Available: ${details.available}'),
+                        const SizedBox(width: 16),
+                        Text('Total: ${details.stock}'),
                       ],
                     ),
                   ],
