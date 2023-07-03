@@ -9,6 +9,15 @@ class InventoryViewModel extends ChangeNotifier {
     refresh();
   }
 
+  bool _editing = false;
+
+  bool get editing => _editing;
+
+  set editing(bool value) {
+    _editing = value;
+    notifyListeners();
+  }
+
   final _repository = InventoryRepository();
 
   List<ThingModel> get things => _repository.things;
@@ -46,6 +55,20 @@ class InventoryViewModel extends ChangeNotifier {
     return thing;
   }
 
+  Future<void> updateThing({
+    required String thingId,
+    String? name,
+    String? spanishName,
+  }) async {
+    await _repository.updateThing(
+      thingId: thingId,
+      name: name,
+      spanishName: spanishName,
+    );
+
+    refresh();
+  }
+
   Future<void> createItems({
     required String thingId,
     required int quantity,
@@ -65,6 +88,7 @@ class InventoryViewModel extends ChangeNotifier {
   }
 
   void select(ThingModel thing) {
+    _editing = false;
     selectedId = thing.id;
     notifyListeners();
   }

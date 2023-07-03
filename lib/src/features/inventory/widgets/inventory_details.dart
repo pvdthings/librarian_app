@@ -9,11 +9,19 @@ import 'details_card_header.dart';
 class InventoryDetails extends StatelessWidget {
   const InventoryDetails({
     super.key,
-    required this.details,
+    required this.nameController,
+    required this.spanishNameController,
+    required this.items,
+    required this.availableItems,
     this.onAddItems,
+    this.readOnly = true,
   });
 
-  final DetailedThingModel details;
+  final TextEditingController nameController;
+  final TextEditingController spanishNameController;
+  final List<ItemModel> items;
+  final int availableItems;
+  final bool readOnly;
 
   final void Function(
     String? brand,
@@ -28,8 +36,8 @@ class InventoryDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextField(
-          controller: TextEditingController(text: details.name),
-          readOnly: true,
+          controller: nameController,
+          readOnly: readOnly,
           decoration: inputDecoration.copyWith(
             icon: const Icon(Icons.build),
             labelText: 'Name',
@@ -37,9 +45,9 @@ class InventoryDetails extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         TextField(
-          controller: TextEditingController(text: details.spanishName),
-          readOnly: true,
-          enabled: details.spanishName != null,
+          controller: spanishNameController,
+          readOnly: readOnly,
+          enabled: spanishNameController.text.isNotEmpty || !readOnly,
           decoration: inputDecoration.copyWith(
             icon: const Icon(Icons.build),
             labelText: 'Name (Spanish)',
@@ -71,20 +79,21 @@ class InventoryDetails extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text('Available: ${details.available}'),
+                        Text('Available: $availableItems'),
                         const SizedBox(width: 16),
-                        Text('Total: ${details.stock}'),
+                        Text('Total: ${items.length}'),
                       ],
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
-                if (details.items.isNotEmpty)
+                if (items.isNotEmpty)
                   ListView.separated(
                     shrinkWrap: true,
-                    itemCount: details.items.length,
+                    itemCount: items.length,
                     itemBuilder: (context, index) {
-                      final item = details.items[index];
+                      final item = items[index];
+
                       return ListTile(
                         leading:
                             item.available ? checkedInIcon : checkedOutIcon,

@@ -61,6 +61,17 @@ class LendingApi {
     });
   }
 
+  static Future<Response> updateThing(
+    String thingId, {
+    String? name,
+    String? spanishName,
+  }) async {
+    return await _client.patch('/things/$thingId', data: {
+      'name': name,
+      'spanishName': spanishName,
+    });
+  }
+
   static Future<Response> fetchInventoryItem({required int number}) async {
     return await _client.get('/inventory/$number');
   }

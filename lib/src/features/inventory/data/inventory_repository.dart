@@ -30,6 +30,18 @@ class InventoryRepository {
     return ThingModel.fromJson(response.data as Map<String, dynamic>);
   }
 
+  Future<void> updateThing({
+    required String thingId,
+    String? name,
+    String? spanishName,
+  }) async {
+    await LendingApi.updateThing(
+      thingId,
+      name: name,
+      spanishName: spanishName,
+    );
+  }
+
   Future<void> createItems({
     required String thingId,
     required int quantity,

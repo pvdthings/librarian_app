@@ -23,7 +23,13 @@ class InventoryDetailsView extends StatelessWidget {
 
             final details = snapshot.data!;
 
-            return InventoryDetails(details: details);
+            return InventoryDetails(
+              nameController: TextEditingController(text: details.name),
+              spanishNameController:
+                  TextEditingController(text: details.spanishName),
+              items: details.items,
+              availableItems: details.available,
+            );
           },
         );
       },

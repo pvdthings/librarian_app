@@ -21,16 +21,20 @@ class InventoryDetailsPane extends StatefulWidget {
 }
 
 class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
-  DetailedThingModel? details;
-  bool _editMode = false;
-
-  void _reset() {
-    _editMode = false;
+  Future<void> _save(String name, String spanishName) async {
+    await widget.model.updateThing(
+      thingId: widget.thing!.id,
+      name: name,
+      spanishName: spanishName,
+    );
+    widget.model.editing = false;
   }
 
   @override
   Widget build(BuildContext context) {
     final thing = widget.thing;
+    final name = TextEditingController(text: thing?.name);
+    final spanishName = TextEditingController(text: thing?.spanishName);
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -67,24 +71,26 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
                           ),
                           Row(
                             children: [
-                              if (_editMode)
+                              if (widget.model.editing)
                                 IconButton(
-                                  onPressed: () {
-                                    setState(_reset);
-                                  },
+                                  onPressed: () async => await _save(
+                                    name.text,
+                                    spanishName.text,
+                                  ),
                                   icon: const Icon(Icons.save_rounded),
                                   tooltip: 'Save',
                                 ),
                               const SizedBox(width: 4),
-                              _editMode
+                              widget.model.editing
                                   ? IconButton(
-                                      onPressed: () => setState(_reset),
+                                      onPressed: () =>
+                                          widget.model.editing = false,
                                       icon: const Icon(Icons.close_rounded),
                                       tooltip: 'Cancel',
                                     )
                                   : IconButton(
                                       onPressed: () =>
-                                          setState(() => _editMode = true),
+                                          widget.model.editing = true,
                                       icon: const Icon(Icons.edit_rounded),
                                       tooltip: 'Edit',
                                     ),
@@ -98,9 +104,17 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: InventoryDetails(
-                            details: thingDetails,
-                            onAddItems:
-                                (brand, description, estimatedValue, quantity) {
+                            readOnly: !widget.model.editing,
+                            nameController: name,
+                            spanishNameController: spanishName,
+                            items: thingDetails.items,
+                            availableItems: thingDetails.available,
+                            onAddItems: (
+                              brand,
+                              description,
+                              estimatedValue,
+                              quantity,
+                            ) {
                               widget.model
                                   .createItems(
                                     thingId: thing.id,
