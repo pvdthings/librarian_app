@@ -15,6 +15,16 @@ class LoansList extends StatelessWidget {
     this.onTap,
   });
 
+  String _getBorrowerInitials(String name) {
+    final uppercaseName = name.toUpperCase();
+    final firstLetter = uppercaseName[0];
+
+    final split = uppercaseName.split(' ');
+    final secondLetter = split.length > 1 ? split[1][0] : uppercaseName[1];
+
+    return firstLetter + secondLetter;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -22,9 +32,17 @@ class LoansList extends StatelessWidget {
       itemBuilder: (context, index) {
         final loan = loans[index];
 
+        final thingNumber = Text('#${loan.thing.number}');
+        final thingName = Text(loan.thing.name ?? 'Unknown Thing');
+        final borrowerInitials = _getBorrowerInitials(loan.borrower.name);
+
         return ListTile(
-          title: Text(loan.thing.name ?? 'Unknown Thing'),
-          subtitle: Text(loan.borrower.name),
+          leading: CircleAvatar(
+            backgroundColor: Colors.black38,
+            child: Text(borrowerInitials),
+          ),
+          title: thingName,
+          subtitle: thingNumber,
           trailing: loan.isOverdue
               ? const Tooltip(
                   message: 'Overdue',
