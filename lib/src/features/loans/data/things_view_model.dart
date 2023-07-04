@@ -6,7 +6,7 @@ import 'thing_model.dart';
 class ThingsViewModel extends ChangeNotifier {
   Future<ThingModel?> getOne({required int number}) async {
     try {
-      final response = await LendingApi.fetchThing(number: number);
+      final response = await LendingApi.fetchInventoryItem(number: number);
       final data = response.data;
       return ThingModel(
         id: data['id'] as String,

@@ -8,7 +8,6 @@ import 'package:librarian_app/src/features/loans/widgets/loan_details.dart';
 import 'package:librarian_app/src/features/borrowers/views/searchable_borrowers_list.dart';
 import 'package:provider/provider.dart';
 
-import '../../dashboard/views/mobile_layout.dart';
 import '../data/thing_model.dart';
 
 class OpenLoanPage extends StatefulWidget {
@@ -116,11 +115,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
 
     Future.delayed(
       Duration.zero,
-      () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-        builder: (context) {
-          return const DashboardMobileLayout();
-        },
-      ), (route) => false),
+      () => Navigator.of(context).pop(),
     );
   }
 

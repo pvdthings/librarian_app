@@ -4,7 +4,6 @@ import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details.dart';
 import 'package:provider/provider.dart';
 
-import '../../dashboard/views/mobile_layout.dart';
 import '../data/loan_model.dart';
 
 class LoanDetailsPage extends StatefulWidget {
@@ -45,11 +44,6 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
     }
   }
 
-  Future<void> _closeLoan(String loanId, String thingId) async {
-    final loans = Provider.of<LoansViewModel>(context, listen: false);
-    await loans.closeLoan(loanId: loanId, thingId: thingId);
-  }
-
   void _checkIn() {
     showDialog(
       context: context,
@@ -67,18 +61,16 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
             TextButton(
               child: const Text("Yes"),
               onPressed: () async {
-                await _closeLoan(widget.loan.id, thing.id);
+                final loans =
+                    Provider.of<LoansViewModel>(context, listen: false);
+                await loans.closeLoan(
+                    loanId: widget.loan.id, thingId: widget.loan.thing.id);
 
-                Future.delayed(
+                await Future.delayed(
                   Duration.zero,
                   () {
                     Navigator.of(context).pop();
-                    return Navigator.pushAndRemoveUntil(context,
-                        MaterialPageRoute(
-                      builder: (context) {
-                        return const DashboardMobileLayout();
-                      },
-                    ), (route) => false);
+                    Navigator.of(context).pop();
                   },
                 );
               },
