@@ -45,7 +45,7 @@ class DesktopDashboard extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            margin: const EdgeInsets.only(top: 8, right: 8, bottom: 8),
+            margin: const EdgeInsets.only(right: 8, bottom: 8),
             child: child,
           ),
         ),
