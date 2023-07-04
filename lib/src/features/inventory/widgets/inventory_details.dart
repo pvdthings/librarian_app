@@ -23,7 +23,7 @@ class InventoryDetails extends StatelessWidget {
   final int availableItems;
   final bool readOnly;
 
-  final void Function(
+  final Future<void> Function(
     String? brand,
     String? description,
     double? estimatedValue,

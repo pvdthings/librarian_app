@@ -4,7 +4,7 @@ import 'package:librarian_app/src/features/common/widgets/input_decoration.dart'
 class AddInventoryDialog extends StatelessWidget {
   AddInventoryDialog({super.key, this.onCreate});
 
-  final void Function(
+  final Future<void> Function(
     String? brand,
     String? description,
     double? estimatedValue,
@@ -90,13 +90,17 @@ class AddInventoryDialog extends StatelessWidget {
                   ),
                   const SizedBox(width: 16),
                   FilledButton(
-                    onPressed: () {
-                      onCreate?.call(
+                    onPressed: () async {
+                      await onCreate?.call(
                         _brand.text,
                         _description.text,
                         double.tryParse(_estimatedValue.text),
                         int.tryParse(_quantity.text) ?? 1,
                       );
+
+                      await Future.delayed(Duration.zero, () {
+                        Navigator.of(context).pop();
+                      });
                     },
                     child: const Text('Create'),
                   ),

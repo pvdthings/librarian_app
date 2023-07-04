@@ -4,7 +4,14 @@ import 'package:librarian_app/src/features/inventory/widgets/inventory_details.d
 import 'package:provider/provider.dart';
 
 class InventoryDetailsView extends StatelessWidget {
-  const InventoryDetailsView({super.key});
+  const InventoryDetailsView({
+    super.key,
+    required this.nameController,
+    required this.spanishNameController,
+  });
+
+  final TextEditingController nameController;
+  final TextEditingController spanishNameController;
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +31,25 @@ class InventoryDetailsView extends StatelessWidget {
             final details = snapshot.data!;
 
             return InventoryDetails(
-              nameController: TextEditingController(text: details.name),
-              spanishNameController:
-                  TextEditingController(text: details.spanishName),
+              nameController: nameController,
+              spanishNameController: spanishNameController,
               items: details.items,
               availableItems: details.available,
+              readOnly: !inventory.editing,
+              onAddItems: (
+                brand,
+                description,
+                estimatedValue,
+                quantity,
+              ) async {
+                await inventory.createItems(
+                  thingId: details.id,
+                  quantity: quantity,
+                  brand: brand,
+                  description: description,
+                  estimatedValue: estimatedValue,
+                );
+              },
             );
           },
         );

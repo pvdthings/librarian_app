@@ -4,7 +4,7 @@ import 'package:librarian_app/src/features/borrowers/views/searchable_borrowers_
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory_view_model.dart';
 import 'package:librarian_app/src/features/inventory/views/dashboard/inventory_desktop_layout.dart';
-import 'package:librarian_app/src/features/inventory/views/inventory_details_view.dart';
+import 'package:librarian_app/src/features/inventory/views/inventory_details_page.dart';
 import 'package:librarian_app/src/features/inventory/views/searchable_inventory_list.dart';
 import 'package:librarian_app/src/features/inventory/widgets/create_thing_dialog.dart';
 import 'package:librarian_app/src/features/loans/views/checkout/checkout_page.dart';
@@ -77,15 +77,7 @@ class _DashboardPageState extends State<DashboardPage> {
       mobileLayout: SearchableInventoryList(
         onThingTapped: (thing) {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) {
-              return Scaffold(
-                appBar: AppBar(title: Text(thing.name)),
-                body: const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: InventoryDetailsView(),
-                ),
-              );
-            },
+            builder: (context) => const InventoryDetailsPage(),
           ));
         },
       ),

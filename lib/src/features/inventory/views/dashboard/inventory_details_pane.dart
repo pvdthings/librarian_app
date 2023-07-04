@@ -114,16 +114,14 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
                               description,
                               estimatedValue,
                               quantity,
-                            ) {
-                              widget.model
-                                  .createItems(
-                                    thingId: thing.id,
-                                    quantity: quantity,
-                                    brand: brand,
-                                    description: description,
-                                    estimatedValue: estimatedValue,
-                                  )
-                                  .then((_) => Navigator.of(context).pop());
+                            ) async {
+                              await widget.model.createItems(
+                                thingId: thing.id,
+                                quantity: quantity,
+                                brand: brand,
+                                description: description,
+                                estimatedValue: estimatedValue,
+                              );
                             },
                           ),
                         ),
