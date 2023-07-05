@@ -86,7 +86,7 @@ class InventoryDetails extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                if (items.isNotEmpty) const Divider(),
                 if (items.isNotEmpty)
                   ListView.separated(
                     shrinkWrap: true,
