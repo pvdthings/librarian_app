@@ -44,11 +44,13 @@ class InventoryDetailsPage extends StatelessWidget {
             ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: InventoryDetailsView(
-          nameController: name,
-          spanishNameController: spanishName,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: InventoryDetailsView(
+            nameController: name,
+            spanishNameController: spanishName,
+          ),
         ),
       ),
     );
