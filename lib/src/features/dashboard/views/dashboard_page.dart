@@ -120,6 +120,7 @@ class _DashboardPageState extends State<DashboardPage> {
             title: Text(module.title),
             centerTitle: mobile,
             elevation: 0,
+            scrolledUnderElevation: isMobile(context) ? 1 : 0,
             // leading: IconButton(
             //   onPressed: () {
             //     final user = Provider.of<UserViewModel>(context, listen: false);
