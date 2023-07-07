@@ -32,7 +32,8 @@ class LoansViewModel extends ChangeNotifier {
     return _loans
         .where((l) =>
             l.borrower.name.toLowerCase().contains(filter.toLowerCase()) ||
-            l.thing.name!.toLowerCase().contains(filter.toLowerCase()))
+            l.thing.name!.toLowerCase().contains(filter.toLowerCase()) ||
+            l.thing.number == int.tryParse(filter))
         .toList();
   }
 
