@@ -43,8 +43,53 @@ class LendingApi {
     return await _client.get('/borrowers');
   }
 
-  static Future<Response> fetchThing({required int number}) async {
-    return await _client.get('/things/$number');
+  static Future<Response> fetchThings() async {
+    return await _client.get('/things');
+  }
+
+  static Future<Response> fetchThing({required String id}) async {
+    return await _client.get('/things/$id');
+  }
+
+  static Future<Response> createThing({
+    required String name,
+    String? spanishName,
+  }) async {
+    return await _client.put('/things', data: {
+      'name': name,
+      'spanishName': spanishName,
+    });
+  }
+
+  static Future<Response> updateThing(
+    String thingId, {
+    String? name,
+    String? spanishName,
+  }) async {
+    return await _client.patch('/things/$thingId', data: {
+      'name': name,
+      'spanishName': spanishName,
+    });
+  }
+
+  static Future<Response> fetchInventoryItem({required int number}) async {
+    return await _client.get('/inventory/$number');
+  }
+
+  static Future<Response> createInventoryItems(
+    String thingId, {
+    required int quantity,
+    required String? brand,
+    required String? description,
+    required double? estimatedValue,
+  }) async {
+    return await _client.put('/inventory', data: {
+      'thingId': thingId,
+      'quantity': quantity,
+      'brand': brand,
+      'description': description,
+      'estimatedValue': estimatedValue,
+    });
   }
 
   static Future<Response> recordCashPayment({

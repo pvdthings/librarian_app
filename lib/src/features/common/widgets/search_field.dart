@@ -24,6 +24,7 @@ class _SearchFieldState extends State<SearchField> {
       onChanged: widget.onChanged,
       decoration: InputDecoration(
         border: InputBorder.none,
+        constraints: const BoxConstraints(maxWidth: 400),
         hintText: 'Search...',
         icon: Icon(
           Icons.search_rounded,
