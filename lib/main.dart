@@ -3,7 +3,7 @@ import 'package:librarian_app/constants.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
 import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
-import 'package:librarian_app/src/features/authentication/data/user_view.model.dart';
+import 'package:librarian_app/src/features/authentication/data/user.vm.dart';
 import 'package:librarian_app/src/features/splash/pages/splash.page.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;

@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/authentication/data/user.vm.dart';
 import 'package:librarian_app/src/features/authentication/pages/signin.page.dart';
 import 'package:librarian_app/src/features/dashboard/pages/dashboard.page.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:provider/provider.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -15,27 +16,22 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    _redirect();
-  }
 
-  Future<void> _redirect() async {
-    // await for for the widget to mount
-    await Future.delayed(Duration.zero);
+    Timer(const Duration(seconds: 2), () {
+      final viewModel = Provider.of<UserViewModel>(context, listen: false);
 
-    final session = Supabase.instance.client.auth.currentSession;
-    if (session == null && !kDebugMode) {
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const SignInPage()),
-        (route) => false,
-      );
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const DashboardPage()),
-        (route) => false,
-      );
-    }
+      if (!viewModel.signedIn) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const SignInPage()),
+          (route) => false,
+        );
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const DashboardPage()),
+          (route) => false,
+        );
+      }
+    });
   }
 
   @override
