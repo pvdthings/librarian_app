@@ -1,6 +1,6 @@
-import '../../borrowers/data/borrower_model.dart';
-import 'loan_model.dart';
-import 'thing_model.dart';
+import '../../borrowers/data/borrower.model.dart';
+import 'loan.model.dart';
+import 'thing.model.dart';
 
 class LoansMapper {
   static Iterable<LoanModel> map(Iterable<dynamic> data) {
