@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/common/widgets/dashboard/list_pane.widget.dart';
 import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.widget.dart';
 import 'package:librarian_app/src/features/common/widgets/search_field.widget.dart';
 import 'package:librarian_app/src/features/loans/widgets/dashboard/loan_details_pane.widget.dart';
@@ -21,36 +22,26 @@ class _LoansDesktopLayoutState extends State<LoansDesktopLayout> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Card(
-          clipBehavior: Clip.antiAlias,
-          child: SizedBox(
-            width: 500,
-            child: Consumer<LoansViewModel>(
-              builder: (context, model, child) {
-                return Column(
-                  children: [
-                    PaneHeader(
-                      child: SearchField(
-                        onChanged: (value) {
-                          setState(() => _searchFilter = value);
-                        },
-                        onClearPressed: () {
-                          setState(() => _searchFilter = '');
-                          model.clearSelectedLoan();
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: LoansView(
-                        model: model,
-                        searchFilter: _searchFilter,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
+        Consumer<LoansViewModel>(
+          builder: (context, loans, child) {
+            return ListPane(
+              header: PaneHeader(
+                child: SearchField(
+                  onChanged: (value) {
+                    setState(() => _searchFilter = value);
+                  },
+                  onClearPressed: () {
+                    setState(() => _searchFilter = '');
+                    loans.clearSelectedLoan();
+                  },
+                ),
+              ),
+              child: LoansView(
+                model: loans,
+                searchFilter: _searchFilter,
+              ),
+            );
+          },
         ),
         Expanded(
           child: Consumer<LoansViewModel>(
