@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/widgets/input_decoration.widget.dart';
-import 'package:librarian_app/src/features/inventory/data/detailed_thing.model.dart';
 import 'package:librarian_app/src/features/inventory/widgets/add_inventory_dialog.widget.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 
+import '../data/item.model.dart';
 import 'details_card_header.widget.dart';
 
 class InventoryDetails extends StatelessWidget {
