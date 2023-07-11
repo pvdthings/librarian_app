@@ -5,7 +5,7 @@ import 'package:librarian_app/src/features/inventory/widgets/dashboard/inventory
 import 'package:provider/provider.dart';
 
 import '../../data/inventory.vm.dart';
-import '../inventory_view.widget.dart';
+import '../inventory_list/inventory_list_view.widget.dart';
 
 class InventoryDesktopLayout extends StatefulWidget {
   const InventoryDesktopLayout({super.key});
@@ -41,7 +41,7 @@ class _InventoryDesktopLayoutState extends State<InventoryDesktopLayout> {
                       ),
                     ),
                     Expanded(
-                      child: InventoryView(
+                      child: InventoryListView(
                         searchFilter: _searchFilter,
                       ),
                     ),

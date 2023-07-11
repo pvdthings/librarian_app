@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_details.widget.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/inventory_details.widget.dart';
 import 'package:provider/provider.dart';
 
 class InventoryDetailsView extends StatelessWidget {

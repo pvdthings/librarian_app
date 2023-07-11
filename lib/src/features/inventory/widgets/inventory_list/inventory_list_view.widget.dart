@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../data/inventory.vm.dart';
-import '../data/thing.model.dart';
-import '../widgets/inventory_list.widget.dart';
+import '../../data/inventory.vm.dart';
+import '../../data/thing.model.dart';
+import 'inventory_list.widget.dart';
 
-class InventoryView extends StatelessWidget {
-  const InventoryView({
+class InventoryListView extends StatelessWidget {
+  const InventoryListView({
     super.key,
     required this.searchFilter,
     this.onTap,

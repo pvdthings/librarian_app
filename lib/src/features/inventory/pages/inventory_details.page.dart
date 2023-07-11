@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../data/inventory.vm.dart';
-import '../widgets/inventory_details_view.widget.dart';
+import '../widgets/inventory_details/inventory_details_view.widget.dart';
 
 class InventoryDetailsPage extends StatelessWidget {
   const InventoryDetailsPage({super.key});

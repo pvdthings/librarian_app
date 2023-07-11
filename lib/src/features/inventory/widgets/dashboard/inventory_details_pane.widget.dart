@@ -4,7 +4,7 @@ import 'package:librarian_app/src/features/inventory/data/detailed_thing.model.d
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
 
 import '../../data/thing.model.dart';
-import '../../widgets/inventory_details.widget.dart';
+import '../inventory_details/inventory_details.widget.dart';
 
 class InventoryDetailsPane extends StatefulWidget {
   final ThingModel? thing;

@@ -5,8 +5,8 @@ import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_vie
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
 import 'package:librarian_app/src/features/inventory/widgets/dashboard/inventory_desktop_layout.widget.dart';
 import 'package:librarian_app/src/features/inventory/pages/inventory_details.page.dart';
-import 'package:librarian_app/src/features/inventory/widgets/searchable_inventory_list.widget.dart';
-import 'package:librarian_app/src/features/inventory/widgets/create_thing_dialog.widget.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_list/searchable_inventory_list.widget.dart';
+import 'package:librarian_app/src/features/inventory/widgets/dialogs/create_thing_dialog.widget.dart';
 import 'package:librarian_app/src/features/loans/pages/checkout.page.dart';
 import 'package:librarian_app/src/features/loans/pages/loan_details.page.dart';
 import 'package:librarian_app/src/features/loans/widgets/searchable_loans_list.widget.dart';
