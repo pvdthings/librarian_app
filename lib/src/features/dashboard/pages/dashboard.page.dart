@@ -68,7 +68,7 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       floatingActionButton: getFloatingActionButton(
         tooltip: 'Coming Soon',
-        onPressed: () {},
+        onPressed: null,
       ),
     ),
     DashboardModule(
@@ -192,7 +192,7 @@ class DashboardModule {
 }
 
 FloatingActionButton getFloatingActionButton({
-  required void Function() onPressed,
+  required void Function()? onPressed,
   String? tooltip,
 }) {
   return FloatingActionButton.small(
