@@ -19,10 +19,14 @@ class InventoryListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<InventoryViewModel>(
       builder: (context, model, child) {
-        final things = model.filtered(searchFilter);
+        if (model.refreshing) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final things = model.getCachedThings(filter: searchFilter);
 
         if (things.isEmpty) {
-          return const Center(child: Text('No results found'));
+          return const Center(child: Text('Nothing to see here'));
         }
 
         return InventoryList(

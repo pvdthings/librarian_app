@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/inventory/data/detailed_thing.model.dart';
-import 'package:librarian_app/src/features/inventory/data/inventory.repo.dart';
+import 'package:librarian_app/src/features/inventory/services/inventory.service.dart';
 
 import 'thing.model.dart';
 
 class InventoryViewModel extends ChangeNotifier {
   InventoryViewModel() {
     refresh();
+  }
+
+  final _service = InventoryService();
+
+  bool _refreshing = false;
+
+  bool get refreshing => _refreshing;
+
+  set refreshing(bool value) {
+    _refreshing = value;
+    notifyListeners();
   }
 
   bool _editing = false;
@@ -18,34 +29,29 @@ class InventoryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  final _repository = InventoryRepository();
-
-  List<ThingModel> get things => _repository.things;
+  List<ThingModel> get things => _service.cachedThings;
 
   String? selectedId;
 
-  ThingModel? get selected =>
-      selectedId != null ? things.firstWhere((t) => t.id == selectedId) : null;
+  ThingModel? get selected => _service.getCachedThing(id: selectedId);
 
-  List<ThingModel> filtered(String filter) {
-    if (filter.isEmpty) {
-      return things;
-    }
+  List<ThingModel> getCachedThings({String? filter}) {
+    return _service.getCachedThings(filter: filter);
+  }
 
-    return things
-        .where((t) => t.name.toLowerCase().contains(filter.toLowerCase()))
-        .toList();
+  Future<List<ThingModel>> getThings({String? filter}) async {
+    return await _service.getThings(filter: filter);
   }
 
   Future<DetailedThingModel> getThingDetails({required String id}) async {
-    return await _repository.getThingDetails(id: id);
+    return await _service.getThingDetails(id: id);
   }
 
   Future<ThingModel> createThing({
     required String name,
     String? spanishName,
   }) async {
-    final thing = await _repository.createThing(
+    final thing = await _service.createThing(
       name: name,
       spanishName: spanishName,
     );
@@ -60,7 +66,7 @@ class InventoryViewModel extends ChangeNotifier {
     String? name,
     String? spanishName,
   }) async {
-    await _repository.updateThing(
+    await _service.updateThing(
       thingId: thingId,
       name: name,
       spanishName: spanishName,
@@ -76,7 +82,7 @@ class InventoryViewModel extends ChangeNotifier {
     required String? description,
     required double? estimatedValue,
   }) async {
-    await _repository.createItems(
+    await _service.createItems(
       thingId: thingId,
       quantity: quantity,
       brand: brand,
@@ -99,7 +105,8 @@ class InventoryViewModel extends ChangeNotifier {
   }
 
   Future<void> refresh() async {
-    await _repository.refresh();
-    notifyListeners();
+    refreshing = true;
+    await _service.updateCachedThings();
+    refreshing = false;
   }
 }

@@ -13,6 +13,21 @@ class InventoryRepository {
     things = objects.map((e) => ThingModel.fromJson(e)).toList();
   }
 
+  List<ThingModel> getCachedThings({String? filter}) {
+    if (filter == null || filter.isEmpty) {
+      return things;
+    }
+
+    return things
+        .where((t) => t.name.toLowerCase().contains(filter.toLowerCase()))
+        .toList();
+  }
+
+  Future<List<ThingModel>> getThings({String? filter}) async {
+    await refresh();
+    return getCachedThings(filter: filter);
+  }
+
   Future<DetailedThingModel> getThingDetails({required String id}) async {
     final response = await LendingApi.fetchThing(id: id);
     return DetailedThingModel.fromJson(response.data as Map<String, dynamic>);
