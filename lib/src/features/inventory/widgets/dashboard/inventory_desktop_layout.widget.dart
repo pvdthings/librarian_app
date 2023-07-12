@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/dashboard/widgets/panes/list_pane.widget.dart';
+import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 import 'package:provider/provider.dart';
-import 'package:librarian_app/src/features/common/widgets/dashboard/list_pane.widget.dart';
-import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.widget.dart';
 import 'package:librarian_app/src/features/common/widgets/search_field.widget.dart';
 import 'inventory_details_pane.widget.dart';
 

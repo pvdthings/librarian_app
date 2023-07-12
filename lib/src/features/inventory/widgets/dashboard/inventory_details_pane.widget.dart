@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/common/widgets/dashboard/pane_header.widget.dart';
+import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 import 'package:librarian_app/src/features/inventory/data/detailed_thing.model.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
 
