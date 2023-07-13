@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
-import 'package:librarian_app/src/features/borrowers/widgets/borrowers_view.widget.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/borrowers_view.widget.dart';
 import 'package:provider/provider.dart';
 
-import '../data/borrower.model.dart';
+import '../../data/borrower.model.dart';
 
 class ConnectedBorrowersList extends StatelessWidget {
   final void Function(BorrowerModel)? onTap;

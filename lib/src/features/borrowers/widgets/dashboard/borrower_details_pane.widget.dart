@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/widgets/borrower_details.widget.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_details.widget.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 
 import '../../data/borrower.model.dart';

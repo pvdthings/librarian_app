@@ -6,7 +6,7 @@ import 'package:librarian_app/src/features/dashboard/widgets/panes/list_pane.wid
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 import 'package:provider/provider.dart';
 
-import '../borrowers_view.widget.dart';
+import '../borrowers_list/borrowers_view.widget.dart';
 
 class BorrowersDesktopLayout extends StatefulWidget {
   const BorrowersDesktopLayout({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/borrower.model.dart';
 import '../data/borrowers.vm.dart';
-import 'borrowers_view.widget.dart';
+import 'borrowers_list/borrowers_view.widget.dart';
 
 class BorrowerSearchDelegate extends SearchDelegate<BorrowerModel?> {
   BorrowerSearchDelegate({required this.model});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
-import 'package:librarian_app/src/features/borrowers/widgets/borrower_issues.widget.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.widget.dart';
 import 'package:librarian_app/src/features/loans/data/thing.model.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/checkout_controller.dart';

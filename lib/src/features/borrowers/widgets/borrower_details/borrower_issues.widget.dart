@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../data/borrower.model.dart';
-import '../data/borrowers.vm.dart';
-import '../widgets/dues_dialog.widget.dart';
+import '../../data/borrower.model.dart';
+import '../../data/borrowers.vm.dart';
+import '../dialogs/dues_dialog.widget.dart';
 
 class BorrowerIssues extends StatelessWidget {
   final String borrowerId;

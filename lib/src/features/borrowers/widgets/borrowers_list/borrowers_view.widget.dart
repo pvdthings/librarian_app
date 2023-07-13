@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
 
-import '../data/borrower.model.dart';
-import '../widgets/borrowers_list.widget.dart';
+import '../../data/borrower.model.dart';
+import 'borrowers_list.widget.dart';
 
 class BorrowersView extends StatelessWidget {
   const BorrowersView({

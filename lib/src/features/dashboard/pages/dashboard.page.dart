@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/dashboard/borrowers_desktop_layout.widget.dart';
-import 'package:librarian_app/src/features/borrowers/widgets/searchable_borrowers_list.widget.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/searchable_borrowers_list.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.widget.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
 import 'package:librarian_app/src/features/inventory/widgets/layouts/inventory_desktop_layout.widget.dart';

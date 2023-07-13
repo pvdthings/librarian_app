@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/widgets/borrower_issues.widget.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.widget.dart';
 
-import '../data/borrower.model.dart';
+import '../../data/borrower.model.dart';
 
 class BorrowerDetails extends StatefulWidget {
   final BorrowerModel borrower;
