@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../data/loan.model.dart';
-import '../data/loans.vm.dart';
-import '../widgets/loans_list.widget.dart';
+import '../../data/loan.model.dart';
+import '../../data/loans.vm.dart';
+import 'loans_list.widget.dart';
 
 class LoansView extends StatelessWidget {
   const LoansView({

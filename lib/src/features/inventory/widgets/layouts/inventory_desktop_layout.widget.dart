@@ -3,7 +3,7 @@ import 'package:librarian_app/src/features/dashboard/widgets/panes/list_pane.wid
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 import 'package:provider/provider.dart';
 import 'package:librarian_app/src/features/common/widgets/search_field.widget.dart';
-import 'inventory_details_pane.widget.dart';
+import '../inventory_details/inventory_details_pane.widget.dart';
 
 import '../../data/inventory.vm.dart';
 import '../inventory_list/inventory_list_view.widget.dart';

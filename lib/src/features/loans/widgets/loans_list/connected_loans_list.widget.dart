@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/widgets/loans_view.widget.dart';
+import 'package:librarian_app/src/features/loans/widgets/loans_list/loans_view.widget.dart';
 import 'package:provider/provider.dart';
 
-import '../data/loan.model.dart';
-import '../data/loans.vm.dart';
+import '../../data/loan.model.dart';
+import '../../data/loans.vm.dart';
 
 class ConnectedLoansList extends StatelessWidget {
   final void Function(LoanModel loan)? onTap;

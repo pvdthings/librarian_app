@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
 import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
-import 'package:librarian_app/src/features/loans/widgets/pick_things.widget.dart';
+import 'package:librarian_app/src/features/loans/widgets/checkout/pick_things.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.widget.dart';
-import 'package:librarian_app/src/features/loans/widgets/loan_details.widget.dart';
+import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/searchable_borrowers_list.widget.dart';
 import 'package:provider/provider.dart';
 

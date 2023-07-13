@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:librarian_app/src/features/loans/data/things.vm.dart';
 import 'package:provider/provider.dart';
 
-import '../../common/widgets/submit_text_field.widget.dart';
-import '../data/thing.model.dart';
-import '../widgets/thing_list_tile.widget.dart';
+import '../../../common/widgets/submit_text_field.widget.dart';
+import '../../data/thing.model.dart';
+import '../things_list/thing_list_tile.widget.dart';
 
 class PickThingsView extends StatefulWidget {
   const PickThingsView({
