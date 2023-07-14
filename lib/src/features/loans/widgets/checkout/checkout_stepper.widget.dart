@@ -3,7 +3,8 @@ import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.widget.dart';
-import 'package:librarian_app/src/features/loans/data/thing.model.dart';
+import 'package:librarian_app/src/features/inventory/data/item.model.dart';
+import 'package:librarian_app/src/features/loans/data/thing_summary.model.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/checkout_controller.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/connected_thing_search_field.widget.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.widget.dart';
@@ -21,7 +22,7 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
   BorrowerModel? _borrower;
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
-  final List<ThingModel> _things = [];
+  final List<ItemModel> _things = [];
 
   void Function()? _onStepContinueFactory(int index) {
     switch (index) {
@@ -169,7 +170,7 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
                   return Card(
                     child: ListTile(
                       leading: Text('#${thing.number}'),
-                      title: Text(thing.name ?? 'Unknown'),
+                      title: Text(thing.name),
                       trailing: IconButton(
                         icon: const Icon(Icons.remove_circle_rounded),
                         onPressed: () {
@@ -192,7 +193,13 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
             padding: const EdgeInsets.only(top: 8),
             child: LoanDetails(
               borrower: _borrower,
-              things: _things,
+              things: _things
+                  .map((t) => ThingSummaryModel(
+                        id: t.id,
+                        name: t.name,
+                        number: t.number,
+                      ))
+                  .toList(),
               checkedOutDate: DateTime.now(),
               dueDate: _dueDate,
               onDueDateUpdated: (newDate) {

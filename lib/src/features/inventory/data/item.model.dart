@@ -2,6 +2,7 @@ class ItemModel {
   ItemModel({
     required this.id,
     required this.number,
+    required this.name,
     required this.available,
     required this.totalLoans,
     this.brand,
@@ -9,6 +10,7 @@ class ItemModel {
 
   final String id;
   final int number;
+  final String name;
   final String? brand;
   final bool available;
   final int totalLoans;
@@ -17,6 +19,7 @@ class ItemModel {
     return ItemModel(
       id: json['id'] as String,
       number: json['number'] as int,
+      name: json['name'] as String? ?? 'Unknown Thing',
       available: json['available'] as bool,
       totalLoans: json['totalLoans'] as int,
       brand: json['brand'] as String?,

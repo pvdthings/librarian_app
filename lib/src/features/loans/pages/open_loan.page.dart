@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
+import 'package:librarian_app/src/features/inventory/data/item.model.dart';
 import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
+import 'package:librarian_app/src/features/loans/data/thing_summary.model.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/pick_things.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.widget.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/searchable_borrowers_list.widget.dart';
 import 'package:provider/provider.dart';
-
-import '../data/thing.model.dart';
 
 class OpenLoanPage extends StatefulWidget {
   const OpenLoanPage({super.key});
@@ -25,7 +25,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
   Widget? _floatingActionButton;
 
   BorrowerModel _borrower = BorrowerModel(id: '', name: "Borrower", issues: []);
-  final List<ThingModel> _things = [];
+  final List<ItemModel> _things = [];
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
   void _configureView() {
@@ -55,7 +55,13 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
           padding: const EdgeInsets.all(16),
           child: LoanDetails(
             borrower: _borrower,
-            things: _things,
+            things: _things
+                .map((t) => ThingSummaryModel(
+                      id: t.id,
+                      name: t.name,
+                      number: t.number,
+                    ))
+                .toList(),
             checkedOutDate: DateTime.now(),
             dueDate: _dueDate,
             onDueDateUpdated: (newDate) {
@@ -92,7 +98,7 @@ class _OpenLoanPageState extends State<OpenLoanPage> {
     setState(() => _currentView = OpenLoanView.borrowerNeedsAttention);
   }
 
-  void _onTapThing(ThingModel thing) {
+  void _onTapThing(ItemModel thing) {
     setState(() {
       if (_things.contains(thing)) {
         _things.remove(thing);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
-import 'package:librarian_app/src/features/loans/data/thing.model.dart';
+import 'package:librarian_app/src/features/loans/data/thing_summary.model.dart';
 
 class LoanDetails extends StatelessWidget {
   const LoanDetails({
@@ -17,7 +17,7 @@ class LoanDetails extends StatelessWidget {
 
   final bool editable;
   final BorrowerModel? borrower;
-  final List<ThingModel> things;
+  final List<ThingSummaryModel> things;
   final DateTime checkedOutDate;
   final DateTime dueDate;
   final DateTime? checkedInDate;
@@ -60,7 +60,7 @@ class LoanDetails extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 16),
               child: TextField(
                 controller: TextEditingController(
-                    text: '${thing.name ?? 'Unknown'} #${thing.number}'),
+                    text: '${thing.name} #${thing.number}'),
                 readOnly: true,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.build_rounded),

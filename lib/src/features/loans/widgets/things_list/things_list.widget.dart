@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/data/things.vm.dart';
+import 'package:librarian_app/src/features/inventory/data/item.model.dart';
+import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
 import 'package:librarian_app/src/features/loans/widgets/things_list/thing_list_tile.widget.dart';
 import 'package:provider/provider.dart';
-
-import '../../data/thing.model.dart';
 
 class ThingsListView extends StatefulWidget {
   const ThingsListView({
@@ -11,7 +10,7 @@ class ThingsListView extends StatefulWidget {
     required this.onTapThing,
   });
 
-  final Function(ThingModel) onTapThing;
+  final Function(ItemModel) onTapThing;
 
   @override
   State<ThingsListView> createState() => _ThingsListViewState();
@@ -22,7 +21,7 @@ class _ThingsListViewState extends State<ThingsListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThingsViewModel>(
+    return Consumer<LoansViewModel>(
       builder: (context, model, child) {
         final things = [];
 

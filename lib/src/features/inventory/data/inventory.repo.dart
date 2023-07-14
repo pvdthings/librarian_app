@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
 
 import 'detailed_thing.model.dart';
+import 'item.model.dart';
 import 'thing.model.dart';
 
 class InventoryRepository {
@@ -31,6 +33,15 @@ class InventoryRepository {
   Future<DetailedThingModel> getThingDetails({required String id}) async {
     final response = await LendingApi.fetchThing(id: id);
     return DetailedThingModel.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  Future<ItemModel?> getItem({required int number}) async {
+    try {
+      final response = await LendingApi.fetchInventoryItem(number: number);
+      return ItemModel.fromJson(response.data as Map<String, dynamic>);
+    } on DioError {
+      return null;
+    }
   }
 
   Future<ThingModel> createThing({

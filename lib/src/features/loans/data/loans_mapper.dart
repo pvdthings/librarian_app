@@ -1,16 +1,13 @@
+import 'package:librarian_app/src/features/loans/data/thing_summary.model.dart';
+
 import '../../borrowers/data/borrower.model.dart';
 import 'loan.model.dart';
-import 'thing.model.dart';
 
 class LoansMapper {
   static Iterable<LoanModel> map(Iterable<dynamic> data) {
     return data.map((e) => LoanModel(
           id: e['id'] as String? ?? '?',
-          thing: ThingModel(
-            name: e['thing']?['name'] as String? ?? '???',
-            id: e['thing']?['id'] as String? ?? '???',
-            number: e['thing']?['number'] as int? ?? 0,
-          ),
+          thing: ThingSummaryModel.fromJson(e['thing'] as Map<String, dynamic>),
           borrower: BorrowerModel(
             id: e['borrower']?['id'] as String? ?? '?',
             name: e['borrower']?['name'] as String? ?? '???',

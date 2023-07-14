@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/data/thing.model.dart';
-import 'package:librarian_app/src/features/loans/data/things.vm.dart';
+import 'package:librarian_app/src/features/inventory/data/item.model.dart';
+import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
 import 'package:provider/provider.dart';
 
 class ConnectedThingSearchField extends StatelessWidget {
@@ -45,7 +45,7 @@ class ConnectedThingSearchField extends StatelessWidget {
 
 class ThingSearchController {
   final BuildContext context;
-  final void Function(ThingModel) onMatchFound;
+  final void Function(ItemModel) onMatchFound;
 
   bool isLoading = false;
 
@@ -57,8 +57,8 @@ class ThingSearchController {
   Future<void> search(String value) async {
     isLoading = true;
 
-    final thingsModel = Provider.of<ThingsViewModel>(context, listen: false);
-    final match = await thingsModel.getOne(number: int.parse(value));
+    final loansModel = Provider.of<LoansViewModel>(context, listen: false);
+    final match = await loansModel.getInventoryItem(number: int.parse(value));
 
     isLoading = false;
 
@@ -73,7 +73,7 @@ class ThingSearchController {
     }
   }
 
-  void _showThingCheckedOutDialog(ThingModel thing) {
+  void _showThingCheckedOutDialog(ItemModel thing) {
     showDialog(
       context: context,
       builder: (context) {

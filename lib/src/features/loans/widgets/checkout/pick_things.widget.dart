@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:librarian_app/src/features/loans/data/things.vm.dart';
+import 'package:librarian_app/src/features/inventory/data/item.model.dart';
+import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/widgets/submit_text_field.widget.dart';
-import '../../data/thing.model.dart';
 import '../things_list/thing_list_tile.widget.dart';
 
 class PickThingsView extends StatefulWidget {
@@ -14,8 +14,8 @@ class PickThingsView extends StatefulWidget {
     required this.onThingPicked,
   });
 
-  final List<ThingModel> pickedThings;
-  final Function(ThingModel thing) onThingPicked;
+  final List<ItemModel> pickedThings;
+  final Function(ItemModel thing) onThingPicked;
 
   @override
   State<StatefulWidget> createState() {
@@ -30,8 +30,8 @@ class _PickThingsViewState extends State<PickThingsView> {
   Future<void> _onSearchSubmitted(String value) async {
     setState(() => _isLoading = true);
 
-    final thingsModel = Provider.of<ThingsViewModel>(context, listen: false);
-    final match = await thingsModel.getOne(number: int.parse(value));
+    final loansModel = Provider.of<LoansViewModel>(context, listen: false);
+    final match = await loansModel.getInventoryItem(number: int.parse(value));
 
     setState(() => _isLoading = false);
 
@@ -48,7 +48,7 @@ class _PickThingsViewState extends State<PickThingsView> {
     _searchController.clear();
   }
 
-  void _showThingCheckedOutDialog(ThingModel thing) {
+  void _showThingCheckedOutDialog(ItemModel thing) {
     showDialog(
       context: context,
       builder: (context) {
@@ -115,7 +115,7 @@ class _PickThingsViewState extends State<PickThingsView> {
 
                   return ThingListTile(
                     number: thing.number,
-                    name: thing.name ?? 'Unknown Thing',
+                    name: thing.name,
                     available: thing.available,
                     selected: true,
                     onTap: () => widget.onThingPicked(thing),

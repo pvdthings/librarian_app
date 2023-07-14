@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
+import 'package:librarian_app/src/features/inventory/data/item.model.dart';
+import 'package:librarian_app/src/features/inventory/services/inventory.service.dart';
 
 import 'loan.model.dart';
 import 'loans_mapper.dart';
@@ -10,6 +12,8 @@ class LoansViewModel extends ChangeNotifier {
   LoansViewModel() {
     refresh();
   }
+
+  final _inventoryService = InventoryService();
 
   String? errorMessage;
 
@@ -32,7 +36,7 @@ class LoansViewModel extends ChangeNotifier {
     return _loans
         .where((l) =>
             l.borrower.name.toLowerCase().contains(filter.toLowerCase()) ||
-            l.thing.name!.toLowerCase().contains(filter.toLowerCase()) ||
+            l.thing.name.toLowerCase().contains(filter.toLowerCase()) ||
             l.thing.number == int.tryParse(filter))
         .toList();
   }
@@ -54,6 +58,10 @@ class LoansViewModel extends ChangeNotifier {
     }
 
     isLoading = false;
+  }
+
+  Future<ItemModel?> getInventoryItem({required int number}) async {
+    return await _inventoryService.getItem(number: number);
   }
 
   Future<List<LoanModel>> getLoans() async {

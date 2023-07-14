@@ -1,5 +1,6 @@
 import '../data/detailed_thing.model.dart';
 import '../data/inventory.repo.dart';
+import '../data/item.model.dart';
 import '../data/thing.model.dart';
 
 class InventoryService {
@@ -29,6 +30,10 @@ class InventoryService {
 
   Future<DetailedThingModel> getThingDetails({required String id}) async {
     return await _repository.getThingDetails(id: id);
+  }
+
+  Future<ItemModel?> getItem({required int number}) async {
+    return await _repository.getItem(number: number);
   }
 
   Future<ThingModel> createThing({

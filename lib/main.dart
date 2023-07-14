@@ -8,8 +8,6 @@ import 'package:librarian_app/src/features/splash/pages/splash.page.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
-import 'src/features/loans/data/things.vm.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -28,9 +26,6 @@ Future<void> main() async {
       ),
       ChangeNotifierProvider<BorrowersViewModel>(
         create: (context) => BorrowersViewModel(),
-      ),
-      ChangeNotifierProvider<ThingsViewModel>(
-        create: (context) => ThingsViewModel(),
       ),
       ChangeNotifierProvider<InventoryViewModel>(
         create: (context) => InventoryViewModel(),
