@@ -65,7 +65,8 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                                   builder: (context) {
                                     return CheckinDialog(
                                       thingNumber: loan.thing.number,
-                                      onCheckin: widget.onCheckIn,
+                                      onCheckin: () async =>
+                                          Future(widget.onCheckIn),
                                     );
                                   },
                                 );

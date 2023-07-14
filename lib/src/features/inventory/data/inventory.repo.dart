@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
 
 import 'detailed_thing.model.dart';
@@ -39,7 +38,7 @@ class InventoryRepository {
     try {
       final response = await LendingApi.fetchInventoryItem(number: number);
       return ItemModel.fromJson(response.data as Map<String, dynamic>);
-    } on DioError {
+    } catch (_) {
       return null;
     }
   }
