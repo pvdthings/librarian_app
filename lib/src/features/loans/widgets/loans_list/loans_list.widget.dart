@@ -33,7 +33,7 @@ class LoansList extends StatelessWidget {
         final loan = loans[index];
 
         final thingNumber = Text('#${loan.thing.number}');
-        final thingName = Text(loan.thing.name ?? 'Unknown Thing');
+        final thingName = Text(loan.thing.name);
         final borrowerInitials = _getBorrowerInitials(loan.borrower.name);
 
         return ListTile(

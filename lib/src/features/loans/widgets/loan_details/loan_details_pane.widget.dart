@@ -50,7 +50,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                           ThingNumber(number: loan.thing.number),
                           const SizedBox(width: 16),
                           Text(
-                            widget.loan!.thing.name!,
+                            widget.loan!.thing.name,
                             style: const TextStyle(fontSize: 24),
                           ),
                         ],
