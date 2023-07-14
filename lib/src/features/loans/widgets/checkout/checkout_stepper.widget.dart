@@ -3,6 +3,7 @@ import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.widget.dart';
+import 'package:librarian_app/src/features/common/widgets/filled_progress_button.dart';
 import 'package:librarian_app/src/features/inventory/data/item.model.dart';
 import 'package:librarian_app/src/features/loans/data/thing_summary.model.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/checkout_controller.dart';
@@ -74,10 +75,15 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
           padding: const EdgeInsets.only(top: 16),
           child: Row(
             children: [
-              FilledButton(
-                onPressed: details.onStepContinue,
-                child: Text(details.stepIndex == 2 ? 'Confirm' : 'Continue'),
-              ),
+              details.stepIndex != 2
+                  ? FilledButton(
+                      onPressed: details.onStepContinue,
+                      child: const Text('Continue'),
+                    )
+                  : FilledProgressButton(
+                      onPressed: details.onStepContinue,
+                      child: const Text('Confirm'),
+                    ),
             ],
           ),
         );
