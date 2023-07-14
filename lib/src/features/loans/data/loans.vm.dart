@@ -6,7 +6,6 @@ import 'package:librarian_app/src/features/inventory/data/item.model.dart';
 import 'package:librarian_app/src/features/inventory/services/inventory.service.dart';
 
 import 'loan.model.dart';
-import 'loans_mapper.dart';
 
 class LoansViewModel extends ChangeNotifier {
   LoansViewModel() {
@@ -66,7 +65,7 @@ class LoansViewModel extends ChangeNotifier {
 
   Future<List<LoanModel>> getLoans() async {
     final response = await LendingApi.fetchLoans();
-    return LoansMapper.map(response.data as List).toList();
+    return (response.data as List).map((e) => LoanModel.fromJson(e)).toList();
   }
 
   LoanModel? _selectedLoan;

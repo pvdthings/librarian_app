@@ -25,4 +25,25 @@ class LoanModel {
     required this.dueDate,
     this.checkedInDate,
   });
+
+  factory LoanModel.fromJson(Map<String, dynamic> json) {
+    return LoanModel(
+      id: json['id'] as String? ?? '?',
+      thing: ThingSummaryModel.fromJson(json['thing'] as Map<String, dynamic>),
+      borrower: BorrowerModel(
+        id: json['borrower']?['id'] as String? ?? '?',
+        name: json['borrower']?['name'] as String? ?? '???',
+        issues: [],
+      ),
+      checkedOutDate: json['checkedOutDate'] != null
+          ? DateTime.parse(json['checkedOutDate'] as String)
+          : DateTime.now(),
+      checkedInDate: json['checkedInDate'] != null
+          ? DateTime.parse(json['checkedInDate'] as String)
+          : null,
+      dueDate: json['dueBackDate'] != null
+          ? DateTime.parse(json['dueBackDate'])
+          : DateTime.now(),
+    );
+  }
 }
