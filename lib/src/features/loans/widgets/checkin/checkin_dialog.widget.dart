@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/widgets/filled_progress_button.dart';
 
-class CheckinDialog extends StatefulWidget {
+class CheckinDialog extends StatelessWidget {
   final int thingNumber;
   final Future<void> Function()? onCheckin;
   final void Function()? onPostCheckin;
@@ -14,16 +14,11 @@ class CheckinDialog extends StatefulWidget {
   });
 
   @override
-  State<CheckinDialog> createState() => _CheckinDialogState();
-}
-
-class _CheckinDialogState extends State<CheckinDialog> {
-  @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Thing #${widget.thingNumber}"),
-      content: Text(
-          "Are you sure you want to check Thing #${widget.thingNumber} back in?"),
+      title: Text("Thing #$thingNumber"),
+      content:
+          Text("Are you sure you want to check Thing #$thingNumber back in?"),
       actions: [
         OutlinedButton(
           child: const Text("Cancel"),
@@ -33,10 +28,10 @@ class _CheckinDialogState extends State<CheckinDialog> {
           child: const Text('Yes'),
           onPressed: () {
             Future.delayed(const Duration(seconds: 2), () async {
-              await widget.onCheckin?.call();
+              await onCheckin?.call();
             }).whenComplete(() {
               Navigator.of(context).pop();
-              widget.onPostCheckin?.call();
+              onPostCheckin?.call();
             });
           },
         ),
