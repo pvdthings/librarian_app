@@ -74,7 +74,18 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                               tooltip: 'Check in',
                               icon: const Icon(Icons.check_circle_rounded),
                             ),
-                          if (_editMode && _newDueDate != null)
+                          if (_editMode && _newDueDate != null) ...[
+                            Text(
+                              'Unsaved Changes',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                            ),
+                            const SizedBox(width: 8),
                             IconButton(
                               onPressed: () {
                                 widget.onSave(_newDueDate!);
@@ -83,6 +94,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                               icon: const Icon(Icons.save_rounded),
                               tooltip: 'Save',
                             ),
+                          ],
                           const SizedBox(width: 4),
                           _editMode
                               ? IconButton(
