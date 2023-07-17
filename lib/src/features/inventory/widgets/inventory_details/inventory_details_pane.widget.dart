@@ -3,16 +3,15 @@ import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.w
 import 'package:librarian_app/src/features/inventory/data/detailed_thing.model.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
 
-import '../../data/thing.model.dart';
 import 'inventory_details.widget.dart';
 
 class InventoryDetailsPane extends StatefulWidget {
-  final ThingModel? thing;
+  final String? thingId;
   final InventoryViewModel model;
 
   const InventoryDetailsPane({
     super.key,
-    required this.thing,
+    required this.thingId,
     required this.model,
   });
 
@@ -23,7 +22,7 @@ class InventoryDetailsPane extends StatefulWidget {
 class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
   Future<void> _save(String name, String spanishName) async {
     await widget.model.updateThing(
-      thingId: widget.thing!.id,
+      thingId: widget.thingId!,
       name: name,
       spanishName: spanishName,
     );
@@ -32,16 +31,14 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
 
   @override
   Widget build(BuildContext context) {
-    final thing = widget.thing;
-    final name = TextEditingController(text: thing?.name);
-    final spanishName = TextEditingController(text: thing?.spanishName);
+    final thing = widget.thingId;
 
     return Card(
       clipBehavior: Clip.antiAlias,
       child: thing == null
           ? const Center(child: Text('Inventory Details'))
           : FutureBuilder<DetailedThingModel>(
-              future: widget.model.getThingDetails(id: thing.id),
+              future: widget.model.getThingDetails(id: thing),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -55,6 +52,10 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
 
                 final thingDetails = snapshot.data;
 
+                final name = TextEditingController(text: thingDetails!.name);
+                final spanishName =
+                    TextEditingController(text: thingDetails.spanishName);
+
                 return Column(
                   children: [
                     PaneHeader(
@@ -64,7 +65,7 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
                           Row(
                             children: [
                               Text(
-                                thingDetails!.name,
+                                thingDetails.name,
                                 style: const TextStyle(fontSize: 24),
                               ),
                             ],
@@ -116,7 +117,7 @@ class _InventoryDetailsPaneState extends State<InventoryDetailsPane> {
                               quantity,
                             ) async {
                               await widget.model.createItems(
-                                thingId: thing.id,
+                                thingId: thing,
                                 quantity: quantity,
                                 brand: brand,
                                 description: description,
