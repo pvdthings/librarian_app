@@ -114,7 +114,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                               );
                             },
                             tooltip: 'Check in',
-                            icon: const Icon(Icons.check_circle),
+                            icon: const Icon(Icons.library_add_check),
                           ),
                         ],
                       )
