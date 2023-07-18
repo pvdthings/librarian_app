@@ -23,12 +23,14 @@ class LoanDetailsPane extends StatefulWidget {
 }
 
 class _LoanDetailsPaneState extends State<LoanDetailsPane> {
-  bool _editMode = false;
   DateTime? _newDueDate;
 
   void _reset() {
-    _editMode = false;
     _newDueDate = null;
+  }
+
+  bool _hasUnsavedChanges() {
+    return _newDueDate != null;
   }
 
   @override
@@ -57,7 +59,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                       ),
                       Row(
                         children: [
-                          if (_editMode && _newDueDate != null) ...[
+                          if (_hasUnsavedChanges()) ...[
                             Text(
                               'Unsaved Changes',
                               style: Theme.of(context)
@@ -69,28 +71,25 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                                   ),
                             ),
                             const SizedBox(width: 8),
-                            IconButton(
-                              onPressed: () {
-                                widget.onSave(_newDueDate!);
-                                setState(_reset);
-                              },
-                              icon: const Icon(Icons.save_rounded),
-                              tooltip: 'Save',
-                            ),
                           ],
+                          IconButton(
+                            onPressed: _hasUnsavedChanges()
+                                ? () {
+                                    widget.onSave(_newDueDate!);
+                                    setState(_reset);
+                                  }
+                                : null,
+                            icon: const Icon(Icons.save_rounded),
+                            tooltip: 'Save',
+                          ),
                           const SizedBox(width: 4),
-                          _editMode
-                              ? IconButton(
-                                  onPressed: () => setState(_reset),
-                                  icon: const Icon(Icons.close_rounded),
-                                  tooltip: 'Cancel',
-                                )
-                              : IconButton(
-                                  onPressed: () =>
-                                      setState(() => _editMode = true),
-                                  icon: const Icon(Icons.edit),
-                                  tooltip: 'Edit',
-                                ),
+                          IconButton(
+                            onPressed: _hasUnsavedChanges()
+                                ? () => setState(_reset)
+                                : null,
+                            icon: const Icon(Icons.cancel),
+                            tooltip: 'Discard Changes',
+                          ),
                           SizedBox(
                             height: 24,
                             width: 24,
@@ -132,7 +131,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                     onDueDateUpdated: (dueDate) {
                       setState(() => _newDueDate = dueDate);
                     },
-                    editable: _editMode,
+                    editable: true,
                   ),
                 ),
               ],
