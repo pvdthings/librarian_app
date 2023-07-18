@@ -57,23 +57,6 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                       ),
                       Row(
                         children: [
-                          if (!_editMode)
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CheckinDialog(
-                                      thingNumber: loan.thing.number,
-                                      onCheckin: () async =>
-                                          Future(widget.onCheckIn),
-                                    );
-                                  },
-                                );
-                              },
-                              tooltip: 'Check in',
-                              icon: const Icon(Icons.check_circle_rounded),
-                            ),
                           if (_editMode && _newDueDate != null) ...[
                             Text(
                               'Unsaved Changes',
@@ -105,9 +88,34 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                               : IconButton(
                                   onPressed: () =>
                                       setState(() => _editMode = true),
-                                  icon: const Icon(Icons.edit_rounded),
+                                  icon: const Icon(Icons.edit),
                                   tooltip: 'Edit',
                                 ),
+                          SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: VerticalDivider(
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CheckinDialog(
+                                    thingNumber: loan.thing.number,
+                                    onCheckin: () async {
+                                      _reset();
+                                      await Future(widget.onCheckIn);
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            tooltip: 'Check in',
+                            icon: const Icon(Icons.check_circle),
+                          ),
                         ],
                       )
                     ],
