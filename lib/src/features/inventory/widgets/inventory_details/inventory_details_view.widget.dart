@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_details/inventory_details.widget.dart';
 import 'package:provider/provider.dart';
+
+import 'data/inventory_details.vm.dart';
+import 'new_inventory_details.dart';
 
 class InventoryDetailsView extends StatelessWidget {
   const InventoryDetailsView({
@@ -28,29 +30,18 @@ class InventoryDetailsView extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final details = snapshot.data!;
+            final thingDetails = snapshot.data!;
 
-            return InventoryDetails(
-              nameController: nameController,
-              spanishNameController: spanishNameController,
-              items: details.items,
-              availableItems: details.available,
-              readOnly: !inventory.editing,
-              onAddItems: (
-                brand,
-                description,
-                estimatedValue,
-                quantity,
-              ) async {
-                await inventory.createItems(
-                  thingId: details.id,
-                  quantity: quantity,
-                  brand: brand,
-                  description: description,
-                  estimatedValue: estimatedValue,
-                );
-              },
+            final details = InventoryDetailsViewModel(
+              inventory: inventory,
+              thingId: thingDetails.id,
+              name: thingDetails.name,
+              spanishName: thingDetails.spanishName,
+              items: thingDetails.items,
+              availableItems: thingDetails.available,
             );
+
+            return InventoryDetails(details: details);
           },
         );
       },
