@@ -3,7 +3,7 @@ import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.w
 import 'package:librarian_app/src/features/inventory/data/detailed_thing.model.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/data/inventory_details.vm.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_details/new_inventory_details.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/inventory_details.dart';
 import 'package:provider/provider.dart';
 
 class InventoryDetailsPane extends StatelessWidget {

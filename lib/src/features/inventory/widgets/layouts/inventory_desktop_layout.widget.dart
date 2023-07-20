@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:librarian_app/src/features/common/widgets/search_field.widget.dart';
 
 import '../../data/inventory.vm.dart';
-import '../inventory_details/new_inventory_details_pane.dart';
+import '../inventory_details/inventory_details_pane.dart';
 import '../inventory_list/inventory_list_view.widget.dart';
 
 class InventoryDesktopLayout extends StatefulWidget {

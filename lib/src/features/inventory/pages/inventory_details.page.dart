@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../data/inventory.vm.dart';
 import '../widgets/inventory_details/data/inventory_details.vm.dart';
-import '../widgets/inventory_details/new_inventory_details.dart';
+import '../widgets/inventory_details/inventory_details.dart';
 
 class InventoryDetailsPage extends StatelessWidget {
   const InventoryDetailsPage({super.key});
