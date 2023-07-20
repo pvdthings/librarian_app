@@ -11,7 +11,6 @@ class InventoryDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final inventory = Provider.of<InventoryViewModel>(context);
-    final selected = inventory.selected!;
 
     return FutureBuilder(
       future: inventory.getThingDetails(id: inventory.selectedId!),
@@ -37,7 +36,7 @@ class InventoryDetailsPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(selected.name),
+            title: Text(details.name),
             actions: [
               ListenableBuilder(
                 listenable: details,
