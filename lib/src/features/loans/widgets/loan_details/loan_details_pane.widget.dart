@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 
 import '../../data/loan.model.dart';
@@ -74,9 +75,11 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                           ],
                           IconButton(
                             onPressed: _hasUnsavedChanges()
-                                ? () {
-                                    widget.onSave(_newDueDate!);
-                                    setState(_reset);
+                                ? () async {
+                                    if (await showSaveDialog(context)) {
+                                      widget.onSave(_newDueDate!);
+                                      setState(_reset);
+                                    }
                                   }
                                 : null,
                             icon: const Icon(Icons.save_rounded),
