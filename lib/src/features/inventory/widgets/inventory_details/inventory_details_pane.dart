@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 import 'package:librarian_app/src/features/inventory/data/detailed_thing.model.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
@@ -75,7 +76,12 @@ class InventoryDetailsPane extends StatelessWidget {
                                       ],
                                       IconButton(
                                         onPressed: details.hasUnsavedChanges
-                                            ? details.save
+                                            ? () async {
+                                                if (await showSaveDialog(
+                                                    context)) {
+                                                  await details.save();
+                                                }
+                                              }
                                             : null,
                                         icon: const Icon(Icons.save_rounded),
                                         tooltip: 'Save',
