@@ -6,6 +6,7 @@ class SaveDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      icon: const Icon(Icons.save),
       title: const Text('Save Changes'),
       content: const Text('Are you sure you want to save?'),
       actions: [
@@ -26,6 +27,7 @@ class SaveDialog extends StatelessWidget {
   }
 }
 
+// TODO: Should make dialogs more like this from now on. Dialogs should not contain complicated logic. Return a result and let a controller handle what happens next.
 Future<bool> showSaveDialog(BuildContext context) async {
   return await showDialog<bool>(
         context: context,
