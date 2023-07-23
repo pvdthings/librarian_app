@@ -53,8 +53,8 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
     }
   }
 
-  void _checkIn() {
-    showDialog(
+  void _checkIn() async {
+    showDialog<bool>(
       context: context,
       builder: (context) {
         final thing = widget.loan.thing;
@@ -69,7 +69,11 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
           },
         );
       },
-    );
+    ).then((result) {
+      if (result ?? false) {
+        Navigator.of(context).pop();
+      }
+    });
   }
 
   late Future<LoanModel?> _loanFuture;
