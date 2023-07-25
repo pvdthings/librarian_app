@@ -16,21 +16,22 @@ class CheckinDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      icon: const Icon(Icons.library_add_check),
       title: Text("Thing #$thingNumber"),
       content:
           Text("Are you sure you want to check Thing #$thingNumber back in?"),
       actions: [
         OutlinedButton(
           child: const Text("Cancel"),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.of(context).pop(false),
         ),
         FilledProgressButton(
-          child: const Text('Yes'),
+          child: const Text('Check in'),
           onPressed: () {
             Future.delayed(const Duration(seconds: 2), () async {
               await onCheckin?.call();
             }).whenComplete(() {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(true);
               onPostCheckin?.call();
             });
           },

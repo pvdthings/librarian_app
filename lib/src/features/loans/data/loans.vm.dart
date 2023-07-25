@@ -63,6 +63,19 @@ class LoansViewModel extends ChangeNotifier {
     return await _inventoryService.getItem(number: number);
   }
 
+  Future<LoanModel?> getLoan({
+    required String id,
+    required String thingId,
+  }) async {
+    try {
+      final response = await LendingApi.fetchLoan(id: id, thingId: thingId);
+      return LoanModel.fromJson(response.data as Map<String, dynamic>);
+    } catch (error) {
+      errorMessage = error.toString();
+      return null;
+    }
+  }
+
   Future<List<LoanModel>> getLoans() async {
     final response = await LendingApi.fetchLoans();
     return (response.data as List).map((e) => LoanModel.fromJson(e)).toList();

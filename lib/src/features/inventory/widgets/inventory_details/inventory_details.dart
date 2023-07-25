@@ -1,33 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/widgets/input_decoration.widget.dart';
 import 'package:librarian_app/src/features/inventory/widgets/dialogs/add_inventory_dialog.widget.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/data/inventory_details.vm.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/items_card.widget.dart';
 
-import '../../data/item.model.dart';
-
 class InventoryDetails extends StatelessWidget {
-  const InventoryDetails({
-    super.key,
-    required this.nameController,
-    required this.spanishNameController,
-    required this.items,
-    required this.availableItems,
-    this.onAddItems,
-    this.readOnly = true,
-  });
+  const InventoryDetails({super.key, required this.details});
 
-  final TextEditingController nameController;
-  final TextEditingController spanishNameController;
-  final List<ItemModel> items;
-  final int availableItems;
-  final bool readOnly;
-
-  final Future<void> Function(
-    String? brand,
-    String? description,
-    double? estimatedValue,
-    int quantity,
-  )? onAddItems;
+  final InventoryDetailsViewModel details;
 
   @override
   Widget build(BuildContext context) {
@@ -35,32 +15,31 @@ class InventoryDetails extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextField(
-          controller: nameController,
-          readOnly: readOnly,
+          controller: details.nameController,
           decoration: inputDecoration.copyWith(
             icon: const Icon(Icons.build),
             labelText: 'Name',
           ),
+          onChanged: (_) => details.announceChanges(),
         ),
         const SizedBox(height: 16),
         TextField(
-          controller: spanishNameController,
-          readOnly: readOnly,
-          enabled: spanishNameController.text.isNotEmpty || !readOnly,
+          controller: details.spanishNameController,
           decoration: inputDecoration.copyWith(
             icon: const Icon(Icons.build),
             labelText: 'Name (Spanish)',
           ),
+          onChanged: (_) => details.announceChanges(),
         ),
         const SizedBox(height: 32),
         ItemsCard(
-          items: items,
-          availableItemsCount: availableItems,
+          items: details.items,
+          availableItemsCount: details.availableItems,
           onAddItemsPressed: () {
             showDialog(
               context: context,
               builder: (context) => AddInventoryDialog(
-                onCreate: onAddItems,
+                onCreate: details.addItems,
               ),
             );
           },

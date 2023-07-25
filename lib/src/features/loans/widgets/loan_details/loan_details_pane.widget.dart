@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 
 import '../../data/loan.model.dart';
@@ -23,12 +24,14 @@ class LoanDetailsPane extends StatefulWidget {
 }
 
 class _LoanDetailsPaneState extends State<LoanDetailsPane> {
-  bool _editMode = false;
   DateTime? _newDueDate;
 
   void _reset() {
-    _editMode = false;
     _newDueDate = null;
+  }
+
+  bool _hasUnsavedChanges() {
+    return _newDueDate != null;
   }
 
   @override
@@ -57,45 +60,64 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                       ),
                       Row(
                         children: [
-                          if (!_editMode)
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return CheckinDialog(
-                                      thingNumber: loan.thing.number,
-                                      onCheckin: () async =>
-                                          Future(widget.onCheckIn),
-                                    );
-                                  },
-                                );
-                              },
-                              tooltip: 'Check in',
-                              icon: const Icon(Icons.check_circle_rounded),
+                          if (_hasUnsavedChanges()) ...[
+                            Text(
+                              'Unsaved Changes',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontStyle: FontStyle.italic,
+                                  ),
                             ),
-                          if (_editMode && _newDueDate != null)
-                            IconButton(
-                              onPressed: () {
-                                widget.onSave(_newDueDate!);
-                                setState(_reset);
-                              },
-                              icon: const Icon(Icons.save_rounded),
-                              tooltip: 'Save',
-                            ),
+                            const SizedBox(width: 8),
+                          ],
+                          IconButton(
+                            onPressed: _hasUnsavedChanges()
+                                ? () async {
+                                    if (await showSaveDialog(context)) {
+                                      widget.onSave(_newDueDate!);
+                                      setState(_reset);
+                                    }
+                                  }
+                                : null,
+                            icon: const Icon(Icons.save_rounded),
+                            tooltip: 'Save',
+                          ),
                           const SizedBox(width: 4),
-                          _editMode
-                              ? IconButton(
-                                  onPressed: () => setState(_reset),
-                                  icon: const Icon(Icons.close_rounded),
-                                  tooltip: 'Cancel',
-                                )
-                              : IconButton(
-                                  onPressed: () =>
-                                      setState(() => _editMode = true),
-                                  icon: const Icon(Icons.edit_rounded),
-                                  tooltip: 'Edit',
-                                ),
+                          IconButton(
+                            onPressed: _hasUnsavedChanges()
+                                ? () => setState(_reset)
+                                : null,
+                            icon: const Icon(Icons.cancel),
+                            tooltip: 'Discard Changes',
+                          ),
+                          SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: VerticalDivider(
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CheckinDialog(
+                                    thingNumber: loan.thing.number,
+                                    onCheckin: () async {
+                                      _reset();
+                                      await Future(widget.onCheckIn);
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            tooltip: 'Check in',
+                            icon: const Icon(Icons.library_add_check),
+                          ),
                         ],
                       )
                     ],
@@ -112,7 +134,7 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                     onDueDateUpdated: (dueDate) {
                       setState(() => _newDueDate = dueDate);
                     },
-                    editable: _editMode,
+                    editable: true,
                   ),
                 ),
               ],
