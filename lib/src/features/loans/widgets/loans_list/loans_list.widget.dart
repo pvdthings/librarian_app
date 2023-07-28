@@ -15,16 +15,6 @@ class LoansList extends StatelessWidget {
     this.onTap,
   });
 
-  String _getBorrowerInitials(String name) {
-    final uppercaseName = name.toUpperCase();
-    final firstLetter = uppercaseName[0];
-
-    final split = uppercaseName.split(' ');
-    final secondLetter = split.length > 1 ? split[1][0] : uppercaseName[1];
-
-    return firstLetter + secondLetter;
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -34,7 +24,7 @@ class LoansList extends StatelessWidget {
 
         final thingNumber = Text('#${loan.thing.number}');
         final thingName = Text(loan.thing.name);
-        final borrowerInitials = _getBorrowerInitials(loan.borrower.name);
+        final borrowerInitials = Initials.convert(loan.borrower.name);
 
         return ListTile(
           leading: CircleAvatar(
@@ -64,5 +54,21 @@ class LoansList extends StatelessWidget {
       },
       shrinkWrap: true,
     );
+  }
+}
+
+class Initials {
+  static String convert(String fullName) {
+    final trimmedName = fullName.trim().toUpperCase();
+    if (trimmedName.isEmpty) {
+      return '?';
+    }
+
+    final firstLetter = trimmedName[0];
+
+    final split = trimmedName.split(' ');
+    final secondLetter = split.length > 1 ? split.last[0] : trimmedName[1];
+
+    return firstLetter + secondLetter;
   }
 }
