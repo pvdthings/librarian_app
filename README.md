@@ -14,11 +14,11 @@ Without a `SUPABASE_URL`, attempting signin will result in a 404 error.
 
 ## Project Structure
 
-The app is broken down into features or modules, each containing directories for `data`, `widgets`, and `views`.
+The app is broken down into features or modules, each containing directories for `data`, `widgets`, and `pages`.
 
 - `data` contains Models, ViewModels, Repostories, or any other business logic.
-- `widgets` contains UI components that have no knowledge of the ViewModel.
-- `views` contains UI components that _do_ have knowledge of the ViewModel. Pages are the most common, but there may be smaller views that compose a page.
+- `widgets` contains UI components that compose larger widgets or pages.
+- `pages` contains UI components that represent pages. Generally wrapped in a `Scaffold` widget.
 
 ## Background
 

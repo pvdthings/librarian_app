@@ -22,6 +22,13 @@ class LendingApi {
     return await _client.get('/loans');
   }
 
+  static Future<Response> fetchLoan({
+    required String id,
+    required String thingId,
+  }) async {
+    return await _client.get('/loans/$id/$thingId');
+  }
+
   static Future<Response> createLoan(NewLoan data) async {
     return await _client.put('/loans', data: {
       'borrowerId': data.borrowerId,

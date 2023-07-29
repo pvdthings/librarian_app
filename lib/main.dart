@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/constants.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers_view_model.dart';
-import 'package:librarian_app/src/features/inventory/data/inventory_view_model.dart';
-import 'package:librarian_app/src/features/loans/data/loans_view_model.dart';
-import 'package:librarian_app/src/features/authentication/data/user_view_model.dart';
-import 'package:librarian_app/src/features/splash/views/splash_page.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
+import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
+import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
+import 'package:librarian_app/src/features/authentication/data/user.vm.dart';
+import 'package:librarian_app/src/features/splash/pages/splash.page.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
-
-import 'src/features/loans/data/things_view_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,9 +26,6 @@ Future<void> main() async {
       ),
       ChangeNotifierProvider<BorrowersViewModel>(
         create: (context) => BorrowersViewModel(),
-      ),
-      ChangeNotifierProvider<ThingsViewModel>(
-        create: (context) => ThingsViewModel(),
       ),
       ChangeNotifierProvider<InventoryViewModel>(
         create: (context) => InventoryViewModel(),
