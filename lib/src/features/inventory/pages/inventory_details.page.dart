@@ -64,7 +64,10 @@ class InventoryDetailsPage extends StatelessWidget {
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: InventoryDetails(details: details),
+              child: ListenableBuilder(
+                listenable: details,
+                builder: (context, child) => InventoryDetails(details: details),
+              ),
             ),
           ),
         );
