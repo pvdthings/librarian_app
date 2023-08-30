@@ -36,6 +36,7 @@ class InventoryDetailsPane extends StatelessWidget {
                       thingId: thingDetails.id,
                       name: thingDetails.name,
                       spanishName: thingDetails.spanishName,
+                      hidden: thingDetails.hidden,
                       items: thingDetails.items,
                       availableItems: thingDetails.available,
                     );
@@ -105,7 +106,12 @@ class InventoryDetailsPane extends StatelessWidget {
                           child: SingleChildScrollView(
                             child: Padding(
                               padding: const EdgeInsets.all(16),
-                              child: InventoryDetails(details: details),
+                              child: ListenableBuilder(
+                                listenable: details,
+                                builder: (BuildContext context, Widget? child) {
+                                  return InventoryDetails(details: details);
+                                },
+                              ),
                             ),
                           ),
                         ),

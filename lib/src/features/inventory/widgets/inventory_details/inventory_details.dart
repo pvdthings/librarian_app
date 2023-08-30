@@ -31,6 +31,16 @@ class InventoryDetails extends StatelessWidget {
           ),
           onChanged: (_) => details.announceChanges(),
         ),
+        const SizedBox(height: 16),
+        CheckboxListTile(
+          title: const Text('Hidden'),
+          value: details.hiddenNotifier.value,
+          onChanged: (bool? value) {
+            details.hiddenNotifier.value = value ?? false;
+            details.announceChanges();
+          },
+          controlAffinity: ListTileControlAffinity.leading,
+        ),
         const SizedBox(height: 32),
         ItemsCard(
           items: details.items,
