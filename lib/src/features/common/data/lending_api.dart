@@ -72,10 +72,12 @@ class LendingApi {
     String thingId, {
     String? name,
     String? spanishName,
+    bool? hidden,
   }) async {
     return await _client.patch('/things/$thingId', data: {
       'name': name,
       'spanishName': spanishName,
+      'hidden': hidden,
     });
   }
 

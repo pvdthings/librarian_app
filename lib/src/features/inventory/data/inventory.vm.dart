@@ -65,11 +65,13 @@ class InventoryViewModel extends ChangeNotifier {
     required String thingId,
     String? name,
     String? spanishName,
+    bool? hidden,
   }) async {
     await _service.updateThing(
       thingId: thingId,
       name: name,
       spanishName: spanishName,
+      hidden: hidden,
     );
 
     refresh();

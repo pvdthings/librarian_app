@@ -59,11 +59,13 @@ class InventoryRepository {
     required String thingId,
     String? name,
     String? spanishName,
+    bool? hidden,
   }) async {
     await LendingApi.updateThing(
       thingId,
       name: name,
       spanishName: spanishName,
+      hidden: hidden,
     );
   }
 

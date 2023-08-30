@@ -47,11 +47,13 @@ class InventoryService {
     required String thingId,
     String? name,
     String? spanishName,
+    bool? hidden,
   }) async {
     return await _repository.updateThing(
       thingId: thingId,
       name: name,
       spanishName: spanishName,
+      hidden: hidden,
     );
   }
 
