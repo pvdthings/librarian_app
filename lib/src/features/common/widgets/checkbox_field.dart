@@ -18,9 +18,12 @@ class CheckboxField extends StatelessWidget {
       children: [
         Checkbox(value: value, onChanged: onChanged),
         const SizedBox(width: 16),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.bodyLarge,
+        TapRegion(
+          onTapInside: (_) => onChanged(!value),
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.bodyLarge,
+          ),
         ),
       ],
     );
