@@ -31,6 +31,7 @@ class InventoryDetailsPage extends StatelessWidget {
           name: thingDetails.name,
           spanishName: thingDetails.spanishName,
           hidden: thingDetails.hidden,
+          images: thingDetails.images,
           items: thingDetails.items,
           availableItems: thingDetails.available,
         );

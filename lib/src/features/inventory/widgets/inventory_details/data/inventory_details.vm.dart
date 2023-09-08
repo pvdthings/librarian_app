@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/inventory/data/image.model.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
 import 'package:librarian_app/src/features/inventory/data/item.model.dart';
 
@@ -9,6 +10,7 @@ class InventoryDetailsViewModel extends ChangeNotifier {
     required this.name,
     required this.spanishName,
     required this.hidden,
+    required this.images,
     required this.items,
     required this.availableItems,
   });
@@ -23,6 +25,7 @@ class InventoryDetailsViewModel extends ChangeNotifier {
   final String name;
   final String? spanishName;
   final bool hidden;
+  final List<ImageModel> images;
   final List<ItemModel> items;
   final int availableItems;
 
