@@ -17,7 +17,7 @@ class CheckboxField extends StatelessWidget {
     return Row(
       children: [
         Checkbox(value: value, onChanged: onChanged),
-        const SizedBox(width: 16),
+        const SizedBox(width: 8),
         TapRegion(
           onTapInside: (_) => onChanged(!value),
           child: Text(
