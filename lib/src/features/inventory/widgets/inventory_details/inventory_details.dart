@@ -21,8 +21,14 @@ class InventoryDetails extends StatelessWidget {
           runSpacing: 32,
           children: [
             ThingImageCard(
-              imageUrl:
-                  details.images.isNotEmpty ? details.images[0].url : null,
+              imageUrl: details.imageNotifier.value != null
+                  ? details.imageNotifier.value!.url
+                  : null,
+              onRemove: () {
+                details.imageNotifier.value = null;
+                details.announceChanges();
+              },
+              onReplace: () {},
             ),
             Column(
               children: [

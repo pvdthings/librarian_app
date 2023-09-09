@@ -10,7 +10,7 @@ class InventoryDetailsViewModel extends ChangeNotifier {
     required this.name,
     required this.spanishName,
     required this.hidden,
-    required this.images,
+    required this.image,
     required this.items,
     required this.availableItems,
   });
@@ -20,19 +20,21 @@ class InventoryDetailsViewModel extends ChangeNotifier {
   late final nameController = TextEditingController(text: name);
   late final spanishNameController = TextEditingController(text: spanishName);
   late final hiddenNotifier = ValueNotifier(hidden);
+  late final imageNotifier = ValueNotifier(image);
 
   final String thingId;
   final String name;
   final String? spanishName;
   final bool hidden;
-  final List<ImageModel> images;
+  final ImageModel? image;
   final List<ItemModel> items;
   final int availableItems;
 
   bool get hasUnsavedChanges =>
       nameController.text != name ||
       spanishNameController.text != (spanishName ?? '') ||
-      hiddenNotifier.value != hidden;
+      hiddenNotifier.value != hidden ||
+      imageNotifier.value != image;
 
   void announceChanges() => notifyListeners();
 
@@ -51,6 +53,7 @@ class InventoryDetailsViewModel extends ChangeNotifier {
         ? TextEditingValue(text: spanishName!)
         : TextEditingValue.empty;
     hiddenNotifier.value = hidden;
+    imageNotifier.value = image;
     notifyListeners();
   }
 
