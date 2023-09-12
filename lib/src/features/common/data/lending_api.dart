@@ -73,11 +73,13 @@ class LendingApi {
     String? name,
     String? spanishName,
     bool? hidden,
+    ImageDTO? image,
   }) async {
     return await _client.patch('/things/$thingId', data: {
       'name': name,
       'spanishName': spanishName,
       'hidden': hidden,
+      'image': image != null ? {'url': image.url} : null,
     });
   }
 
@@ -109,6 +111,12 @@ class LendingApi {
       'cash': cash,
     });
   }
+}
+
+class ImageDTO {
+  final String? url;
+
+  const ImageDTO({required this.url});
 }
 
 class NewLoan {

@@ -60,12 +60,14 @@ class InventoryRepository {
     String? name,
     String? spanishName,
     bool? hidden,
+    String? imageUrl,
   }) async {
     await LendingApi.updateThing(
       thingId,
       name: name,
       spanishName: spanishName,
       hidden: hidden,
+      image: imageUrl != null ? ImageDTO(url: imageUrl) : null,
     );
   }
 

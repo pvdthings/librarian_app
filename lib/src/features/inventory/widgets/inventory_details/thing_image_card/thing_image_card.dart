@@ -1,14 +1,18 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 class ThingImageCard extends StatelessWidget {
   const ThingImageCard({
     super.key,
-    required this.imageUrl,
+    this.imageUrl,
+    this.imageBytes,
     required this.onRemove,
     required this.onReplace,
   });
 
   final String? imageUrl;
+  final Uint8List? imageBytes;
   final void Function() onRemove;
   final void Function() onReplace;
 
@@ -28,12 +32,17 @@ class ThingImageCard extends StatelessWidget {
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
-              child: imageUrl != null
-                  ? Image.network(
-                      imageUrl!,
+              child: imageBytes != null
+                  ? Image.memory(
+                      imageBytes!,
                       fit: BoxFit.cover,
                     )
-                  : null,
+                  : imageUrl != null
+                      ? Image.network(
+                          imageUrl!,
+                          fit: BoxFit.cover,
+                        )
+                      : null,
             ),
             const SizedBox(height: 8),
             Row(

@@ -37,7 +37,7 @@ class InventoryDetailsPane extends StatelessWidget {
                       name: thingDetails.name,
                       spanishName: thingDetails.spanishName,
                       hidden: thingDetails.hidden,
-                      image: thingDetails.images.firstOrNull,
+                      images: thingDetails.images,
                       items: thingDetails.items,
                       availableItems: thingDetails.available,
                     );
