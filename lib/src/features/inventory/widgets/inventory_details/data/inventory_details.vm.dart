@@ -62,6 +62,13 @@ class InventoryDetailsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeImage() {
+    imageNotifier.value = null;
+    imageUploadNotifier.value =
+        const UpdatedImageModel(type: null, bytes: null);
+    notifyListeners();
+  }
+
   Future<void> addItems(
     String? brand,
     String? description,

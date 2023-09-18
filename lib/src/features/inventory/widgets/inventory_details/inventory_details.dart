@@ -24,14 +24,9 @@ class InventoryDetails extends StatelessWidget {
           runSpacing: 32,
           children: [
             ThingImageCard(
-              imageUrl: details.imageNotifier.value != null
-                  ? details.imageNotifier.value!.url
-                  : null,
+              imageUrl: details.imageNotifier.value?.url,
               imageBytes: details.imageUploadNotifier.value?.bytes,
-              onRemove: () {
-                details.imageNotifier.value = null;
-                details.announceChanges();
-              },
+              onRemove: details.removeImage,
               onReplace: () async {
                 FilePickerResult? result = await FilePickerWeb.platform
                     .pickFiles(type: FileType.image);
