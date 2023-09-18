@@ -42,7 +42,7 @@ class ThingImageCard extends StatelessWidget {
                           imageUrl!,
                           fit: BoxFit.cover,
                         )
-                      : null,
+                      : const Center(child: Text('No image')),
             ),
             const SizedBox(height: 8),
             Row(
