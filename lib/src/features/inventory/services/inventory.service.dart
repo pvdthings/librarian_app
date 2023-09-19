@@ -1,3 +1,6 @@
+import 'package:librarian_app/src/features/common/services/image_service.dart';
+import 'package:librarian_app/src/features/inventory/data/updated_image_model.dart';
+
 import '../data/detailed_thing.model.dart';
 import '../data/inventory.repo.dart';
 import '../data/item.model.dart';
@@ -5,6 +8,7 @@ import '../data/thing.model.dart';
 
 class InventoryService {
   final _repository = InventoryRepository();
+  final _imageService = ImageService();
 
   List<ThingModel> get cachedThings => _repository.things;
 
@@ -48,12 +52,24 @@ class InventoryService {
     String? name,
     String? spanishName,
     bool? hidden,
+    UpdatedImageModel? image,
   }) async {
+    if (image != null && image.bytes == null) {
+      await _repository.deleteThingImage(thingId: thingId);
+    }
+
     return await _repository.updateThing(
       thingId: thingId,
       name: name,
       spanishName: spanishName,
       hidden: hidden,
+      imageUrl: image != null && image.bytes != null
+          ? (await _imageService.uploadImage(
+              bytes: image.bytes!,
+              type: image.type!,
+            ))
+              .url
+          : null,
     );
   }
 

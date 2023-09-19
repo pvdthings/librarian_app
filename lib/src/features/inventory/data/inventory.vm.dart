@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/inventory/data/detailed_thing.model.dart';
+import 'package:librarian_app/src/features/inventory/data/updated_image_model.dart';
 import 'package:librarian_app/src/features/inventory/services/inventory.service.dart';
 
 import 'thing.model.dart';
@@ -66,12 +67,14 @@ class InventoryViewModel extends ChangeNotifier {
     String? name,
     String? spanishName,
     bool? hidden,
+    UpdatedImageModel? image,
   }) async {
     await _service.updateThing(
       thingId: thingId,
       name: name,
       spanishName: spanishName,
       hidden: hidden,
+      image: image,
     );
 
     refresh();

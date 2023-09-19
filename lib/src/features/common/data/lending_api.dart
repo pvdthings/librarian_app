@@ -73,12 +73,18 @@ class LendingApi {
     String? name,
     String? spanishName,
     bool? hidden,
+    ImageDTO? image,
   }) async {
     return await _client.patch('/things/$thingId', data: {
       'name': name,
       'spanishName': spanishName,
       'hidden': hidden,
+      'image': image != null ? {'url': image.url} : null,
     });
+  }
+
+  static Future<Response> deleteThingImage(String thingId) async {
+    return await _client.delete('/things/$thingId/image');
   }
 
   static Future<Response> fetchInventoryItem({required int number}) async {
@@ -109,6 +115,12 @@ class LendingApi {
       'cash': cash,
     });
   }
+}
+
+class ImageDTO {
+  final String? url;
+
+  const ImageDTO({required this.url});
 }
 
 class NewLoan {
