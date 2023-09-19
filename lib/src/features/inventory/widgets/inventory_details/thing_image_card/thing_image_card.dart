@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/utils/media_query.dart';
 
 class ThingImageCard extends StatelessWidget {
   const ThingImageCard({
@@ -19,7 +20,7 @@ class ThingImageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 0,
+      elevation: isMobile(context) ? 1 : 0,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
