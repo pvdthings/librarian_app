@@ -83,6 +83,10 @@ class LendingApi {
     });
   }
 
+  static Future<Response> deleteThingImage(String thingId) async {
+    return await _client.delete('/things/$thingId/image');
+  }
+
   static Future<Response> fetchInventoryItem({required int number}) async {
     return await _client.get('/inventory/$number');
   }

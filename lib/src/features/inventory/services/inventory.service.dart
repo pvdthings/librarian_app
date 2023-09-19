@@ -54,12 +54,16 @@ class InventoryService {
     bool? hidden,
     UpdatedImageModel? image,
   }) async {
+    if (image != null && image.bytes == null) {
+      await _repository.deleteThingImage(thingId: thingId);
+    }
+
     return await _repository.updateThing(
       thingId: thingId,
       name: name,
       spanishName: spanishName,
       hidden: hidden,
-      imageUrl: image != null
+      imageUrl: image != null && image.bytes != null
           ? (await _imageService.uploadImage(
               bytes: image.bytes!,
               type: image.type!,

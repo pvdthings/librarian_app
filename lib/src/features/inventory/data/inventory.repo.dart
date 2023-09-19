@@ -71,6 +71,10 @@ class InventoryRepository {
     );
   }
 
+  Future<void> deleteThingImage({required String thingId}) async {
+    await LendingApi.deleteThingImage(thingId);
+  }
+
   Future<void> createItems({
     required String thingId,
     required int quantity,
