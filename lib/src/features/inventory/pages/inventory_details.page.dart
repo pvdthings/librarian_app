@@ -30,6 +30,8 @@ class InventoryDetailsPage extends StatelessWidget {
           thingId: thingDetails.id,
           name: thingDetails.name,
           spanishName: thingDetails.spanishName,
+          hidden: thingDetails.hidden,
+          images: thingDetails.images,
           items: thingDetails.items,
           availableItems: thingDetails.available,
         );
@@ -63,7 +65,10 @@ class InventoryDetailsPage extends StatelessWidget {
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: InventoryDetails(details: details),
+              child: ListenableBuilder(
+                listenable: details,
+                builder: (context, child) => InventoryDetails(details: details),
+              ),
             ),
           ),
         );

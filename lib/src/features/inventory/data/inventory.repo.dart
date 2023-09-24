@@ -59,12 +59,20 @@ class InventoryRepository {
     required String thingId,
     String? name,
     String? spanishName,
+    bool? hidden,
+    String? imageUrl,
   }) async {
     await LendingApi.updateThing(
       thingId,
       name: name,
       spanishName: spanishName,
+      hidden: hidden,
+      image: imageUrl != null ? ImageDTO(url: imageUrl) : null,
     );
+  }
+
+  Future<void> deleteThingImage({required String thingId}) async {
+    await LendingApi.deleteThingImage(thingId);
   }
 
   Future<void> createItems({
