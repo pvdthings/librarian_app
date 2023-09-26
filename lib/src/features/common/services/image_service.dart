@@ -9,10 +9,11 @@ class ImageService {
     required String type,
   }) async {
     final guid = const Uuid().v4();
+    final path = '$guid.$type';
 
-    final String path = await Supabase.instance.client.storage
+    await Supabase.instance.client.storage
         .from('librarian_images')
-        .uploadBinary('$guid.$type', bytes);
+        .uploadBinary(path, bytes);
 
     final String url = Supabase.instance.client.storage
         .from('librarian_images')
