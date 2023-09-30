@@ -3,9 +3,11 @@ import 'dart:typed_data';
 class UpdatedImageModel {
   final String? type;
   final Uint8List? bytes;
+  final String? url;
 
   const UpdatedImageModel({
-    required this.type,
-    required this.bytes,
+    this.type,
+    this.bytes,
+    this.url,
   });
 }

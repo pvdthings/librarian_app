@@ -77,7 +77,7 @@ class InventoryViewModel extends ChangeNotifier {
       image: image,
     );
 
-    refresh();
+    Future.delayed(const Duration(seconds: 1), refresh);
   }
 
   Future<void> createItems({
