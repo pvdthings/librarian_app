@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:librarian_app/src/features/common/services/image_service.dart';
 import 'package:librarian_app/src/features/inventory/data/updated_image_model.dart';
 
@@ -63,7 +64,7 @@ class InventoryService {
       name: name,
       spanishName: spanishName,
       hidden: hidden,
-      imageUrl: image != null && image.bytes != null
+      imageUrl: image != null && image.bytes != null && !kDebugMode
           ? (await _imageService.uploadImage(
               bytes: image.bytes!,
               type: image.type!,
