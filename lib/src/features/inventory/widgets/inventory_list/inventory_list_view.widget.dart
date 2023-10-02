@@ -1,39 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/inventory/providers/selected_thing_provider.dart';
+import 'package:librarian_app/src/features/inventory/providers/things_provider.dart';
 
-import '../../data/inventory.vm.dart';
-import '../../data/thing.model.dart';
+import '../../models/thing_model.dart';
 import 'inventory_list.widget.dart';
 
-class InventoryListView extends StatelessWidget {
-  const InventoryListView({
-    super.key,
-    required this.searchFilter,
-    this.onTap,
-  });
+class InventoryListView extends ConsumerWidget {
+  const InventoryListView({super.key, this.onTap});
 
-  final String searchFilter;
   final void Function(ThingModel)? onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<InventoryViewModel>(
-      builder: (context, model, child) {
-        if (model.refreshing) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final things = ref.watch(thingsProvider);
+    final selectedThing = ref.watch(selectedThingProvider);
+
+    return FutureBuilder(
+      future: things,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final things = model.getCachedThings(filter: searchFilter);
-
-        if (things.isEmpty) {
+        if (snapshot.hasData && snapshot.data!.isEmpty) {
           return const Center(child: Text('Nothing to see here'));
         }
 
         return InventoryList(
-          things: things,
-          selected: model.selected,
+          things: snapshot.data!,
+          selected: selectedThing,
           onTap: (thing) {
-            model.select(thing);
+            ref.read(selectedThingProvider.notifier).select(thing);
             onTap?.call(thing);
           },
         );

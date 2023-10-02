@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/inventory/data/image.model.dart';
-import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
-import 'package:librarian_app/src/features/inventory/data/item.model.dart';
-import 'package:librarian_app/src/features/inventory/data/updated_image_model.dart';
+import 'package:librarian_app/src/features/inventory/data/inventory.repo.dart';
+import 'package:librarian_app/src/features/inventory/models/image_model.dart';
+import 'package:librarian_app/src/features/inventory/models/item_model.dart';
+import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
 
 class InventoryDetailsViewModel extends ChangeNotifier {
   InventoryDetailsViewModel({
@@ -14,9 +14,10 @@ class InventoryDetailsViewModel extends ChangeNotifier {
     required this.images,
     required this.items,
     required this.availableItems,
+    this.onSave,
   });
 
-  final InventoryViewModel inventory;
+  final InventoryRepository inventory;
 
   late final nameController = TextEditingController(text: name);
   late final spanishNameController = TextEditingController(text: spanishName);
@@ -31,6 +32,7 @@ class InventoryDetailsViewModel extends ChangeNotifier {
   final List<ImageModel> images;
   final List<ItemModel> items;
   final int availableItems;
+  final void Function()? onSave;
 
   bool get hasUnsavedChanges =>
       nameController.text != name ||
@@ -49,6 +51,8 @@ class InventoryDetailsViewModel extends ChangeNotifier {
       hidden: hiddenNotifier.value,
       image: imageUploadNotifier.value,
     );
+
+    onSave?.call();
   }
 
   Future<void> discardChanges() async {
@@ -82,5 +86,7 @@ class InventoryDetailsViewModel extends ChangeNotifier {
       estimatedValue: estimatedValue,
       quantity: quantity,
     );
+
+    onSave?.call();
   }
 }

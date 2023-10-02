@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
-import 'package:librarian_app/src/features/inventory/data/item.model.dart';
-import 'package:librarian_app/src/features/inventory/services/inventory.service.dart';
+import 'package:librarian_app/src/features/inventory/data/inventory.repo.dart';
+import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 
 import 'loan.model.dart';
 
@@ -12,7 +12,7 @@ class LoansViewModel extends ChangeNotifier {
     refresh();
   }
 
-  final _inventoryService = InventoryService();
+  final _inventoryRepository = InventoryRepository();
 
   String? errorMessage;
 
@@ -60,7 +60,7 @@ class LoansViewModel extends ChangeNotifier {
   }
 
   Future<ItemModel?> getInventoryItem({required int number}) async {
-    return await _inventoryService.getItem(number: number);
+    return await _inventoryRepository.getItem(number: number);
   }
 
   Future<LoanModel?> getLoan({

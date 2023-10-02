@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:librarian_app/constants.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
-import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
 import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
 import 'package:librarian_app/src/features/authentication/data/user.vm.dart';
 import 'package:librarian_app/src/features/splash/pages/splash.page.dart';
@@ -27,11 +27,8 @@ Future<void> main() async {
       ChangeNotifierProvider<BorrowersViewModel>(
         create: (context) => BorrowersViewModel(),
       ),
-      ChangeNotifierProvider<InventoryViewModel>(
-        create: (context) => InventoryViewModel(),
-      ),
     ],
-    child: const LibrarianApp(),
+    child: const riverpod.ProviderScope(child: LibrarianApp()),
   ));
 }
 

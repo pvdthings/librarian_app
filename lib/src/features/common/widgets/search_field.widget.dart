@@ -5,17 +5,19 @@ class SearchField extends StatefulWidget {
     super.key,
     required this.onChanged,
     this.onClearPressed,
+    this.text,
   });
 
   final void Function(String value) onChanged;
   final void Function()? onClearPressed;
+  final String? text;
 
   @override
   State<SearchField> createState() => _SearchFieldState();
 }
 
 class _SearchFieldState extends State<SearchField> {
-  final _searchController = TextEditingController();
+  late final _searchController = TextEditingController(text: widget.text);
 
   @override
   Widget build(BuildContext context) {

@@ -1,44 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/list_pane.widget.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
-import 'package:provider/provider.dart';
 import 'package:librarian_app/src/features/common/widgets/search_field.widget.dart';
+import 'package:librarian_app/src/features/inventory/providers/things_filter_provider.dart';
 
-import '../../data/inventory.vm.dart';
 import '../inventory_details/inventory_details_pane.dart';
 import '../inventory_list/inventory_list_view.widget.dart';
 
-class InventoryDesktopLayout extends StatefulWidget {
+class InventoryDesktopLayout extends ConsumerWidget {
   const InventoryDesktopLayout({super.key});
 
   @override
-  State<InventoryDesktopLayout> createState() => _InventoryDesktopLayoutState();
-}
-
-class _InventoryDesktopLayoutState extends State<InventoryDesktopLayout> {
-  String _searchFilter = '';
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
-        Consumer<InventoryViewModel>(
-          builder: (context, inventory, child) {
-            return ListPane(
-              header: PaneHeader(
-                child: SearchField(
-                  onChanged: (value) {
-                    setState(() => _searchFilter = value);
-                  },
-                  onClearPressed: () {
-                    setState(() => _searchFilter = '');
-                    inventory.clearSelection();
-                  },
-                ),
-              ),
-              child: InventoryListView(searchFilter: _searchFilter),
-            );
-          },
+        ListPane(
+          header: PaneHeader(
+            child: SearchField(
+              onChanged: (value) {
+                ref.read(thingsFilterProvider.notifier).state = value;
+              },
+              onClearPressed: () {
+                ref.read(thingsFilterProvider.notifier).state = null;
+              },
+            ),
+          ),
+          child: const InventoryListView(),
         ),
         const Expanded(
           child: InventoryDetailsPane(),

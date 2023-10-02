@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/inventory/data/item.model.dart';
+import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
 import 'package:provider/provider.dart';
 
