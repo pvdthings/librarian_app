@@ -4,7 +4,7 @@ import 'package:librarian_app/src/features/inventory/providers/selected_thing_pr
 import 'package:librarian_app/src/features/inventory/providers/things_provider.dart';
 
 import '../../models/thing_model.dart';
-import 'inventory_list.widget.dart';
+import 'inventory_list.dart';
 
 class InventoryListView extends ConsumerWidget {
   const InventoryListView({super.key, this.onTap});

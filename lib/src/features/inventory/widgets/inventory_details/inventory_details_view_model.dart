@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/inventory/data/inventory.repo.dart';
+import 'package:librarian_app/src/features/inventory/data/inventory_repository.dart';
 import 'package:librarian_app/src/features/inventory/models/image_model.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';

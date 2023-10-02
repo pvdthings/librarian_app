@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 
-import '../widgets/inventory_details/data/inventory_details.vm.dart';
+import '../widgets/inventory_details/inventory_details_view_model.dart';
 import '../widgets/inventory_details/inventory_details.dart';
 
 class InventoryDetailsPage extends ConsumerWidget {

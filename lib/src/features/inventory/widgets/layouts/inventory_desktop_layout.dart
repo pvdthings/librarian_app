@@ -6,7 +6,7 @@ import 'package:librarian_app/src/features/common/widgets/search_field.widget.da
 import 'package:librarian_app/src/features/inventory/providers/things_filter_provider.dart';
 
 import '../inventory_details/inventory_details_pane.dart';
-import '../inventory_list/inventory_list_view.widget.dart';
+import '../inventory_list/inventory_list_view.dart';
 
 class InventoryDesktopLayout extends ConsumerWidget {
   const InventoryDesktopLayout({super.key});

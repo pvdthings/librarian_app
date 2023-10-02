@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 
 import '../../../models/item_model.dart';
-import 'details_card_header.widget.dart';
+import 'details_card_header.dart';
 
 class ItemsCard extends StatelessWidget {
   const ItemsCard({

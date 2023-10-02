@@ -6,7 +6,7 @@ import 'package:librarian_app/src/features/inventory/models/detailed_thing_model
 import 'package:librarian_app/src/features/inventory/providers/selected_thing_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_details/data/inventory_details.vm.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/inventory_details_view_model.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/inventory_details.dart';
 
 class InventoryDetailsPane extends ConsumerWidget {

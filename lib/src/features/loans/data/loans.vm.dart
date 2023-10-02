@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
-import 'package:librarian_app/src/features/inventory/data/inventory.repo.dart';
+import 'package:librarian_app/src/features/inventory/data/inventory_repository.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 
 import 'loan.model.dart';
