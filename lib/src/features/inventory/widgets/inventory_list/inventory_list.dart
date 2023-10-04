@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 
-import '../../data/thing.model.dart';
+import '../../models/thing_model.dart';
 
 class InventoryList extends StatelessWidget {
   const InventoryList({

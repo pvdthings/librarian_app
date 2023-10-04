@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
-import 'package:librarian_app/src/features/inventory/data/item.model.dart';
+import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
 import 'package:librarian_app/src/features/loans/data/thing_summary.model.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/pick_things.widget.dart';

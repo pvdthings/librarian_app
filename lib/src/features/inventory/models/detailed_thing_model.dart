@@ -1,6 +1,6 @@
-import 'package:librarian_app/src/features/inventory/data/image.model.dart';
+import 'package:librarian_app/src/features/inventory/models/image_model.dart';
 
-import 'item.model.dart';
+import 'item_model.dart';
 
 class DetailedThingModel {
   DetailedThingModel({

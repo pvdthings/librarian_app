@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/layouts/borrowers_desktop_layout.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/searchable_borrowers_list.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.widget.dart';
-import 'package:librarian_app/src/features/inventory/data/inventory.vm.dart';
-import 'package:librarian_app/src/features/inventory/widgets/layouts/inventory_desktop_layout.widget.dart';
-import 'package:librarian_app/src/features/inventory/pages/inventory_details.page.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_list/searchable_inventory_list.widget.dart';
-import 'package:librarian_app/src/features/inventory/widgets/dialogs/create_thing_dialog.widget.dart';
+import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
+import 'package:librarian_app/src/features/inventory/widgets/layouts/inventory_desktop_layout.dart';
+import 'package:librarian_app/src/features/inventory/pages/inventory_details_page.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_list/searchable_inventory_list.dart';
+import 'package:librarian_app/src/features/inventory/widgets/dialogs/create_thing_dialog.dart';
 import 'package:librarian_app/src/features/loans/pages/checkout.page.dart';
 import 'package:librarian_app/src/features/loans/pages/loan_details.page.dart';
 import 'package:librarian_app/src/features/loans/widgets/loans_list/searchable_loans_list.widget.dart';
 import 'package:librarian_app/src/features/loans/widgets/layouts/loans_desktop_layout.widget.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
-import 'package:provider/provider.dart';
 
 import '../widgets/desktop_dashboard.widget.dart';
 
-class DashboardPage extends StatefulWidget {
+class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
 
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _DashboardPageState();
+  }
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardPageState extends ConsumerState<DashboardPage> {
   int _moduleIndex = 0;
-
-  late final _inventory =
-      Provider.of<InventoryViewModel>(context, listen: false);
 
   late final List<DashboardModule> _modules = [
     DashboardModule(
@@ -89,7 +88,8 @@ class _DashboardPageState extends State<DashboardPage> {
             builder: (context) {
               return CreateThingDialog(
                 onCreate: (name, spanishName) {
-                  _inventory
+                  ref
+                      .read(thingsRepositoryProvider)
                       .createThing(name: name, spanishName: spanishName)
                       .then((value) {
                     Navigator.of(context).pop();
@@ -121,16 +121,6 @@ class _DashboardPageState extends State<DashboardPage> {
             centerTitle: mobile,
             elevation: 0,
             scrolledUnderElevation: isMobile(context) ? 1 : 0,
-            // leading: IconButton(
-            //   onPressed: () {
-            //     final user = Provider.of<UserViewModel>(context, listen: false);
-            //     user.signOut();
-            //     Navigator.of(context).popAndPushNamed('/');
-            //   },
-            //   icon: const Icon(
-            //     Icons.logout_rounded,
-            //   ),
-            // ),
           ),
           body: mobile
               ? module.mobileLayout

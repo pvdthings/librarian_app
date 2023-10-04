@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/widgets/submit_text_field.widget.dart';
-import 'package:librarian_app/src/features/inventory/data/thing.model.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_list/inventory_list_view.widget.dart';
+import 'package:librarian_app/src/features/inventory/models/thing_model.dart';
+import 'package:librarian_app/src/features/inventory/providers/things_filter_provider.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_list/inventory_list_view.dart';
 
-class SearchableInventoryList extends StatefulWidget {
+class SearchableInventoryList extends ConsumerWidget {
   final Function(ThingModel)? onThingTapped;
 
   const SearchableInventoryList({
@@ -11,18 +13,12 @@ class SearchableInventoryList extends StatefulWidget {
     this.onThingTapped,
   });
 
-  @override
-  State<StatefulWidget> createState() {
-    return _SearchableInventoryListState();
-  }
-}
-
-class _SearchableInventoryListState extends State<SearchableInventoryList> {
-  final _searchController = TextEditingController();
-  String _searchText = '';
+  // final _searchController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final searchFilter = ref.watch(thingsFilterProvider);
+
     return Column(
       children: [
         Padding(
@@ -33,16 +29,15 @@ class _SearchableInventoryListState extends State<SearchableInventoryList> {
             prefixIcon: const Icon(Icons.search),
             showSubmitButton: false,
             onChanged: (value) {
-              setState(() => _searchText = value.toLowerCase());
+              ref.read(thingsFilterProvider.notifier).state = value;
             },
             onSubmitted: (_) => {},
-            controller: _searchController,
+            controller: TextEditingController(text: searchFilter),
           ),
         ),
         Expanded(
           child: InventoryListView(
-            searchFilter: _searchText,
-            onTap: widget.onThingTapped,
+            onTap: onThingTapped,
           ),
         ),
       ],

@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
+import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 
-import '../data/inventory.vm.dart';
-import '../widgets/inventory_details/data/inventory_details.vm.dart';
+import '../widgets/inventory_details/inventory_details_view_model.dart';
 import '../widgets/inventory_details/inventory_details.dart';
 
-class InventoryDetailsPage extends StatelessWidget {
+class InventoryDetailsPage extends ConsumerWidget {
   const InventoryDetailsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final inventory = Provider.of<InventoryViewModel>(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final thingDetails = ref.watch(thingDetailsProvider);
 
     return FutureBuilder(
-      future: inventory.getThingDetails(id: inventory.selectedId!),
+      future: thingDetails,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return errorScaffold(snapshot.error.toString());
@@ -26,7 +27,7 @@ class InventoryDetailsPage extends StatelessWidget {
         final thingDetails = snapshot.data!;
 
         final details = InventoryDetailsViewModel(
-          inventory: inventory,
+          inventory: ref.read(thingsRepositoryProvider),
           thingId: thingDetails.id,
           name: thingDetails.name,
           spanishName: thingDetails.spanishName,
@@ -34,6 +35,7 @@ class InventoryDetailsPage extends StatelessWidget {
           images: thingDetails.images,
           items: thingDetails.items,
           availableItems: thingDetails.available,
+          onSave: () => ref.invalidate(thingsRepositoryProvider),
         );
 
         return Scaffold(

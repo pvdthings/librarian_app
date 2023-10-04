@@ -41,7 +41,9 @@ dependencies:
   dio: ^5.0.3
   intl: ^0.18.0
   file_picker: ^5.5.0
-  uuid: ^4.0.0
+  uuid: ^3.0.6
+  flutter_riverpod: ^2.4.1
+  riverpod_annotation: ^2.1.6
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +55,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  riverpod_generator: ^2.3.3
+  build_runner: ^2.4.6
+  custom_lint: ^0.5.3
+  riverpod_lint: ^2.1.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

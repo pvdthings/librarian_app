@@ -4,7 +4,7 @@ import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.widget.dart';
 import 'package:librarian_app/src/features/common/widgets/filled_progress_button.dart';
-import 'package:librarian_app/src/features/inventory/data/item.model.dart';
+import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/loans/data/thing_summary.model.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/checkout_controller.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/connected_thing_search_field.widget.dart';

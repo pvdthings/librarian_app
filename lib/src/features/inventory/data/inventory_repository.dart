@@ -1,8 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
+import 'package:librarian_app/src/features/common/services/image_service.dart';
+import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
 
-import 'detailed_thing.model.dart';
-import 'item.model.dart';
-import 'thing.model.dart';
+import '../models/detailed_thing_model.dart';
+import '../models/item_model.dart';
+import '../models/thing_model.dart';
 
 class InventoryRepository {
   List<ThingModel> things = [];
@@ -60,15 +63,32 @@ class InventoryRepository {
     String? name,
     String? spanishName,
     bool? hidden,
-    String? imageUrl,
+    UpdatedImageModel? image,
   }) async {
+    if (image != null && image.bytes == null) {
+      await deleteThingImage(thingId: thingId);
+    }
+
     await LendingApi.updateThing(
       thingId,
       name: name,
       spanishName: spanishName,
       hidden: hidden,
-      image: imageUrl != null ? ImageDTO(url: imageUrl) : null,
+      image: await _convert(image),
     );
+  }
+
+  Future<ImageDTO?> _convert(UpdatedImageModel? updatedImage) async {
+    if (updatedImage == null || updatedImage.bytes == null || kDebugMode) {
+      return null;
+    }
+
+    final result = await ImageService().uploadImage(
+      bytes: updatedImage.bytes!,
+      type: updatedImage.type!,
+    );
+
+    return ImageDTO(url: result.url);
   }
 
   Future<void> deleteThingImage({required String thingId}) async {
