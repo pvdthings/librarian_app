@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/widgets/submit_text_field.widget.dart';
 import 'package:librarian_app/src/features/loans/data/loan.model.dart';
-import 'package:librarian_app/src/features/loans/widgets/loans_list/connected_loans_list.widget.dart';
+import 'package:librarian_app/src/features/loans/providers/loans_filter_provider.dart';
 
-class SearchableLoansList extends StatefulWidget {
+import 'loans_list_view.dart';
+
+class SearchableLoansList extends ConsumerWidget {
   final Function(LoanModel)? onLoanTapped;
 
   const SearchableLoansList({
@@ -12,17 +15,7 @@ class SearchableLoansList extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() {
-    return _SearchableLoansListState();
-  }
-}
-
-class _SearchableLoansListState extends State<SearchableLoansList> {
-  final _searchController = TextEditingController();
-  String? _searchText;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         Padding(
@@ -33,18 +26,15 @@ class _SearchableLoansListState extends State<SearchableLoansList> {
             prefixIcon: const Icon(Icons.search),
             showSubmitButton: false,
             onChanged: (value) {
-              setState(() => _searchText = value.toLowerCase());
+              ref.read(loansFilterProvider.notifier).state =
+                  value.toLowerCase();
             },
             onSubmitted: (_) => {},
-            controller: _searchController,
+            controller:
+                TextEditingController(text: ref.read(loansFilterProvider)),
           ),
         ),
-        Expanded(
-          child: ConnectedLoansList(
-            filter: _searchText,
-            onTap: widget.onLoanTapped,
-          ),
-        ),
+        const Expanded(child: LoansListView()),
       ],
     );
   }

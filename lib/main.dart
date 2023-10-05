@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:librarian_app/constants.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
-import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
 import 'package:librarian_app/src/features/authentication/data/user.vm.dart';
 import 'package:librarian_app/src/features/splash/pages/splash.page.dart';
 import 'package:provider/provider.dart';
@@ -16,19 +15,18 @@ Future<void> main() async {
     anonKey: supabasePublicKey,
   );
 
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<UserViewModel>(
-        create: (context) => UserViewModel(),
-      ),
-      ChangeNotifierProvider<LoansViewModel>(
-        create: (context) => LoansViewModel(),
-      ),
-      ChangeNotifierProvider<BorrowersViewModel>(
-        create: (context) => BorrowersViewModel(),
-      ),
-    ],
-    child: const riverpod.ProviderScope(child: LibrarianApp()),
+  runApp(riverpod.ProviderScope(
+    child: MultiProvider(
+      providers: [
+        ChangeNotifierProvider<UserViewModel>(
+          create: (context) => UserViewModel(),
+        ),
+        ChangeNotifierProvider<BorrowersViewModel>(
+          create: (context) => BorrowersViewModel(),
+        ),
+      ],
+      child: const LibrarianApp(),
+    ),
   ));
 }
 

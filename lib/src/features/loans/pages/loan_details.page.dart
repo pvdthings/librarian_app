@@ -1,24 +1,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/inventory/pages/inventory_details_page.dart';
-import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
+import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkin/checkin_dialog.widget.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.widget.dart';
-import 'package:provider/provider.dart';
 
 import '../data/loan.model.dart';
 
-class LoanDetailsPage extends StatefulWidget {
+class LoanDetailsPage extends ConsumerStatefulWidget {
   const LoanDetailsPage(this.loan, {super.key});
 
   final LoanModel loan;
 
   @override
-  State<LoanDetailsPage> createState() => _LoanDetailsPageState();
+  ConsumerState<LoanDetailsPage> createState() => _LoanDetailsPageState();
 }
 
-class _LoanDetailsPageState extends State<LoanDetailsPage> {
+class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
   bool get _changesMade => _newDueDate != null;
 
   DateTime? _newDueDate;
@@ -34,7 +34,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
   }
 
   Future<void> _updateDueDate(String loanId, String thingId) async {
-    final loans = Provider.of<LoansViewModel>(context, listen: false);
+    final loans = ref.read(loansRepositoryProvider);
     try {
       await loans.updateDueDate(
         loanId: loanId,
@@ -61,7 +61,7 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
         return CheckinDialog(
           thingNumber: thing.number,
           onCheckin: () async {
-            final loans = Provider.of<LoansViewModel>(context, listen: false);
+            final loans = ref.read(loansRepositoryProvider);
             await loans.closeLoan(
               loanId: widget.loan.id,
               thingId: widget.loan.thing.id,
@@ -82,69 +82,65 @@ class _LoanDetailsPageState extends State<LoanDetailsPage> {
   void initState() {
     super.initState();
     final loan = widget.loan;
-    _loanFuture = context
-        .read<LoansViewModel>()
+    _loanFuture = ref
+        .read(loansRepositoryProvider)
         .getLoan(id: loan.id, thingId: loan.thing.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoansViewModel>(
-      builder: (context, loans, child) {
-        return FutureBuilder(
-          future: _loanFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return loadingScaffold;
-            }
+    return FutureBuilder(
+      future: _loanFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return loadingScaffold;
+        }
 
-            if (loans.errorMessage != null) {
-              return errorScaffold(loans.errorMessage!);
-            }
+        if (snapshot.hasError) {
+          return errorScaffold(snapshot.error.toString());
+        }
 
-            final loan = snapshot.data!;
+        final loan = snapshot.data!;
 
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text("Loan Details"),
-                centerTitle: true,
-                actions: [
-                  IconButton(
-                    onPressed: _changesMade
-                        ? () => _saveChanges(loan.id, loan.thing.id)
-                        : null,
-                    icon: const Icon(Icons.save_rounded),
-                    tooltip: 'Save',
-                  ),
-                  IconButton(
-                    onPressed: _changesMade ? _discardChanges : null,
-                    icon: const Icon(Icons.cancel),
-                    tooltip: 'Discard Changes',
-                  ),
-                ],
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Loan Details"),
+            centerTitle: true,
+            actions: [
+              IconButton(
+                onPressed: _changesMade
+                    ? () => _saveChanges(loan.id, loan.thing.id)
+                    : null,
+                icon: const Icon(Icons.save_rounded),
+                tooltip: 'Save',
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(16),
-                child: LoanDetails(
-                  borrower: loan.borrower,
-                  things: [loan.thing],
-                  checkedOutDate: loan.checkedOutDate,
-                  dueDate: _newDueDate ?? loan.dueDate,
-                  checkedInDate: loan.checkedInDate,
-                  isOverdue: loan.isOverdue,
-                  editable: true,
-                  onDueDateUpdated: (newDueDate) {
-                    setState(() => _newDueDate = newDueDate);
-                  },
-                ),
+              IconButton(
+                onPressed: _changesMade ? _discardChanges : null,
+                icon: const Icon(Icons.cancel),
+                tooltip: 'Discard Changes',
               ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: _checkIn,
-                tooltip: 'Check in',
-                child: const Icon(Icons.check_rounded),
-              ),
-            );
-          },
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: LoanDetails(
+              borrower: loan.borrower,
+              things: [loan.thing],
+              checkedOutDate: loan.checkedOutDate,
+              dueDate: _newDueDate ?? loan.dueDate,
+              checkedInDate: loan.checkedInDate,
+              isOverdue: loan.isOverdue,
+              editable: true,
+              onDueDateUpdated: (newDueDate) {
+                setState(() => _newDueDate = newDueDate);
+              },
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: _checkIn,
+            tooltip: 'Check in',
+            child: const Icon(Icons.check_rounded),
+          ),
         );
       },
     );

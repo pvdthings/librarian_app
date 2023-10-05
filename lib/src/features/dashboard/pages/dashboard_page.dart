@@ -10,8 +10,8 @@ import 'package:librarian_app/src/features/inventory/widgets/inventory_list/sear
 import 'package:librarian_app/src/features/inventory/widgets/dialogs/create_thing_dialog.dart';
 import 'package:librarian_app/src/features/loans/pages/checkout.page.dart';
 import 'package:librarian_app/src/features/loans/pages/loan_details.page.dart';
-import 'package:librarian_app/src/features/loans/widgets/loans_list/searchable_loans_list.widget.dart';
-import 'package:librarian_app/src/features/loans/widgets/layouts/loans_desktop_layout.widget.dart';
+import 'package:librarian_app/src/features/loans/widgets/loans_list/searchable_loans_list.dart';
+import 'package:librarian_app/src/features/loans/widgets/layouts/loans_desktop_layout.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 
 import '../widgets/desktop_dashboard.widget.dart';

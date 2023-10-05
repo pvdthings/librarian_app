@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrowers.vm.dart';
+import 'package:librarian_app/src/features/borrowers/providers/borrowers_view_model_provider.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.widget.dart';
 import 'package:librarian_app/src/features/common/widgets/filled_progress_button.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
+import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/data/thing_summary.model.dart';
-import 'package:librarian_app/src/features/loans/widgets/checkout/checkout_controller.dart';
+import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/connected_thing_search_field.widget.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.widget.dart';
-import 'package:provider/provider.dart';
 
-class CheckoutStepper extends StatefulWidget {
+class CheckoutStepper extends ConsumerStatefulWidget {
   const CheckoutStepper({super.key});
 
   @override
-  State<CheckoutStepper> createState() => _CheckoutStepperState();
+  ConsumerState<CheckoutStepper> createState() => _CheckoutStepperState();
 }
 
-class _CheckoutStepperState extends State<CheckoutStepper> {
+class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
   int _index = 0;
   BorrowerModel? _borrower;
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
@@ -49,9 +50,9 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
   }
 
   void _finish() {
-    final controller = CheckoutController(context);
+    final controller = ref.read(loansRepositoryProvider);
     controller
-        .checkOut(
+        .openLoan(
       borrowerId: _borrower!.id,
       thingIds: _things.map((e) => e.id).toList(),
       dueBackDate: _dueDate,
@@ -68,6 +69,8 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
 
   @override
   Widget build(BuildContext context) {
+    final borrowersModel = ref.read(borrowersViewModelProvider);
+
     return Stepper(
       currentStep: _index,
       controlsBuilder: (context, details) {
@@ -103,54 +106,49 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
         Step(
           title: const Text('Select Borrower'),
           subtitle: _borrower != null ? Text(_borrower!.name) : null,
-          content: Consumer<BorrowersViewModel>(
-            builder: (context, model, child) {
-              return Column(
-                children: [
-                  TextField(
-                    controller: TextEditingController(text: _borrower?.name),
-                    canRequestFocus: false,
-                    decoration: const InputDecoration(
-                      labelText: 'Borrower',
-                      prefixIcon: Icon(Icons.person_rounded),
-                    ),
-                    onTap: () async {
-                      final borrower = await showSearch(
-                        context: context,
-                        delegate: BorrowerSearchDelegate(model: model),
-                        useRootNavigator: true,
-                      );
+          content: Column(
+            children: [
+              TextField(
+                controller: TextEditingController(text: _borrower?.name),
+                canRequestFocus: false,
+                decoration: const InputDecoration(
+                  labelText: 'Borrower',
+                  prefixIcon: Icon(Icons.person_rounded),
+                ),
+                onTap: () async {
+                  final borrower = await showSearch(
+                    context: context,
+                    delegate: BorrowerSearchDelegate(model: borrowersModel),
+                    useRootNavigator: true,
+                  );
 
-                      if (borrower != null) {
-                        setState(() => _borrower = borrower);
-                      }
-                    },
-                  ),
-                  if (_borrower != null && !_borrower!.active) ...[
-                    const SizedBox(height: 16),
-                    BorrowerIssues(
-                      borrowerId: _borrower!.id,
-                      issues: _borrower!.issues,
-                      onRecordCashPayment: (success) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(success
-                                ? 'Success!'
-                                : 'Failed to record payment'),
-                          ),
-                        );
+                  if (borrower != null) {
+                    setState(() => _borrower = borrower);
+                  }
+                },
+              ),
+              if (_borrower != null && !_borrower!.active) ...[
+                const SizedBox(height: 16),
+                BorrowerIssues(
+                  borrowerId: _borrower!.id,
+                  issues: _borrower!.issues,
+                  onRecordCashPayment: (success) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            success ? 'Success!' : 'Failed to record payment'),
+                      ),
+                    );
 
-                        if (success) {
-                          final refreshedBorrower = model.borrowers
-                              .firstWhere((b) => b.id == _borrower!.id);
-                          setState(() => _borrower = refreshedBorrower);
-                        }
-                      },
-                    ),
-                  ],
-                ],
-              );
-            },
+                    if (success) {
+                      final refreshedBorrower = borrowersModel.borrowers
+                          .firstWhere((b) => b.id == _borrower!.id);
+                      setState(() => _borrower = refreshedBorrower);
+                    }
+                  },
+                ),
+              ],
+            ],
           ),
           isActive: _index >= 0,
         ),
@@ -166,6 +164,7 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
                   onMatchFound: (thing) {
                     setState(() => _things.add(thing));
                   },
+                  repository: ref.read(thingsRepositoryProvider),
                 ),
               ),
               const SizedBox(height: 8),
