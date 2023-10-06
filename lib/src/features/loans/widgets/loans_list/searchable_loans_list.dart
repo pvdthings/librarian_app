@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/widgets/submit_text_field.widget.dart';
-import 'package:librarian_app/src/features/loans/data/loan.model.dart';
+import 'package:librarian_app/src/features/loans/models/loan_model.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_filter_provider.dart';
 
 import 'loans_list_view.dart';

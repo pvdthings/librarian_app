@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 
-import '../../data/loan.model.dart';
+import '../../models/loan_model.dart';
 import '../checkin/checkin_dialog.widget.dart';
 import 'loan_details.widget.dart';
 import 'thing_number.widget.dart';

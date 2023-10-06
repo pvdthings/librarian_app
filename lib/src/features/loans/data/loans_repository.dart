@@ -1,8 +1,12 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
-import 'package:librarian_app/src/features/loans/data/loan.model.dart';
+import 'package:librarian_app/src/features/loans/models/loan_model.dart';
 
-class LoansRepository {
+class LoansRepository extends Notifier<Future<List<LoanModel>>> {
+  @override
+  Future<List<LoanModel>> build() async => await getLoans();
+
   Future<LoanModel?> getLoan({
     required String id,
     required String thingId,
@@ -37,6 +41,7 @@ class LoansRepository {
       return false;
     }
 
+    ref.invalidateSelf();
     return true;
   }
 
@@ -51,6 +56,8 @@ class LoansRepository {
       thingId: thingId,
       checkedInDate: dateFormat.format(DateTime.now()),
     ));
+
+    ref.invalidateSelf();
   }
 
   Future<void> updateDueDate({
@@ -65,5 +72,7 @@ class LoansRepository {
       thingId: thingId,
       dueBackDate: dateFormat.format(dueBackDate),
     ));
+
+    ref.invalidateSelf();
   }
 }

@@ -7,7 +7,7 @@ import 'package:librarian_app/src/features/loans/providers/loans_repository_prov
 import 'package:librarian_app/src/features/loans/widgets/checkin/checkin_dialog.widget.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.widget.dart';
 
-import '../data/loan.model.dart';
+import '../models/loan_model.dart';
 
 class LoanDetailsPage extends ConsumerStatefulWidget {
   const LoanDetailsPage(this.loan, {super.key});
@@ -34,7 +34,7 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
   }
 
   Future<void> _updateDueDate(String loanId, String thingId) async {
-    final loans = ref.read(loansRepositoryProvider);
+    final loans = ref.read(loansRepositoryProvider.notifier);
     try {
       await loans.updateDueDate(
         loanId: loanId,
@@ -61,7 +61,7 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
         return CheckinDialog(
           thingNumber: thing.number,
           onCheckin: () async {
-            final loans = ref.read(loansRepositoryProvider);
+            final loans = ref.read(loansRepositoryProvider.notifier);
             await loans.closeLoan(
               loanId: widget.loan.id,
               thingId: widget.loan.thing.id,
@@ -83,7 +83,7 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
     super.initState();
     final loan = widget.loan;
     _loanFuture = ref
-        .read(loansRepositoryProvider)
+        .read(loansRepositoryProvider.notifier)
         .getLoan(id: loan.id, thingId: loan.thing.id);
   }
 

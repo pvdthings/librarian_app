@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_provider.dart';
 import 'package:librarian_app/src/features/loans/providers/selected_loan_provider.dart';
 
-import '../../data/loan.model.dart';
+import '../../models/loan_model.dart';
 import 'loans_list.dart';
 
 class LoansListView extends ConsumerWidget {
@@ -35,7 +35,7 @@ class LoansListView extends ConsumerWidget {
 
         return LoansList(
           loans: snapshot.data!,
-          selected: ref.read(selectedLoanProvider),
+          selected: ref.watch(selectedLoanProvider),
           onTap: (loan) {
             ref.read(selectedLoanProvider.notifier).state = loan;
             onTap?.call(loan);

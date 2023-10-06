@@ -7,7 +7,7 @@ import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_del
 import 'package:librarian_app/src/features/common/widgets/filled_progress_button.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
-import 'package:librarian_app/src/features/loans/data/thing_summary.model.dart';
+import 'package:librarian_app/src/features/loans/models/thing_summary_model.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/connected_thing_search_field.widget.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.widget.dart';
@@ -50,13 +50,13 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
   }
 
   void _finish() {
-    final controller = ref.read(loansRepositoryProvider);
-    controller
+    ref
+        .read(loansRepositoryProvider.notifier)
         .openLoan(
-      borrowerId: _borrower!.id,
-      thingIds: _things.map((e) => e.id).toList(),
-      dueBackDate: _dueDate,
-    )
+          borrowerId: _borrower!.id,
+          thingIds: _things.map((e) => e.id).toList(),
+          dueBackDate: _dueDate,
+        )
         .then((success) {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(

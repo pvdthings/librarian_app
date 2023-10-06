@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
-import 'package:librarian_app/src/features/loans/data/thing_summary.model.dart';
+import 'package:librarian_app/src/features/loans/models/thing_summary_model.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/pick_things.widget.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.widget.dart';
@@ -108,7 +108,7 @@ class _OpenLoanPageState extends ConsumerState<OpenLoanPage> {
   }
 
   Future<void> _onTapCreate() async {
-    final loans = ref.read(loansRepositoryProvider);
+    final loans = ref.read(loansRepositoryProvider.notifier);
 
     await loans.openLoan(
       borrowerId: _borrower.id,
