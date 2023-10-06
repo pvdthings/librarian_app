@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
-import 'package:librarian_app/src/features/loans/data/loans.vm.dart';
-import 'package:provider/provider.dart';
+import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 
 import '../../../common/widgets/submit_text_field.widget.dart';
-import '../things_list/thing_list_tile.widget.dart';
+import 'thing_list_tile.dart';
 
-class PickThingsView extends StatefulWidget {
+class PickThingsView extends ConsumerStatefulWidget {
   const PickThingsView({
     super.key,
     required this.pickedThings,
@@ -18,20 +18,18 @@ class PickThingsView extends StatefulWidget {
   final Function(ItemModel thing) onThingPicked;
 
   @override
-  State<StatefulWidget> createState() {
-    return _PickThingsViewState();
-  }
+  ConsumerState<PickThingsView> createState() => _PickThingsViewState();
 }
 
-class _PickThingsViewState extends State<PickThingsView> {
+class _PickThingsViewState extends ConsumerState<PickThingsView> {
   final _searchController = TextEditingController();
   bool _isLoading = false;
 
   Future<void> _onSearchSubmitted(String value) async {
     setState(() => _isLoading = true);
 
-    final loansModel = Provider.of<LoansViewModel>(context, listen: false);
-    final match = await loansModel.getInventoryItem(number: int.parse(value));
+    final thingsRepository = ref.read(thingsRepositoryProvider);
+    final match = await thingsRepository.getItem(number: int.parse(value));
 
     setState(() => _isLoading = false);
 

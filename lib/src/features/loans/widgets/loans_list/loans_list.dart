@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 
-import '../../data/loan.model.dart';
+import '../../models/loan_model.dart';
 
 class LoansList extends StatelessWidget {
   final List<LoanModel> loans;

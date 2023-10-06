@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/authentication/data/user.vm.dart';
 import 'package:librarian_app/src/features/authentication/pages/signin/index.dart';
-import 'package:librarian_app/src/features/dashboard/pages/dashboard.page.dart';
+import 'package:librarian_app/src/features/dashboard/pages/dashboard_page.dart';
 import 'package:provider/provider.dart';
 
 class SplashPage extends StatefulWidget {
