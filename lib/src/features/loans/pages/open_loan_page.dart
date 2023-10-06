@@ -4,9 +4,9 @@ import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/loans/models/thing_summary_model.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
-import 'package:librarian_app/src/features/loans/widgets/checkout/pick_things.widget.dart';
+import 'package:librarian_app/src/features/loans/widgets/checkout/pick_things.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.widget.dart';
-import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.widget.dart';
+import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/searchable_borrowers_list.widget.dart';
 
 class OpenLoanPage extends ConsumerStatefulWidget {

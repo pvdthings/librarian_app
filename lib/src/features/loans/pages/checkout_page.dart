@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/loans/widgets/checkout/checkout_stepper.widget.dart';
+import 'package:librarian_app/src/features/loans/widgets/checkout/checkout_stepper.dart';
 
 class CheckoutPage extends StatelessWidget {
   const CheckoutPage({super.key});

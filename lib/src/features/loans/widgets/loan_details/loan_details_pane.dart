@@ -3,9 +3,9 @@ import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dar
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 
 import '../../models/loan_model.dart';
-import '../checkin/checkin_dialog.widget.dart';
-import 'loan_details.widget.dart';
-import 'thing_number.widget.dart';
+import '../checkin/checkin_dialog.dart';
+import 'loan_details.dart';
+import 'thing_number.dart';
 
 class LoanDetailsPane extends StatefulWidget {
   final LoanModel? loan;

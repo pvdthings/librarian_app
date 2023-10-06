@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/inventory/pages/inventory_details_page.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
-import 'package:librarian_app/src/features/loans/widgets/checkin/checkin_dialog.widget.dart';
-import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.widget.dart';
+import 'package:librarian_app/src/features/loans/widgets/checkin/checkin_dialog.dart';
+import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.dart';
 
 import '../models/loan_model.dart';
 

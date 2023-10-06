@@ -7,7 +7,7 @@ import 'package:librarian_app/src/features/loans/providers/loan_details_provider
 import 'package:librarian_app/src/features/loans/providers/loans_filter_provider.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/providers/selected_loan_provider.dart';
-import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details_pane.widget.dart';
+import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details_pane.dart';
 import 'package:librarian_app/src/features/loans/widgets/loans_list/loans_list_view.dart';
 
 class LoansDesktopLayout extends ConsumerWidget {

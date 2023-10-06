@@ -5,7 +5,7 @@ import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 
 import '../../../common/widgets/submit_text_field.widget.dart';
-import 'thing_list_tile.widget.dart';
+import 'thing_list_tile.dart';
 
 class PickThingsView extends ConsumerStatefulWidget {
   const PickThingsView({
