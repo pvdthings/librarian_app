@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'record_payment_dialog.widget.dart';
+import 'record_payment_dialog.dart';
 
 class DuesNotPaidDialog extends StatefulWidget {
   final String instructions;

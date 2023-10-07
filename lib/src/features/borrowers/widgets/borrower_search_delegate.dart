@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../data/borrower.model.dart';
-import '../data/borrowers.vm.dart';
-import 'borrowers_list/borrowers_view.widget.dart';
+import '../data/borrower_model.dart';
+import 'borrowers_list/borrowers_list_view.dart';
 
 class BorrowerSearchDelegate extends SearchDelegate<BorrowerModel?> {
-  BorrowerSearchDelegate({required this.model});
-
-  final BorrowersViewModel model;
+  BorrowerSearchDelegate();
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -33,8 +30,6 @@ class BorrowerSearchDelegate extends SearchDelegate<BorrowerModel?> {
   @override
   Widget buildResults(BuildContext context) {
     return BorrowersView(
-      model: model,
-      searchFilter: query,
       onTap: (borrower) => close(context, borrower),
     );
   }
@@ -42,8 +37,6 @@ class BorrowerSearchDelegate extends SearchDelegate<BorrowerModel?> {
   @override
   Widget buildSuggestions(BuildContext context) {
     return BorrowersView(
-      model: model,
-      searchFilter: query,
       onTap: (borrower) => close(context, borrower),
     );
   }

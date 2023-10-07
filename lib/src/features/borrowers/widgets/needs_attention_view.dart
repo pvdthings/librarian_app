@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
+import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
 
 class NeedsAttentionView extends StatelessWidget {
   final BorrowerModel borrower;
