@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/borrowers/providers/borrowers_repository_provider.dart';
 
-import '../../data/borrower.model.dart';
-import '../../data/borrowers.vm.dart';
-import '../dialogs/dues_dialog.widget.dart';
+import '../../models/issue_model.dart';
+import '../dialogs/dues_dialog.dart';
 
-class BorrowerIssues extends StatelessWidget {
+class BorrowerIssues extends ConsumerWidget {
   final String borrowerId;
   final List<Issue> issues;
   final void Function(bool success) onRecordCashPayment;
@@ -18,7 +18,7 @@ class BorrowerIssues extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
       itemCount: issues.length,
       itemBuilder: (context, index) {
@@ -35,10 +35,8 @@ class BorrowerIssues extends StatelessWidget {
                               instructions: issue.instructions!,
                               imageUrl: issue.graphicUrl,
                               onConfirmPayment: (cash) {
-                                Provider.of<BorrowersViewModel>(
-                                  context,
-                                  listen: false,
-                                )
+                                ref
+                                    .read(borrowersRepositoryProvider.notifier)
                                     .recordCashPayment(
                                         borrowerId: borrowerId, cash: cash)
                                     .then(onRecordCashPayment);

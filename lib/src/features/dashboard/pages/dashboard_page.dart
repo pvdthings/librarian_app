@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:librarian_app/src/features/borrowers/widgets/layouts/borrowers_desktop_layout.widget.dart';
-import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/searchable_borrowers_list.widget.dart';
-import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.widget.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/layouts/borrowers_desktop_layout.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/searchable_borrowers_list.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 import 'package:librarian_app/src/features/inventory/widgets/layouts/inventory_desktop_layout.dart';
 import 'package:librarian_app/src/features/inventory/pages/inventory_details_page.dart';

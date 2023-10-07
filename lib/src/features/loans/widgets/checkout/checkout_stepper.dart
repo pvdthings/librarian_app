@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrower.model.dart';
-import 'package:librarian_app/src/features/borrowers/providers/borrowers_view_model_provider.dart';
-import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.widget.dart';
-import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.widget.dart';
+import 'package:librarian_app/src/features/borrowers/models/borrower_model.dart';
+import 'package:librarian_app/src/features/borrowers/providers/borrowers_repository_provider.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.dart';
 import 'package:librarian_app/src/features/common/widgets/filled_progress_button.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
@@ -69,8 +69,6 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
 
   @override
   Widget build(BuildContext context) {
-    final borrowersModel = ref.read(borrowersViewModelProvider);
-
     return Stepper(
       currentStep: _index,
       controlsBuilder: (context, details) {
@@ -118,7 +116,7 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
                 onTap: () async {
                   final borrower = await showSearch(
                     context: context,
-                    delegate: BorrowerSearchDelegate(model: borrowersModel),
+                    delegate: BorrowerSearchDelegate(),
                     useRootNavigator: true,
                   );
 
@@ -141,9 +139,12 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
                     );
 
                     if (success) {
-                      final refreshedBorrower = borrowersModel.borrowers
-                          .firstWhere((b) => b.id == _borrower!.id);
-                      setState(() => _borrower = refreshedBorrower);
+                      ref
+                          .read(borrowersRepositoryProvider.notifier)
+                          .getBorrower(_borrower!.id)
+                          .then((b) {
+                        setState(() => _borrower = b);
+                      });
                     }
                   },
                 ),

@@ -1,18 +1,20 @@
-import 'borrower.model.dart';
+class Issue {
+  final IssueType type;
+  final String title;
+  final String? explanation;
+  final String? instructions;
+  final String? graphicUrl;
 
-class BorrowersMapper {
-  static Iterable<BorrowerModel> map(Iterable<dynamic> data) {
-    return data
-        .map((e) => BorrowerModel(
-              id: e['id'] as String? ?? '???',
-              name: e['name'] as String? ?? '???',
-              email: e['contact']?['email'] as String?,
-              phone: e['contact']?['phone'] as String?,
-              issues: (e['issues'] as List? ?? [])
-                  .map((e) => _reasonMap[e as String]!)
-                  .toList(),
-            ))
-        .toList();
+  const Issue({
+    required this.title,
+    this.explanation,
+    this.instructions,
+    this.graphicUrl,
+    required this.type,
+  });
+
+  factory Issue.fromCode(String code) {
+    return _reasonMap[code]!;
   }
 
   static final _reasonMap = <String, Issue>{
@@ -42,4 +44,11 @@ class BorrowersMapper {
       type: IssueType.needsLiabilityWaiver,
     ),
   };
+}
+
+enum IssueType {
+  duesNotPaid,
+  overdueLoan,
+  suspended,
+  needsLiabilityWaiver,
 }
