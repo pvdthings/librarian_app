@@ -2,8 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
 
-import 'borrower_model.dart';
-import 'borrowers_mapper.dart';
+import '../models/borrower_model.dart';
 
 class BorrowersRepository extends Notifier<Future<List<BorrowerModel>>> {
   @override
@@ -11,7 +10,9 @@ class BorrowersRepository extends Notifier<Future<List<BorrowerModel>>> {
 
   Future<List<BorrowerModel>> getBorrowers() async {
     final response = await LendingApi.fetchBorrowers();
-    return BorrowersMapper.map(response.data as List).toList();
+    return (response.data as List)
+        .map((json) => BorrowerModel.fromJson(json))
+        .toList();
   }
 
   Future<BorrowerModel?> getBorrower(String id) async {

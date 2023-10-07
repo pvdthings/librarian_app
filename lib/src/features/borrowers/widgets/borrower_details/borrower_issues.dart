@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/providers/borrowers_repository_provider.dart';
 
-import '../../data/borrower_model.dart';
+import '../../models/issue_model.dart';
 import '../dialogs/dues_dialog.dart';
 
 class BorrowerIssues extends ConsumerWidget {

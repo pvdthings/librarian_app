@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:librarian_app/src/features/borrowers/data/borrower_model.dart';
+import 'package:librarian_app/src/features/borrowers/models/borrower_model.dart';
 import 'package:librarian_app/src/features/borrowers/providers/borrowers_repository_provider.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.dart';
