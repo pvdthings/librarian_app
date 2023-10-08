@@ -18,6 +18,7 @@ class InventoryDesktopLayout extends ConsumerWidget {
         ListPane(
           header: PaneHeader(
             child: SearchField(
+              text: ref.watch(thingsFilterProvider),
               onChanged: (value) {
                 ref.read(thingsFilterProvider.notifier).state = value;
               },

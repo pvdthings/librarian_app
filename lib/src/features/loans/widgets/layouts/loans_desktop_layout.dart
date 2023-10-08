@@ -20,6 +20,7 @@ class LoansDesktopLayout extends ConsumerWidget {
         ListPane(
           header: PaneHeader(
             child: SearchField(
+              text: ref.watch(loansFilterProvider),
               onChanged: (value) {
                 ref.read(loansFilterProvider.notifier).state =
                     value.toLowerCase();
