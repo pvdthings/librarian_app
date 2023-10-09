@@ -6,6 +6,7 @@ class DetailedThingModel {
   DetailedThingModel({
     required this.id,
     required this.name,
+    required this.categories,
     required this.images,
     required this.items,
     required this.hidden,
@@ -20,6 +21,7 @@ class DetailedThingModel {
   final bool hidden;
   final int stock;
   final int available;
+  final List<String> categories;
   final List<ImageModel> images;
   final List<ItemModel> items;
 
@@ -31,6 +33,7 @@ class DetailedThingModel {
       hidden: json['hidden'] as bool,
       stock: json['stock'] as int,
       available: json['available'] as int,
+      categories: (json['categories'] as List).cast<String>(),
       images:
           (json['images'] as List).map((e) => ImageModel.fromJson(e)).toList(),
       items: (json['items'] as List).map((e) => ItemModel.fromJson(e)).toList(),

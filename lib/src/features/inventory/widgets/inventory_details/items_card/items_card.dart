@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/utils/media_query.dart';
+import 'package:librarian_app/src/features/common/widgets/details_card/details_card.dart';
 
 import '../../../models/item_model.dart';
-import 'details_card_header.dart';
+import '../../../../common/widgets/details_card/card_header.dart';
 
 class ItemsCard extends StatelessWidget {
   const ItemsCard({
@@ -18,34 +18,30 @@ class ItemsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: isMobile(context) ? 1 : 0,
-      margin: EdgeInsets.zero,
-      clipBehavior: Clip.antiAlias,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Column(
-          children: [
-            DetailsCardHeader(
-              title: 'Inventory',
-              trailing: TextButton.icon(
-                onPressed: onAddItemsPressed,
-                icon: const Icon(Icons.add),
-                label: const Text('Add items'),
-              ),
-              children: [
-                Row(
-                  children: [
-                    Text('Available: $availableItemsCount'),
-                    const SizedBox(width: 16),
-                    Text('Total: ${items.length}'),
-                  ],
-                ),
-              ],
-            ),
-            if (items.isNotEmpty) const Divider(),
-            if (items.isNotEmpty)
-              ListView.separated(
+    return DetailsCard(
+      header: CardHeader(
+        title: 'Inventory',
+        trailing: TextButton.icon(
+          onPressed: onAddItemsPressed,
+          icon: const Icon(Icons.add),
+          label: const Text('Add items'),
+        ),
+        children: [
+          Row(
+            children: [
+              Text('Available: $availableItemsCount'),
+              const SizedBox(width: 16),
+              Text('Total: ${items.length}'),
+            ],
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+      showDivider: items.isNotEmpty,
+      body: items.isNotEmpty
+          ? Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: items.length,
                 itemBuilder: (context, index) {
@@ -59,9 +55,8 @@ class ItemsCard extends StatelessWidget {
                 },
                 separatorBuilder: (c, i) => const Divider(),
               ),
-          ],
-        ),
-      ),
+            )
+          : null,
     );
   }
 }

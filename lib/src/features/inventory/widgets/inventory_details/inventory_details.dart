@@ -1,21 +1,23 @@
 import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/widgets/checkbox_field.dart';
 import 'package:librarian_app/src/features/common/widgets/input_decoration.widget.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
 import 'package:librarian_app/src/features/inventory/widgets/dialogs/add_inventory_dialog.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/categories_card.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/inventory_details_view_model.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/items_card.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/thing_image_card/thing_image_card.dart';
 
-class InventoryDetails extends StatelessWidget {
+class InventoryDetails extends ConsumerWidget {
   const InventoryDetails({super.key, required this.details});
 
   final InventoryDetailsViewModel details;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -66,6 +68,8 @@ class InventoryDetails extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 32),
+        const CategoriesCard(),
         const SizedBox(height: 32),
         ItemsCard(
           items: details.items,
