@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class DetailsCardHeader extends StatelessWidget {
-  const DetailsCardHeader({
+class CardHeader extends StatelessWidget {
+  const CardHeader({
     super.key,
     required this.title,
     this.trailing,
@@ -15,10 +15,7 @@ class DetailsCardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 8,
-      ),
+      padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
       child: Column(
         children: [
           Row(

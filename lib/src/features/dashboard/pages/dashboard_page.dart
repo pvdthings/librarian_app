@@ -89,7 +89,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               return CreateThingDialog(
                 onCreate: (name, spanishName) {
                   ref
-                      .read(thingsRepositoryProvider)
+                      .read(thingsRepositoryProvider.notifier)
                       .createThing(name: name, spanishName: spanishName)
                       .then((value) {
                     Navigator.of(context).pop();

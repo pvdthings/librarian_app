@@ -6,7 +6,13 @@ import '../models/thing_model.dart';
 
 final thingsProvider = Provider<Future<List<ThingModel>>>((ref) async {
   final searchFilter = ref.watch(thingsFilterProvider);
-  final repository = ref.watch(thingsRepositoryProvider);
+  final things = await ref.watch(thingsRepositoryProvider);
 
-  return await repository.getThings(filter: searchFilter);
+  if (searchFilter == null || searchFilter.isEmpty) {
+    return things;
+  }
+
+  return things
+      .where((t) => t.name.toLowerCase().contains(searchFilter.toLowerCase()))
+      .toList();
 });

@@ -31,7 +31,7 @@ class InventoryListView extends ConsumerWidget {
           things: snapshot.data!,
           selected: selectedThing,
           onTap: (thing) {
-            ref.read(selectedThingProvider.notifier).select(thing);
+            ref.read(selectedThingProvider.notifier).state = thing;
             onTap?.call(thing);
           },
         );

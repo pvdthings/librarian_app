@@ -3,10 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 import 'package:librarian_app/src/features/inventory/models/detailed_thing_model.dart';
+import 'package:librarian_app/src/features/inventory/providers/edited_thing_details_providers.dart';
 import 'package:librarian_app/src/features/inventory/providers/selected_thing_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
-import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_details/inventory_details_view_model.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/inventory_details.dart';
 
 class InventoryDetailsPane extends ConsumerWidget {
@@ -33,88 +32,70 @@ class InventoryDetailsPane extends ConsumerWidget {
                 }
 
                 final thingDetails = snapshot.data!;
-
-                final details = InventoryDetailsViewModel(
-                  inventory: ref.read(thingsRepositoryProvider),
-                  thingId: thingDetails.id,
-                  name: thingDetails.name,
-                  spanishName: thingDetails.spanishName,
-                  hidden: thingDetails.hidden,
-                  images: thingDetails.images,
-                  items: thingDetails.items,
-                  availableItems: thingDetails.available,
-                  onSave: () => ref.invalidate(thingsRepositoryProvider),
-                );
+                final hasUnsavedChanges = ref.watch(unsavedChangesProvider);
 
                 return Column(
                   children: [
-                    ListenableBuilder(
-                      listenable: details,
-                      builder: (context, child) {
-                        return PaneHeader(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    PaneHeader(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    details.name,
-                                    style: const TextStyle(fontSize: 24),
-                                  ),
-                                ],
+                              Text(
+                                thingDetails.name,
+                                style: const TextStyle(fontSize: 24),
                               ),
-                              Row(
-                                children: [
-                                  if (details.hasUnsavedChanges) ...[
-                                    Text(
-                                      'Unsaved Changes',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium!
-                                          .copyWith(
-                                            color:
-                                                Colors.white.withOpacity(0.8),
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                  ],
-                                  IconButton(
-                                    onPressed: details.hasUnsavedChanges
-                                        ? () async {
-                                            if (await showSaveDialog(context)) {
-                                              await details.save();
-                                            }
-                                          }
-                                        : null,
-                                    icon: const Icon(Icons.save_rounded),
-                                    tooltip: 'Save',
-                                  ),
-                                  const SizedBox(width: 4),
-                                  IconButton(
-                                    onPressed: details.hasUnsavedChanges
-                                        ? details.discardChanges
-                                        : null,
-                                    icon: const Icon(Icons.cancel),
-                                    tooltip: 'Discard Changes',
-                                  ),
-                                ],
-                              )
                             ],
                           ),
-                        );
-                      },
+                          Row(
+                            children: [
+                              if (hasUnsavedChanges) ...[
+                                Text(
+                                  'Unsaved Changes',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                        color: Colors.white.withOpacity(0.8),
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                ),
+                                const SizedBox(width: 8),
+                              ],
+                              IconButton(
+                                onPressed: hasUnsavedChanges
+                                    ? () async {
+                                        if (await showSaveDialog(context)) {
+                                          await ref
+                                              .read(thingDetailsEditorProvider)
+                                              .save();
+                                        }
+                                      }
+                                    : null,
+                                icon: const Icon(Icons.save_rounded),
+                                tooltip: 'Save',
+                              ),
+                              const SizedBox(width: 4),
+                              IconButton(
+                                onPressed: hasUnsavedChanges
+                                    ? ref
+                                        .read(thingDetailsEditorProvider)
+                                        .discardChanges
+                                    : null,
+                                icon: const Icon(Icons.cancel),
+                                tooltip: 'Discard Changes',
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                    Expanded(
+                    const Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: ListenableBuilder(
-                            listenable: details,
-                            builder: (BuildContext context, Widget? child) {
-                              return InventoryDetails(details: details);
-                            },
-                          ),
+                          padding: EdgeInsets.all(16),
+                          child: InventoryDetails(),
                         ),
                       ),
                     ),

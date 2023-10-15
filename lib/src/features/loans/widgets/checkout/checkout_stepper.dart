@@ -165,7 +165,7 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
                   onMatchFound: (thing) {
                     setState(() => _things.add(thing));
                   },
-                  repository: ref.read(thingsRepositoryProvider),
+                  repository: ref.read(thingsRepositoryProvider.notifier),
                 ),
               ),
               const SizedBox(height: 8),
