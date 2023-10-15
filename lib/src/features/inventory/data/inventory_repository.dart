@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
 import 'package:librarian_app/src/features/common/services/image_service.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
@@ -7,29 +8,22 @@ import '../models/detailed_thing_model.dart';
 import '../models/item_model.dart';
 import '../models/thing_model.dart';
 
-class InventoryRepository {
-  List<ThingModel> things = [];
+class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
+  @override
+  Future<List<ThingModel>> build() async => await getThings();
 
-  Future<void> refresh() async {
+  Future<List<ThingModel>> getThings({String? filter}) async {
     final response = await LendingApi.fetchThings();
     final objects = response.data as List;
+    final things = objects.map((e) => ThingModel.fromJson(e)).toList();
 
-    things = objects.map((e) => ThingModel.fromJson(e)).toList();
-  }
-
-  List<ThingModel> getCachedThings({String? filter}) {
-    if (filter == null || filter.isEmpty) {
+    if (filter == null) {
       return things;
     }
 
     return things
         .where((t) => t.name.toLowerCase().contains(filter.toLowerCase()))
         .toList();
-  }
-
-  Future<List<ThingModel>> getThings({String? filter}) async {
-    await refresh();
-    return getCachedThings(filter: filter);
   }
 
   Future<DetailedThingModel> getThingDetails({required String id}) async {
@@ -55,6 +49,8 @@ class InventoryRepository {
       spanishName: spanishName,
     );
 
+    ref.invalidateSelf();
+
     return ThingModel.fromJson(response.data as Map<String, dynamic>);
   }
 
@@ -76,6 +72,8 @@ class InventoryRepository {
       hidden: hidden,
       image: await _convert(image),
     );
+
+    ref.invalidateSelf();
   }
 
   Future<ImageDTO?> _convert(UpdatedImageModel? updatedImage) async {
@@ -93,6 +91,7 @@ class InventoryRepository {
 
   Future<void> deleteThingImage({required String thingId}) async {
     await LendingApi.deleteThingImage(thingId);
+    ref.invalidateSelf();
   }
 
   Future<void> createItems({
@@ -109,5 +108,6 @@ class InventoryRepository {
       description: description,
       estimatedValue: estimatedValue,
     );
+    ref.invalidateSelf();
   }
 }

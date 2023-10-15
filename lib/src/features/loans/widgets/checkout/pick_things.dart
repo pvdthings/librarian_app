@@ -28,7 +28,7 @@ class _PickThingsViewState extends ConsumerState<PickThingsView> {
   Future<void> _onSearchSubmitted(String value) async {
     setState(() => _isLoading = true);
 
-    final thingsRepository = ref.read(thingsRepositoryProvider);
+    final thingsRepository = ref.read(thingsRepositoryProvider.notifier);
     final match = await thingsRepository.getItem(number: int.parse(value));
 
     setState(() => _isLoading = false);

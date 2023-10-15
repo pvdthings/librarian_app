@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
-import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 
-import '../widgets/inventory_details/inventory_details_view_model.dart';
+import '../providers/edited_thing_details_providers.dart';
 import '../widgets/inventory_details/inventory_details.dart';
 
 class InventoryDetailsPage extends ConsumerWidget {
@@ -25,52 +24,30 @@ class InventoryDetailsPage extends ConsumerWidget {
         }
 
         final thingDetails = snapshot.data!;
-
-        final details = InventoryDetailsViewModel(
-          inventory: ref.read(thingsRepositoryProvider),
-          thingId: thingDetails.id,
-          name: thingDetails.name,
-          spanishName: thingDetails.spanishName,
-          hidden: thingDetails.hidden,
-          images: thingDetails.images,
-          items: thingDetails.items,
-          availableItems: thingDetails.available,
-          onSave: () => ref.invalidate(thingsRepositoryProvider),
-        );
+        final hasUnsavedChanges = ref.watch(unsavedChangesProvider);
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(details.name),
+            title: Text(thingDetails.name),
             actions: [
-              ListenableBuilder(
-                listenable: details,
-                builder: (context, child) {
-                  return IconButton(
-                    onPressed: details.hasUnsavedChanges ? details.save : null,
-                    icon: const Icon(Icons.save),
-                  );
-                },
+              IconButton(
+                onPressed: hasUnsavedChanges
+                    ? ref.read(thingDetailsEditorProvider).save
+                    : null,
+                icon: const Icon(Icons.save),
               ),
-              ListenableBuilder(
-                listenable: details,
-                builder: (context, child) {
-                  return IconButton(
-                    onPressed: details.hasUnsavedChanges
-                        ? details.discardChanges
-                        : null,
-                    icon: const Icon(Icons.cancel),
-                  );
-                },
+              IconButton(
+                onPressed: hasUnsavedChanges
+                    ? ref.read(thingDetailsEditorProvider).discardChanges
+                    : null,
+                icon: const Icon(Icons.cancel),
               ),
             ],
           ),
-          body: SingleChildScrollView(
+          body: const SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: ListenableBuilder(
-                listenable: details,
-                builder: (context, child) => InventoryDetails(details: details),
-              ),
+              padding: EdgeInsets.all(16),
+              child: InventoryDetails(),
             ),
           ),
         );

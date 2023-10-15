@@ -4,12 +4,12 @@ import 'package:librarian_app/src/features/inventory/providers/selected_thing_pr
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 
 final thingDetailsProvider = Provider<Future<DetailedThingModel?>>((ref) async {
+  ref.watch(thingsRepositoryProvider);
   final selectedThing = ref.watch(selectedThingProvider);
   if (selectedThing == null) {
     return null;
   }
 
-  final repository = ref.watch(thingsRepositoryProvider);
-
+  final repository = ref.read(thingsRepositoryProvider.notifier);
   return await repository.getThingDetails(id: selectedThing.id);
 });
