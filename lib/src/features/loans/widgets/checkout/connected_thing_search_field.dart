@@ -77,7 +77,8 @@ class ThingSearchController {
       builder: (context) {
         return AlertDialog(
           title: const Text("Thing Unavailable"),
-          content: Text("Thing #${thing.number} is checked out."),
+          content: Text(
+              "Thing #${thing.number} is checked out or not available for lending."),
           actions: [
             TextButton(
               child: const Text("OK"),

@@ -67,6 +67,6 @@ const checkedInIcon = Tooltip(
 );
 
 const checkedOutIcon = Tooltip(
-  message: 'Checked out',
+  message: 'Unavailable',
   child: Icon(Icons.circle, color: Colors.amber, size: 16),
 );
