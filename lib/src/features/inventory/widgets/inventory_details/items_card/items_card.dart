@@ -48,7 +48,7 @@ class ItemsCard extends StatelessWidget {
                   final item = items[index];
 
                   return ListTile(
-                    leading: item.available ? checkedInIcon : checkedOutIcon,
+                    leading: getIcon(item),
                     title: Text('#${item.number}'),
                     trailing: Text(item.brand ?? 'Generic'),
                   );
@@ -58,6 +58,14 @@ class ItemsCard extends StatelessWidget {
             )
           : null,
     );
+  }
+
+  Widget getIcon(ItemModel item) {
+    if (item.hidden) {
+      return hiddenIcon;
+    }
+
+    return item.available ? checkedInIcon : checkedOutIcon;
   }
 }
 
@@ -69,4 +77,9 @@ const checkedInIcon = Tooltip(
 const checkedOutIcon = Tooltip(
   message: 'Unavailable',
   child: Icon(Icons.circle, color: Colors.amber, size: 16),
+);
+
+const hiddenIcon = Tooltip(
+  message: 'Hidden',
+  child: Icon(Icons.circle, color: Colors.red, size: 16),
 );
