@@ -21,6 +21,7 @@ class ThingImageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: isMobile(context) ? 1 : 0,
+      margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

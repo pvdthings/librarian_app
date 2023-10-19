@@ -1,0 +1,144 @@
+import 'package:flutter/material.dart';
+import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
+import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
+
+import '../../models/loan_model.dart';
+import '../checkin/checkin_dialog.dart';
+import 'loan_details.dart';
+import 'thing_number.dart';
+
+class LoanDetailsPane extends StatefulWidget {
+  final LoanModel? loan;
+  final void Function(DateTime dueDate) onSave;
+  final void Function() onCheckIn;
+
+  const LoanDetailsPane({
+    super.key,
+    required this.loan,
+    required this.onSave,
+    required this.onCheckIn,
+  });
+
+  @override
+  State<LoanDetailsPane> createState() => _LoanDetailsPaneState();
+}
+
+class _LoanDetailsPaneState extends State<LoanDetailsPane> {
+  DateTime? _newDueDate;
+
+  void _reset() {
+    _newDueDate = null;
+  }
+
+  bool _hasUnsavedChanges() {
+    return _newDueDate != null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final loan = widget.loan;
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: loan == null
+          ? const Center(child: Text('Loan Details'))
+          : Column(
+              children: [
+                PaneHeader(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          ThingNumber(number: loan.thing.number),
+                          const SizedBox(width: 16),
+                          Text(
+                            widget.loan!.thing.name,
+                            style: const TextStyle(fontSize: 24),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          if (_hasUnsavedChanges()) ...[
+                            Text(
+                              'Unsaved Changes',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(
+                                    color: Colors.white.withOpacity(0.8),
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                            ),
+                            const SizedBox(width: 8),
+                          ],
+                          IconButton(
+                            onPressed: _hasUnsavedChanges()
+                                ? () async {
+                                    if (await showSaveDialog(context)) {
+                                      widget.onSave(_newDueDate!);
+                                      setState(_reset);
+                                    }
+                                  }
+                                : null,
+                            icon: const Icon(Icons.save_rounded),
+                            tooltip: 'Save',
+                          ),
+                          const SizedBox(width: 4),
+                          IconButton(
+                            onPressed: _hasUnsavedChanges()
+                                ? () => setState(_reset)
+                                : null,
+                            icon: const Icon(Icons.cancel),
+                            tooltip: 'Discard Changes',
+                          ),
+                          SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: VerticalDivider(
+                              color: Colors.white.withOpacity(0.3),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CheckinDialog(
+                                    thingNumber: loan.thing.number,
+                                    onCheckin: () async {
+                                      _reset();
+                                      await Future(widget.onCheckIn);
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            tooltip: 'Check in',
+                            icon: const Icon(Icons.library_add_check),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: LoanDetails(
+                    borrower: loan.borrower,
+                    things: [loan.thing],
+                    checkedOutDate: loan.checkedOutDate,
+                    dueDate: _newDueDate ?? loan.dueDate,
+                    isOverdue: loan.isOverdue,
+                    onDueDateUpdated: (dueDate) {
+                      setState(() => _newDueDate = dueDate);
+                    },
+                    editable: true,
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
+}
