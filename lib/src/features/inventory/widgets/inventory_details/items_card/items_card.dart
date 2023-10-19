@@ -10,11 +10,13 @@ class ItemsCard extends StatelessWidget {
     required this.items,
     required this.availableItemsCount,
     required this.onAddItemsPressed,
+    required this.onToggleHidden,
   });
 
   final List<ItemModel> items;
   final int availableItemsCount;
   final void Function() onAddItemsPressed;
+  final void Function(String id, bool value) onToggleHidden;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,21 @@ class ItemsCard extends StatelessWidget {
                   return ListTile(
                     leading: getIcon(item),
                     title: Text('#${item.number}'),
-                    trailing: Text(item.brand ?? 'Generic'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(item.brand ?? 'Generic'),
+                        const SizedBox(width: 16),
+                        IconButton(
+                          onPressed: () =>
+                              onToggleHidden(item.id, !item.hidden),
+                          tooltip: item.hidden ? 'Unhide' : 'Hide',
+                          icon: item.hidden
+                              ? const Icon(Icons.visibility_off)
+                              : const Icon(Icons.visibility),
+                        ),
+                      ],
+                    ),
                   );
                 },
                 separatorBuilder: (c, i) => const Divider(),
