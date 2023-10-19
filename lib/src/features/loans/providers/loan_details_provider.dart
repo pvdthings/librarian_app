@@ -12,5 +12,6 @@ final loanDetailsProvider = Provider<Future<LoanModel?>>((ref) async {
   }
 
   final loans = await ref.watch(loansRepositoryProvider);
-  return loans.firstWhereOrNull((loan) => loan.id == selectedLoan.id);
+  return loans.firstWhereOrNull((loan) =>
+      loan.id == selectedLoan.id && loan.thing.id == selectedLoan.thing.id);
 });
