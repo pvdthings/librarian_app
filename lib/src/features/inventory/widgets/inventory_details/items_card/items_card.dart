@@ -16,7 +16,7 @@ class ItemsCard extends StatelessWidget {
   final List<ItemModel> items;
   final int availableItemsCount;
   final void Function() onAddItemsPressed;
-  final void Function(String id, bool value) onToggleHidden;
+  final void Function(String id, bool value)? onToggleHidden;
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +58,14 @@ class ItemsCard extends StatelessWidget {
                         Text(item.brand ?? 'Generic'),
                         const SizedBox(width: 16),
                         IconButton(
-                          onPressed: () =>
-                              onToggleHidden(item.id, !item.hidden),
-                          tooltip: item.hidden ? 'Unhide' : 'Hide',
+                          onPressed: onToggleHidden != null
+                              ? () => onToggleHidden!(item.id, !item.hidden)
+                              : null,
+                          tooltip: onToggleHidden == null
+                              ? null
+                              : item.hidden
+                                  ? 'Unhide'
+                                  : 'Hide',
                           icon: item.hidden
                               ? const Icon(Icons.visibility_off)
                               : const Icon(Icons.visibility),

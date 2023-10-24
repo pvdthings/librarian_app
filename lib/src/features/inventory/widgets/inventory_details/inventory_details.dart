@@ -110,11 +110,13 @@ class InventoryDetails extends ConsumerWidget {
                   ),
                 );
               },
-              onToggleHidden: (id, value) async {
-                await ref
-                    .read(thingsRepositoryProvider.notifier)
-                    .updateItem(id, hidden: value);
-              },
+              onToggleHidden: details.hidden
+                  ? null
+                  : (id, value) async {
+                      await ref
+                          .read(thingsRepositoryProvider.notifier)
+                          .updateItem(id, hidden: value);
+                    },
             ),
           ],
         );
