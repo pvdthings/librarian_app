@@ -107,6 +107,15 @@ class LendingApi {
     });
   }
 
+  static Future<Response> updateInventoryItem(
+    String id, {
+    bool? hidden,
+  }) async {
+    return await _client.patch('/inventory/$id', data: {
+      'hidden': hidden,
+    });
+  }
+
   static Future<Response> recordCashPayment({
     required double cash,
     required String borrowerId,

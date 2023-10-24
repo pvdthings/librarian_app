@@ -10,11 +10,13 @@ class ItemsCard extends StatelessWidget {
     required this.items,
     required this.availableItemsCount,
     required this.onAddItemsPressed,
+    required this.onToggleHidden,
   });
 
   final List<ItemModel> items;
   final int availableItemsCount;
   final void Function() onAddItemsPressed;
+  final void Function(String id, bool value)? onToggleHidden;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +50,28 @@ class ItemsCard extends StatelessWidget {
                   final item = items[index];
 
                   return ListTile(
-                    leading: item.available ? checkedInIcon : checkedOutIcon,
+                    leading: getIcon(item),
                     title: Text('#${item.number}'),
-                    trailing: Text(item.brand ?? 'Generic'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(item.brand ?? 'Generic'),
+                        const SizedBox(width: 16),
+                        IconButton(
+                          onPressed: onToggleHidden != null
+                              ? () => onToggleHidden!(item.id, !item.hidden)
+                              : null,
+                          tooltip: onToggleHidden == null
+                              ? null
+                              : item.hidden
+                                  ? 'Unhide'
+                                  : 'Hide',
+                          icon: item.hidden
+                              ? const Icon(Icons.visibility_off)
+                              : const Icon(Icons.visibility),
+                        ),
+                      ],
+                    ),
                   );
                 },
                 separatorBuilder: (c, i) => const Divider(),
@@ -58,6 +79,14 @@ class ItemsCard extends StatelessWidget {
             )
           : null,
     );
+  }
+
+  Widget getIcon(ItemModel item) {
+    if (item.hidden) {
+      return hiddenIcon;
+    }
+
+    return item.available ? checkedInIcon : checkedOutIcon;
   }
 }
 
@@ -69,4 +98,9 @@ const checkedInIcon = Tooltip(
 const checkedOutIcon = Tooltip(
   message: 'Unavailable',
   child: Icon(Icons.circle, color: Colors.amber, size: 16),
+);
+
+const hiddenIcon = Tooltip(
+  message: 'Hidden',
+  child: Icon(Icons.circle, color: Colors.red, size: 16),
 );
