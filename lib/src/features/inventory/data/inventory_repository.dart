@@ -59,10 +59,15 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
     String? name,
     String? spanishName,
     bool? hidden,
+    List<String>? categories,
     UpdatedImageModel? image,
   }) async {
     if (image != null && image.bytes == null) {
       await deleteThingImage(thingId: thingId);
+    }
+
+    if (categories != null) {
+      await LendingApi.updateThingCategories(thingId, categories: categories);
     }
 
     await LendingApi.updateThing(
