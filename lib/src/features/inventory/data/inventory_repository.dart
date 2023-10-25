@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
@@ -14,7 +15,7 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
 
   Future<List<String>> getCategories() async {
     final response = await LendingApi.getCategories();
-    return (response.data as List).map((e) => e.toString()).toList();
+    return (response.data as List).map((e) => e.toString()).sorted().toList();
   }
 
   Future<List<ThingModel>> getThings({String? filter}) async {
