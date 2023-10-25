@@ -58,7 +58,7 @@ dev_dependencies:
   riverpod_generator: ^2.3.3
   build_runner: ^2.4.6
   custom_lint: ^0.5.3
-  riverpod_lint: ^2.1.1
+  riverpod_lint:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
