@@ -18,6 +18,10 @@ class LendingApi {
   static String get _accessToken =>
       Supabase.instance.client.auth.currentSession?.accessToken ?? '';
 
+  static Future<Response> getCategories() async {
+    return await _client.get('/things/categories');
+  }
+
   static Future<Response> fetchLoans() async {
     return await _client.get('/loans');
   }
@@ -80,6 +84,15 @@ class LendingApi {
       'spanishName': spanishName,
       'hidden': hidden,
       'image': image != null ? {'url': image.url} : null,
+    });
+  }
+
+  static Future<Response> updateThingCategories(
+    String id, {
+    required List<String> categories,
+  }) async {
+    return await _client.patch('/things/$id/categories', data: {
+      'categories': categories,
     });
   }
 
