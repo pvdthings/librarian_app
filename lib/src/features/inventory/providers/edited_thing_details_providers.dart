@@ -10,6 +10,8 @@ final spanishNameProvider = StateProvider<String?>((ref) => null);
 
 final hiddenProvider = StateProvider<bool?>((ref) => null);
 
+final categoriesProvider = StateProvider<List<String>?>((ref) => null);
+
 final imageProvider = StateProvider<ImageModel?>((ref) => null);
 
 final imageUploadProvider = StateProvider<UpdatedImageModel?>((ref) => null);
@@ -18,7 +20,8 @@ final unsavedChangesProvider = Provider<bool>((ref) {
   return ref.watch(nameProvider) != null ||
       ref.watch(spanishNameProvider) != null ||
       ref.watch(hiddenProvider) != null ||
-      ref.watch(imageUploadProvider) != null;
+      ref.watch(imageUploadProvider) != null ||
+      ref.watch(categoriesProvider) != null;
 });
 
 class ThingDetailsEditor {
@@ -32,6 +35,7 @@ class ThingDetailsEditor {
         name: ref.read(nameProvider),
         spanishName: ref.read(spanishNameProvider),
         hidden: ref.read(hiddenProvider),
+        categories: ref.read(categoriesProvider),
         image: ref.read(imageUploadProvider));
     discardChanges();
   }
@@ -40,6 +44,7 @@ class ThingDetailsEditor {
     ref.read(nameProvider.notifier).state = null;
     ref.read(spanishNameProvider.notifier).state = null;
     ref.read(hiddenProvider.notifier).state = null;
+    ref.read(categoriesProvider.notifier).state = null;
     ref.read(imageUploadProvider.notifier).state = null;
   }
 }

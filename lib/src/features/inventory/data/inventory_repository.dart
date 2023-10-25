@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
@@ -11,6 +12,11 @@ import '../models/thing_model.dart';
 class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
   @override
   Future<List<ThingModel>> build() async => await getThings();
+
+  Future<List<String>> getCategories() async {
+    final response = await LendingApi.getCategories();
+    return (response.data as List).map((e) => e.toString()).sorted().toList();
+  }
 
   Future<List<ThingModel>> getThings({String? filter}) async {
     final response = await LendingApi.fetchThings();
@@ -59,10 +65,15 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
     String? name,
     String? spanishName,
     bool? hidden,
+    List<String>? categories,
     UpdatedImageModel? image,
   }) async {
     if (image != null && image.bytes == null) {
       await deleteThingImage(thingId: thingId);
+    }
+
+    if (categories != null) {
+      await LendingApi.updateThingCategories(thingId, categories: categories);
     }
 
     await LendingApi.updateThing(
