@@ -18,6 +18,10 @@ class LendingApi {
   static String get _accessToken =>
       Supabase.instance.client.auth.currentSession?.accessToken ?? '';
 
+  static Future<Response> getCategories() async {
+    return await _client.get('/things/categories');
+  }
+
   static Future<Response> fetchLoans() async {
     return await _client.get('/loans');
   }

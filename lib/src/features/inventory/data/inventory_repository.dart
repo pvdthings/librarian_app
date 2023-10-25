@@ -12,6 +12,11 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
   @override
   Future<List<ThingModel>> build() async => await getThings();
 
+  Future<List<String>> getCategories() async {
+    final response = await LendingApi.getCategories();
+    return (response.data as List).map((e) => e.toString()).toList();
+  }
+
   Future<List<ThingModel>> getThings({String? filter}) async {
     final response = await LendingApi.fetchThings();
     final objects = response.data as List;
