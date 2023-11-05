@@ -4,13 +4,13 @@ import 'package:librarian_app/src/features/common/widgets/checkbox_field.dart';
 import 'package:librarian_app/src/features/common/widgets/input_decoration.widget.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
+import 'package:librarian_app/src/utils/format.dart';
 
 class ItemDetailsDialog extends ConsumerWidget {
   const ItemDetailsDialog({super.key, required this.number});
 
   final int number;
 
-  // Currency formatting
   // Enable Save when changes have been made
 
   @override
@@ -81,7 +81,10 @@ class ItemDetails extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       children: [
         CheckboxField(
-            title: 'Hidden', value: item.hidden, onChanged: (value) {}),
+          title: 'Hidden',
+          value: item.hidden,
+          onChanged: (value) {},
+        ),
         const SizedBox(height: 16),
         TextFormField(
           controller: TextEditingController(text: item.brand),
@@ -98,14 +101,19 @@ class ItemDetails extends StatelessWidget {
         const SizedBox(height: 16),
         TextFormField(
           controller:
-              TextEditingController(text: item.estimatedValue?.toString()),
-          decoration:
-              inputDecoration.copyWith(labelText: 'Estimated Value (\$)'),
+              TextEditingController(text: formatNumber(item.estimatedValue)),
+          decoration: inputDecoration.copyWith(
+            labelText: 'Estimated Value (\$)',
+            prefixText: '\$ ',
+          ),
+          keyboardType: TextInputType.number,
         ),
         const SizedBox(height: 16),
         DropdownButtonFormField(
           decoration: inputDecoration.copyWith(labelText: 'Condition'),
-          items: null,
+          items: const [
+            DropdownMenuItem(value: 'Damaged', child: Text('Damaged')),
+          ],
           onChanged: null,
           value: item.condition,
         ),
