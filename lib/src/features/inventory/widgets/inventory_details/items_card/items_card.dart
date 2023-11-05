@@ -10,12 +10,14 @@ class ItemsCard extends StatelessWidget {
     required this.items,
     required this.availableItemsCount,
     required this.onAddItemsPressed,
+    required this.onTap,
     required this.onToggleHidden,
   });
 
   final List<ItemModel> items;
   final int availableItemsCount;
   final void Function() onAddItemsPressed;
+  final void Function(int number)? onTap;
   final void Function(String id, bool value)? onToggleHidden;
 
   @override
@@ -51,6 +53,7 @@ class ItemsCard extends StatelessWidget {
 
                   return ListTile(
                     leading: getIcon(item),
+                    onTap: () => onTap?.call(item.number),
                     title: Text('#${item.number}'),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
