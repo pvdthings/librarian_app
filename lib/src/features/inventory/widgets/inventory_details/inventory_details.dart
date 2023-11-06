@@ -5,14 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/widgets/checkbox_field.dart';
 import 'package:librarian_app/src/features/common/widgets/input_decoration.widget.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
+import 'package:librarian_app/src/features/inventory/pages/item_details_page.dart';
 import 'package:librarian_app/src/features/inventory/providers/edited_thing_details_providers.dart';
 import 'package:librarian_app/src/features/inventory/providers/selected_thing_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 import 'package:librarian_app/src/features/inventory/widgets/dialogs/add_inventory_dialog.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/categories_card.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details_dialog.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/items_card.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/thing_image_card/thing_image_card.dart';
+import 'package:librarian_app/src/utils/media_query.dart';
 
 class InventoryDetails extends ConsumerWidget {
   const InventoryDetails({super.key});
@@ -92,6 +95,28 @@ class InventoryDetails extends ConsumerWidget {
             ItemsCard(
               items: details.items,
               availableItemsCount: details.available,
+              onTap: (item) {
+                if (isMobile(context)) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return ItemDetailsPage(
+                      item: item,
+                      hiddenLocked: details.hidden,
+                    );
+                  }));
+                  return;
+                }
+
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return ItemDetailsDialog(
+                      item: item,
+                      hiddenLocked: details.hidden,
+                    );
+                  },
+                );
+              },
               onAddItemsPressed: () {
                 showDialog(
                   context: context,

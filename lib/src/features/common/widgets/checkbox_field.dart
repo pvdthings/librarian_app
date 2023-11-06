@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CheckboxField extends StatelessWidget {
   final String title;
   final bool value;
-  final void Function(bool? value) onChanged;
+  final void Function(bool? value)? onChanged;
 
   const CheckboxField({
     super.key,
@@ -15,11 +15,12 @@ class CheckboxField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Checkbox(value: value, onChanged: onChanged),
         const SizedBox(width: 8),
         TapRegion(
-          onTapInside: (_) => onChanged(!value),
+          onTapInside: onChanged != null ? (_) => onChanged!(!value) : null,
           child: Text(
             title,
             style: Theme.of(context).textTheme.bodyLarge,
