@@ -17,7 +17,7 @@ class ItemsCard extends StatelessWidget {
   final List<ItemModel> items;
   final int availableItemsCount;
   final void Function() onAddItemsPressed;
-  final void Function(int number)? onTap;
+  final void Function(ItemModel item)? onTap;
   final void Function(String id, bool value)? onToggleHidden;
 
   @override
@@ -53,7 +53,7 @@ class ItemsCard extends StatelessWidget {
 
                   return ListTile(
                     leading: getIcon(item),
-                    onTap: () => onTap?.call(item.number),
+                    onTap: () => onTap?.call(item),
                     title: Text('#${item.number}'),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,

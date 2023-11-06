@@ -93,11 +93,14 @@ class InventoryDetails extends ConsumerWidget {
             ItemsCard(
               items: details.items,
               availableItemsCount: details.available,
-              onTap: (int number) {
+              onTap: (item) {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return ItemDetailsDialog(number: number);
+                    return ItemDetailsDialog(
+                      item: item,
+                      hiddenLocked: details.hidden,
+                    );
                   },
                 );
               },
