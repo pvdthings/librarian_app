@@ -122,9 +122,17 @@ class LendingApi {
 
   static Future<Response> updateInventoryItem(
     String id, {
+    String? brand,
+    String? condition,
+    String? description,
+    double? estimatedValue,
     bool? hidden,
   }) async {
     return await _client.patch('/inventory/$id', data: {
+      'brand': brand,
+      'condition': condition,
+      'description': description,
+      'estimatedValue': estimatedValue,
       'hidden': hidden,
     });
   }

@@ -32,10 +32,12 @@ class _FilledProgressButtonState extends State<FilledProgressButton> {
     }
 
     return FilledButton(
-      onPressed: () {
-        setState(() => _isLoading = true);
-        widget.onPressed?.call();
-      },
+      onPressed: widget.onPressed == null
+          ? null
+          : () {
+              setState(() => _isLoading = true);
+              widget.onPressed?.call();
+            },
       child: widget.child,
     );
   }

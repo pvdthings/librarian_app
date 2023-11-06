@@ -11,6 +11,7 @@ import 'package:librarian_app/src/features/inventory/providers/thing_details_pro
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 import 'package:librarian_app/src/features/inventory/widgets/dialogs/add_inventory_dialog.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/categories_card.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details_dialog.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/items_card.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/thing_image_card/thing_image_card.dart';
 
@@ -92,6 +93,17 @@ class InventoryDetails extends ConsumerWidget {
             ItemsCard(
               items: details.items,
               availableItemsCount: details.available,
+              onTap: (item) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return ItemDetailsDialog(
+                      item: item,
+                      hiddenLocked: details.hidden,
+                    );
+                  },
+                );
+              },
               onAddItemsPressed: () {
                 showDialog(
                   context: context,
