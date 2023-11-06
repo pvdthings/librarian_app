@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/common/widgets/checkbox_field.dart';
 import 'package:librarian_app/src/features/common/widgets/input_decoration.widget.dart';
@@ -71,21 +72,33 @@ class ItemDetails extends ConsumerWidget {
             labelText: 'Estimated Value (\$)',
             prefixText: '\$ ',
           ),
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           keyboardType: TextInputType.number,
           onChanged: (value) {
             ref.read(estimatedValueProvider.notifier).state =
                 double.tryParse(value);
-          },
-          validator: (value) {
-            final doubleValue = double.tryParse(value ?? '');
-            return doubleValue != null ? null : 'Must be a valid dollar amount';
           },
         ),
         const SizedBox(height: 16),
         DropdownButtonFormField(
           decoration: inputDecoration.copyWith(labelText: 'Condition'),
           items: const [
-            DropdownMenuItem(value: 'Damaged', child: Text('Damaged')),
+            DropdownMenuItem(
+              value: 'Like New',
+              child: Text('Like New'),
+            ),
+            DropdownMenuItem(
+              value: 'Lightly Used',
+              child: Text('Lightly Used'),
+            ),
+            DropdownMenuItem(
+              value: 'Heavily Used',
+              child: Text('Heavily Used'),
+            ),
+            DropdownMenuItem(
+              value: 'Damaged',
+              child: Text('Damaged'),
+            ),
           ],
           onChanged: (value) {
             ref.read(conditionProvider.notifier).state = value;
