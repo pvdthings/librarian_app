@@ -124,9 +124,20 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
 
   Future<void> updateItem(
     String id, {
+    String? brand,
+    String? description,
+    String? condition,
+    double? estimatedValue,
     bool? hidden,
   }) async {
-    await LendingApi.updateInventoryItem(id, hidden: hidden);
+    await LendingApi.updateInventoryItem(
+      id,
+      brand: brand,
+      condition: condition,
+      description: description,
+      estimatedValue: estimatedValue,
+      hidden: hidden,
+    );
     ref.invalidateSelf();
   }
 }
