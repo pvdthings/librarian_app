@@ -27,7 +27,7 @@ class ItemDetails extends ConsumerWidget {
           builder: (context) {
             final checkbox = CheckboxField(
               title: 'Hidden',
-              value: item.hidden,
+              value: ref.watch(hiddenProvider) ?? item.hidden,
               onChanged: hiddenLocked
                   ? null
                   : (value) {
