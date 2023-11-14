@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/models/borrower_model.dart';
+import 'package:librarian_app/src/features/borrowers/providers/borrowers_provider.dart';
 import 'package:librarian_app/src/features/borrowers/providers/borrowers_repository_provider.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.dart';
@@ -113,16 +114,18 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
                   labelText: 'Borrower',
                   prefixIcon: Icon(Icons.person_rounded),
                 ),
-                onTap: () async {
-                  final borrower = await showSearch(
-                    context: context,
-                    delegate: BorrowerSearchDelegate(),
-                    useRootNavigator: true,
-                  );
-
-                  if (borrower != null) {
-                    setState(() => _borrower = borrower);
-                  }
+                onTap: () {
+                  ref.read(borrowersProvider).then((borrowers) async {
+                    return await showSearch(
+                      context: context,
+                      delegate: BorrowerSearchDelegate(borrowers),
+                      useRootNavigator: true,
+                    );
+                  }).then((borrower) {
+                    if (borrower != null) {
+                      setState(() => _borrower = borrower);
+                    }
+                  });
                 },
               ),
               if (_borrower != null && !_borrower!.active) ...[
