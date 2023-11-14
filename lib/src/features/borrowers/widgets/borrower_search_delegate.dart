@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../models/borrower_model.dart';
-import 'borrowers_list/borrowers_list_view.dart';
+import 'borrowers_list/borrowers_list.dart';
 
 class BorrowerSearchDelegate extends SearchDelegate<BorrowerModel?> {
-  BorrowerSearchDelegate();
+  BorrowerSearchDelegate(this.borrowers);
+
+  final List<BorrowerModel> borrowers;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -29,15 +31,24 @@ class BorrowerSearchDelegate extends SearchDelegate<BorrowerModel?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return BorrowersView(
-      onTap: (borrower) => close(context, borrower),
-    );
+    return _buildQueriedList(context);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return BorrowersView(
-      onTap: (borrower) => close(context, borrower),
+    return _buildQueriedList(context);
+  }
+
+  Widget _buildQueriedList(BuildContext context) {
+    final results = borrowers
+        .where((b) => b.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return BorrowersList(
+      borrowers: results,
+      onTap: (borrower) {
+        close(context, borrower);
+      },
     );
   }
 }
