@@ -28,7 +28,9 @@ class CategoriesCard extends ConsumerWidget {
               onPressed: () async {
                 final category = await showDialog<String?>(
                   context: context,
-                  builder: (context) => _CategoriesDialog(),
+                  builder: (context) => _CategoriesDialog(
+                    existingCategories: categories.toSet(),
+                  ),
                 );
 
                 if (category == null) {
@@ -70,6 +72,10 @@ class CategoriesCard extends ConsumerWidget {
 }
 
 class _CategoriesDialog extends ConsumerWidget {
+  const _CategoriesDialog({required this.existingCategories});
+
+  final Set<String> existingCategories;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Dialog(
@@ -111,7 +117,9 @@ class _CategoriesDialog extends ConsumerWidget {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  final List<String> categories = snapshot.data!;
+                  final List<String> categories = snapshot.data!
+                      .where((c) => !existingCategories.contains(c))
+                      .toList();
 
                   return ListView.builder(
                     itemCount: categories.length,
