@@ -137,6 +137,12 @@ class LendingApi {
     });
   }
 
+  static Future<Response> fetchPayments({
+    required String borrowerId,
+  }) async {
+    return await _client.get('/payments/$borrowerId');
+  }
+
   static Future<Response> recordCashPayment({
     required double cash,
     required String borrowerId,
