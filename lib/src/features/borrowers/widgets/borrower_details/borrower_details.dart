@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.dart';
+import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/payments_card.dart';
 
 import '../../models/borrower_model.dart';
 
@@ -82,6 +83,8 @@ class _BorrowerDetailsState extends State<BorrowerDetails> {
             'Ready to borrow!',
             style: Theme.of(context).textTheme.bodyLarge,
           ),
+        const SizedBox(height: 32),
+        const PaymentsCard(),
       ],
     );
   }
