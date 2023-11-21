@@ -51,7 +51,7 @@ class _RecordPaymentDialogState extends State<RecordPaymentDialog> {
                     : 'Must be a valid dollar amount';
               },
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.currency_exchange_rounded),
+                prefixText: '\$',
                 labelText: 'Cash',
                 border: OutlineInputBorder(),
               ),
