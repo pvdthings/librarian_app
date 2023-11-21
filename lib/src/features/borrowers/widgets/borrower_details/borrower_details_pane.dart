@@ -50,9 +50,13 @@ class BorrowerDetailsPane extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: BorrowerDetails(borrower: borrower),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: BorrowerDetails(borrower: borrower),
+                        ),
+                      ),
                     ),
                   ],
                 );
