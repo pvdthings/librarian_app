@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/borrowers/providers/edited_borrower_details_providers.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_details.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 
 import '../../models/borrower_model.dart';
 
-class BorrowerDetailsPane extends StatelessWidget {
+class BorrowerDetailsPane extends ConsumerWidget {
   final Future<BorrowerModel?> borrowerFuture;
 
   const BorrowerDetailsPane({
@@ -13,7 +15,7 @@ class BorrowerDetailsPane extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: FutureBuilder(
@@ -47,14 +49,50 @@ class BorrowerDetailsPane extends StatelessWidget {
                               ),
                             ],
                           ),
+                          Row(
+                            children: [
+                              if (ref.watch(unsavedChangesProvider)) ...[
+                                Text(
+                                  'Unsaved Changes',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                        color: Colors.white.withOpacity(0.8),
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                ),
+                                const SizedBox(width: 8),
+                              ],
+                              IconButton(
+                                onPressed: ref.watch(unsavedChangesProvider)
+                                    ? () {}
+                                    : null,
+                                icon: const Icon(Icons.save_rounded),
+                                tooltip: 'Save',
+                              ),
+                              const SizedBox(width: 4),
+                              IconButton(
+                                onPressed: ref.watch(unsavedChangesProvider)
+                                    ? () {
+                                        ref
+                                            .read(borrowerDetailsEditorProvider)
+                                            .discardChanges();
+                                      }
+                                    : null,
+                                icon: const Icon(Icons.cancel),
+                                tooltip: 'Discard Changes',
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: BorrowerDetails(borrower: borrower),
+                          padding: EdgeInsets.all(16),
+                          child: BorrowerDetails(),
                         ),
                       ),
                     ),
