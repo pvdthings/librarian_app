@@ -54,6 +54,17 @@ class LendingApi {
     return await _client.get('/borrowers');
   }
 
+  static Future<Response> updateBorrower(
+    String id, {
+    String? email,
+    String? phone,
+  }) async {
+    return await _client.patch('/borrowers/$id/contact', data: {
+      'email': email,
+      'phone': phone,
+    });
+  }
+
   static Future<Response> fetchThings() async {
     return await _client.get('/things');
   }

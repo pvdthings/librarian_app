@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/borrowers/providers/borrowers_repository_provider.dart';
+import 'package:librarian_app/src/features/borrowers/providers/selected_borrower_provider.dart';
 
 final phoneProvider = StateProvider<String?>((ref) => null);
 
@@ -13,13 +15,11 @@ class BorrowerDetailsEditor {
 
   final ProviderRef ref;
 
-  Future<void> save(String id) async {
-    // await ref.read(thingsRepositoryProvider.notifier).updateItem(id,
-    //     brand: ref.read(brandProvider),
-    //     condition: ref.read(conditionProvider),
-    //     description: ref.read(descriptionProvider),
-    //     estimatedValue: ref.read(estimatedValueProvider),
-    //     hidden: ref.read(hiddenProvider));
+  Future<void> save() async {
+    await ref.read(borrowersRepositoryProvider.notifier).updateBorrower(
+        ref.read(selectedBorrowerProvider)!.id,
+        email: ref.read(emailProvider),
+        phone: ref.read(phoneProvider));
     discardChanges();
   }
 

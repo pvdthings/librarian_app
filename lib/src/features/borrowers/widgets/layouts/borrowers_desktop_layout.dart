@@ -30,7 +30,7 @@ class BorrowersDesktopLayout extends ConsumerWidget {
               },
             ),
           ),
-          child: const BorrowersView(),
+          child: const BorrowersListView(),
         ),
         Expanded(
           child: BorrowerDetailsPane(

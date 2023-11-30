@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/providers/borrowers_provider.dart';
+import 'package:librarian_app/src/features/borrowers/providers/edited_borrower_details_providers.dart';
 import 'package:librarian_app/src/features/borrowers/providers/selected_borrower_provider.dart';
 
 import '../../models/borrower_model.dart';
 import 'borrowers_list.dart';
 
-class BorrowersView extends ConsumerWidget {
-  const BorrowersView({super.key, this.onTap});
+class BorrowersListView extends ConsumerWidget {
+  const BorrowersListView({super.key, this.onTap});
 
   final void Function(BorrowerModel)? onTap;
 
@@ -32,6 +33,7 @@ class BorrowersView extends ConsumerWidget {
           borrowers: snapshot.data!,
           selected: ref.watch(selectedBorrowerProvider),
           onTap: (borrower) {
+            ref.read(borrowerDetailsEditorProvider).discardChanges();
             ref.read(selectedBorrowerProvider.notifier).state = borrower;
             onTap?.call(borrower);
           },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/providers/edited_borrower_details_providers.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_details.dart';
+import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 
 import '../../models/borrower_model.dart';
@@ -39,15 +40,11 @@ class BorrowerDetailsPane extends ConsumerWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                borrower.name,
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            borrower.name,
+                            style: const TextStyle(
+                              fontSize: 24,
+                            ),
                           ),
                           Row(
                             children: [
@@ -66,7 +63,14 @@ class BorrowerDetailsPane extends ConsumerWidget {
                               ],
                               IconButton(
                                 onPressed: ref.watch(unsavedChangesProvider)
-                                    ? () {}
+                                    ? () async {
+                                        if (await showSaveDialog(context)) {
+                                          ref
+                                              .read(
+                                                  borrowerDetailsEditorProvider)
+                                              .save();
+                                        }
+                                      }
                                     : null,
                                 icon: const Icon(Icons.save_rounded),
                                 tooltip: 'Save',
