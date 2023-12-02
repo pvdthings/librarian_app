@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/providers/borrower_details_provider.dart';
 import 'package:librarian_app/src/features/borrowers/providers/edited_borrower_details_providers.dart';
@@ -25,17 +26,6 @@ class BorrowerDetails extends ConsumerWidget {
 
         final borrower = snapshot.data!;
 
-        final emailController = TextEditingController(
-          text: ref.watch(emailProvider) ?? borrower.email,
-        );
-        emailController.selection = TextSelection.fromPosition(
-            TextPosition(offset: emailController.text.length));
-
-        final phoneController = TextEditingController(
-            text: ref.watch(phoneProvider) ?? borrower.phone);
-        phoneController.selection = TextSelection.fromPosition(
-            TextPosition(offset: phoneController.text.length));
-
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -51,7 +41,9 @@ class BorrowerDetails extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             TextField(
-              controller: emailController,
+              controller: TextEditingController(
+                text: ref.read(emailProvider) ?? borrower.email,
+              ),
               decoration: const InputDecoration(
                 icon: Icon(Icons.email_rounded),
                 labelText: 'Email',
@@ -64,13 +56,19 @@ class BorrowerDetails extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
             TextField(
-              controller: phoneController,
+              controller: TextEditingController(
+                text: ref.read(phoneProvider) ?? borrower.phone,
+              ),
               decoration: const InputDecoration(
                 icon: Icon(Icons.phone_rounded),
                 labelText: 'Phone',
                 border: OutlineInputBorder(),
                 constraints: BoxConstraints(maxWidth: 500),
               ),
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              keyboardType: TextInputType.phone,
               onChanged: (value) {
                 ref.read(phoneProvider.notifier).state = value;
               },

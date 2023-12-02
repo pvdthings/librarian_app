@@ -50,6 +50,10 @@ class LendingApi {
     });
   }
 
+  static Future<Response> fetchBorrower(String id) async {
+    return await _client.get('/borrowers/$id');
+  }
+
   static Future<Response> fetchBorrowers() async {
     return await _client.get('/borrowers');
   }
@@ -59,10 +63,17 @@ class LendingApi {
     String? email,
     String? phone,
   }) async {
-    return await _client.patch('/borrowers/$id/contact', data: {
-      'email': email,
-      'phone': phone,
-    });
+    dynamic data = {};
+
+    if (email != null) {
+      data['email'] = email;
+    }
+
+    if (phone != null) {
+      data['phone'] = phone;
+    }
+
+    return await _client.patch('/borrowers/$id/contact', data: data);
   }
 
   static Future<Response> fetchThings() async {

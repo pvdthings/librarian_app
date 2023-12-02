@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/borrowers/providers/borrower_details_provider.dart';
 import 'package:librarian_app/src/features/borrowers/providers/borrowers_repository_provider.dart';
 import 'package:librarian_app/src/features/borrowers/providers/selected_borrower_provider.dart';
 
@@ -26,6 +27,9 @@ class BorrowerDetailsEditor {
   void discardChanges() {
     ref.read(phoneProvider.notifier).state = null;
     ref.read(emailProvider.notifier).state = null;
+
+    // Causes borrower details to refresh from the API
+    ref.invalidate(borrowerDetailsProvider);
   }
 }
 
