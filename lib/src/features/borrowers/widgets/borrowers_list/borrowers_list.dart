@@ -34,7 +34,7 @@ class _BorrowersListState extends State<BorrowersList> {
           title: Text(b.name),
           trailing: b.active ? null : const Icon(Icons.warning_rounded),
           onTap: () => widget.onTap?.call(b),
-          selected: isMobile(context) ? false : widget.selected == b,
+          selected: isMobile(context) ? false : b.id == widget.selected?.id,
         );
       },
       shrinkWrap: true,

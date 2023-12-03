@@ -21,6 +21,22 @@ class BorrowersRepository extends Notifier<Future<List<BorrowerModel>>> {
     return borrowers.firstWhereOrNull((b) => b.id == id);
   }
 
+  Future<BorrowerModel?> getBorrowerDetails(String id) async {
+    final response = await LendingApi.fetchBorrower(id);
+    return BorrowerModel.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  Future<bool> updateBorrower(String id, {String? email, String? phone}) async {
+    try {
+      await LendingApi.updateBorrower(id, email: email, phone: phone);
+
+      ref.invalidateSelf();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   Future<List<PaymentModel>> getPayments(String borrowerId) async {
     final response = await LendingApi.fetchPayments(borrowerId: borrowerId);
     return (response.data as List)
