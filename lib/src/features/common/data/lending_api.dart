@@ -50,8 +50,30 @@ class LendingApi {
     });
   }
 
+  static Future<Response> fetchBorrower(String id) async {
+    return await _client.get('/borrowers/$id');
+  }
+
   static Future<Response> fetchBorrowers() async {
     return await _client.get('/borrowers');
+  }
+
+  static Future<Response> updateBorrower(
+    String id, {
+    String? email,
+    String? phone,
+  }) async {
+    dynamic data = {};
+
+    if (email != null) {
+      data['email'] = email;
+    }
+
+    if (phone != null) {
+      data['phone'] = phone;
+    }
+
+    return await _client.patch('/borrowers/$id/contact', data: data);
   }
 
   static Future<Response> fetchThings() async {
