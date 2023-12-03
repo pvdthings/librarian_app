@@ -115,6 +115,7 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
                   prefixIcon: Icon(Icons.person_rounded),
                 ),
                 onTap: () {
+                  ref.invalidate(borrowersRepositoryProvider);
                   ref.read(borrowersProvider).then((borrowers) async {
                     return await showSearch(
                       context: context,
