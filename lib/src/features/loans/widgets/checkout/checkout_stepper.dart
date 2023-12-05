@@ -23,7 +23,7 @@ class CheckoutStepper extends ConsumerStatefulWidget {
 class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
   int _index = 0;
   BorrowerModel? _borrower;
-  DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
+  final DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
   final List<ItemModel> _things = [];
 
@@ -212,9 +212,6 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
                   .toList(),
               checkedOutDate: DateTime.now(),
               dueDate: _dueDate,
-              onDueDateUpdated: (newDate) {
-                setState(() => _dueDate = newDate);
-              },
             ),
           ),
           isActive: _index >= 2,

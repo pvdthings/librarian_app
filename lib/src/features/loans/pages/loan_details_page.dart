@@ -130,10 +130,6 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
               dueDate: _newDueDate ?? loan.dueDate,
               checkedInDate: loan.checkedInDate,
               isOverdue: loan.isOverdue,
-              editable: true,
-              onDueDateUpdated: (newDueDate) {
-                setState(() => _newDueDate = newDueDate);
-              },
             ),
           ),
           floatingActionButton: FloatingActionButton(
