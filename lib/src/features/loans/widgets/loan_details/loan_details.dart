@@ -29,6 +29,7 @@ class LoanDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Detail(
+            prefixIcon: const Icon(Icons.person),
             label: 'Borrower',
             value: borrower!.name,
           ),
@@ -37,6 +38,7 @@ class LoanDetails extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Detail(
+                prefixIcon: const Icon(Icons.build_rounded),
                 label: 'Thing',
                 value: '#${thing.number} ${thing.name}',
               ),
@@ -47,12 +49,28 @@ class LoanDetails extends StatelessWidget {
             runSpacing: 16,
             children: [
               Detail(
+                prefixIcon: const Icon(Icons.calendar_month),
                 label: 'Checked Out',
                 value:
                     '${checkedOutDate.month}/${checkedOutDate.day}/${checkedOutDate.year}',
               ),
               const SizedBox(width: 16),
               Detail(
+                prefixIcon: Builder(
+                  builder: (_) {
+                    if (!isOverdue) {
+                      return const Icon(Icons.calendar_month);
+                    }
+
+                    return const Tooltip(
+                      message: 'Overdue',
+                      child: Icon(
+                        Icons.calendar_month,
+                        color: Colors.amber,
+                      ),
+                    );
+                  },
+                ),
                 label: 'Due Back',
                 value: '${dueDate.month}/${dueDate.day}/${dueDate.year}',
               ),
