@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/inventory/pages/inventory_details_page.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkin/checkin_dialog.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.dart';
 
 import '../models/loan_model.dart';
+import '../widgets/edit/edit_loan_dialog.dart';
 
 class LoanDetailsPage extends ConsumerStatefulWidget {
   const LoanDetailsPage(this.loan, {super.key});
@@ -19,31 +19,17 @@ class LoanDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
-  bool get _changesMade => _newDueDate != null;
-
-  DateTime? _newDueDate;
-
-  void _discardChanges() {
-    setState(() => _newDueDate = null);
-  }
-
-  Future<void> _saveChanges(String loanId, String thingId) async {
-    if (_newDueDate != null && await showSaveDialog(context)) {
-      await _updateDueDate(loanId, thingId);
-    }
-  }
-
-  Future<void> _updateDueDate(String loanId, String thingId) async {
+  Future<void> _updateDueDate(
+      String loanId, String thingId, DateTime newDueDate) async {
     final loans = ref.read(loansRepositoryProvider.notifier);
     try {
       await loans.updateDueDate(
         loanId: loanId,
         thingId: thingId,
-        dueBackDate: _newDueDate!,
+        dueBackDate: newDueDate,
       );
 
       setState(() {
-        _newDueDate = null;
         _loanFuture = loans.getLoan(id: loanId, thingId: thingId);
       });
     } catch (error) {
@@ -104,21 +90,28 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text("Loan Details"),
+            title: Text('#${loan.thing.number}'),
             centerTitle: true,
             actions: [
               IconButton(
-                onPressed: _changesMade
-                    ? () => _saveChanges(loan.id, loan.thing.id)
-                    : null,
-                icon: const Icon(Icons.save_rounded),
-                tooltip: 'Save',
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return EditLoanDialog(
+                        dueDate: loan.dueDate,
+                        onSavePressed: (newDueDate) async {
+                          await _updateDueDate(
+                              loan.id, loan.thing.id, newDueDate);
+                        },
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(Icons.edit),
+                tooltip: 'Edit',
               ),
-              IconButton(
-                onPressed: _changesMade ? _discardChanges : null,
-                icon: const Icon(Icons.cancel),
-                tooltip: 'Discard Changes',
-              ),
+              const SizedBox(width: 8),
             ],
           ),
           body: Padding(
@@ -127,7 +120,7 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
               borrower: loan.borrower,
               things: [loan.thing],
               checkedOutDate: loan.checkedOutDate,
-              dueDate: _newDueDate ?? loan.dueDate,
+              dueDate: loan.dueDate,
               isOverdue: loan.isOverdue,
             ),
           ),

@@ -50,7 +50,6 @@ class LoanDetailsPane extends StatelessWidget {
                                 builder: (context) {
                                   return EditLoanDialog(
                                     dueDate: loan!.dueDate,
-                                    isOverdue: false,
                                     onSavePressed: (newDueDate) {
                                       onSave(newDueDate);
                                     },

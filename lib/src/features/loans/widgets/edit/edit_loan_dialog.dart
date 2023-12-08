@@ -5,12 +5,10 @@ class EditLoanDialog extends StatefulWidget {
   const EditLoanDialog({
     super.key,
     required this.dueDate,
-    required this.isOverdue,
     required this.onSavePressed,
   });
 
   final DateTime dueDate;
-  final bool isOverdue;
   final void Function(DateTime newDueDate) onSavePressed;
 
   @override
@@ -57,12 +55,11 @@ class _EditLoanDialogState extends State<EditLoanDialog> {
             setState(() => dueDate = value);
           });
         },
-        decoration: InputDecoration(
-          icon: const Icon(Icons.calendar_month_rounded),
-          iconColor: widget.isOverdue ? Colors.orange : null,
+        decoration: const InputDecoration(
+          icon: Icon(Icons.calendar_month_rounded),
           labelText: 'Due Back',
-          border: const OutlineInputBorder(),
-          constraints: const BoxConstraints(maxWidth: 200),
+          border: OutlineInputBorder(),
+          constraints: BoxConstraints(maxWidth: 200),
         ),
       ),
       contentPadding: const EdgeInsets.all(16),

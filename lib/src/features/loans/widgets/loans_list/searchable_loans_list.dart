@@ -34,7 +34,7 @@ class SearchableLoansList extends ConsumerWidget {
                 TextEditingController(text: ref.read(loansFilterProvider)),
           ),
         ),
-        const Expanded(child: LoansListView()),
+        Expanded(child: LoansListView(onTap: onLoanTapped)),
       ],
     );
   }
