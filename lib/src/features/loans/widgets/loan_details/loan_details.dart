@@ -11,14 +11,14 @@ class LoanDetails extends StatelessWidget {
     required this.checkedOutDate,
     required this.dueDate,
     this.isOverdue = false,
-    this.checkedInDate,
+    this.notes,
   });
 
   final BorrowerModel? borrower;
   final List<ThingSummaryModel> things;
+  final String? notes;
   final DateTime checkedOutDate;
   final DateTime dueDate;
-  final DateTime? checkedInDate;
   final bool isOverdue;
 
   @override
@@ -28,53 +28,88 @@ class LoanDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Detail(
-            prefixIcon: const Icon(Icons.person),
-            label: 'Borrower',
-            value: borrower!.name,
-          ),
-          const SizedBox(height: 32),
-          ...things.map((thing) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Detail(
-                prefixIcon: const Icon(Icons.build_rounded),
-                label: 'Thing',
-                value: '#${thing.number} ${thing.name}',
-              ),
-            );
-          }),
-          const SizedBox(height: 16),
-          Wrap(
-            runSpacing: 16,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Detail(
-                prefixIcon: const Icon(Icons.calendar_month),
-                label: 'Checked Out',
-                value:
-                    '${checkedOutDate.month}/${checkedOutDate.day}/${checkedOutDate.year}',
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Detail(
+                    prefixIcon: const Icon(Icons.person),
+                    label: 'Borrower',
+                    value: borrower!.name,
+                  ),
+                  const SizedBox(height: 16),
+                  Detail(
+                    prefixIcon: const Icon(Icons.email),
+                    label: 'Borrower Email',
+                    placeholderText: 'None',
+                    value: borrower!.email,
+                  ),
+                  const SizedBox(height: 16),
+                  Detail(
+                    prefixIcon: const Icon(Icons.phone),
+                    label: 'Borrower Phone',
+                    placeholderText: 'None',
+                    value: borrower!.phone,
+                  ),
+                ],
               ),
-              const SizedBox(width: 16),
-              Detail(
-                prefixIcon: Builder(
-                  builder: (_) {
-                    if (!isOverdue) {
-                      return const Icon(Icons.calendar_month);
-                    }
-
-                    return const Tooltip(
-                      message: 'Overdue',
-                      child: Icon(
-                        Icons.calendar_month,
-                        color: Colors.amber,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...things.map((thing) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Detail(
+                        prefixIcon: const Icon(Icons.build_rounded),
+                        label: 'Thing',
+                        value: '#${thing.number} ${thing.name}',
                       ),
                     );
-                  },
-                ),
-                label: 'Due Back',
-                value: '${dueDate.month}/${dueDate.day}/${dueDate.year}',
+                  })
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Detail(
+                    prefixIcon: const Icon(Icons.calendar_month),
+                    label: 'Checked Out',
+                    value:
+                        '${checkedOutDate.month}/${checkedOutDate.day}/${checkedOutDate.year}',
+                  ),
+                  const SizedBox(height: 16),
+                  Detail(
+                    prefixIcon: Builder(
+                      builder: (_) {
+                        if (!isOverdue) {
+                          return const Icon(Icons.calendar_month);
+                        }
+
+                        return const Tooltip(
+                          message: 'Overdue',
+                          child: Icon(
+                            Icons.calendar_month,
+                            color: Colors.amber,
+                          ),
+                        );
+                      },
+                    ),
+                    label: 'Due Back',
+                    value: '${dueDate.month}/${dueDate.day}/${dueDate.year}',
+                  ),
+                ],
               ),
             ],
+          ),
+          const SizedBox(height: 64),
+          Detail(
+            label: 'Notes',
+            minWidth: 500,
+            placeholderText: 'None',
+            value: notes,
           ),
         ],
       ),

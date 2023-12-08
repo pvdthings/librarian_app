@@ -95,6 +95,7 @@ class LoanDetailsPane extends StatelessWidget {
                   child: LoanDetails(
                     borrower: loan!.borrower,
                     things: [loan!.thing],
+                    notes: loan!.notes,
                     checkedOutDate: loan!.checkedOutDate,
                     dueDate: loan!.dueDate,
                     isOverdue: loan!.isOverdue,

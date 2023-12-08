@@ -128,7 +128,6 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
               things: [loan.thing],
               checkedOutDate: loan.checkedOutDate,
               dueDate: _newDueDate ?? loan.dueDate,
-              checkedInDate: loan.checkedInDate,
               isOverdue: loan.isOverdue,
             ),
           ),
