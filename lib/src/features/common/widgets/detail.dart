@@ -20,19 +20,13 @@ class Detail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final text = value != null
-        ? Text(
-            value!,
-            style:
-                Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 20),
-          )
-        : Text(
-            placeholderText ?? '',
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(fontSize: 20, color: Colors.white54),
-          );
+    final text = Text(
+      value ?? placeholderText ?? '',
+      style: Theme.of(context)
+          .textTheme
+          .bodyLarge!
+          .copyWith(fontSize: 20, color: value == null ? Colors.white54 : null),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
