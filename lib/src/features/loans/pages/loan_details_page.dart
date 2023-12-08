@@ -114,14 +114,17 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
               const SizedBox(width: 8),
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(16),
-            child: LoanDetails(
-              borrower: loan.borrower,
-              things: [loan.thing],
-              checkedOutDate: loan.checkedOutDate,
-              dueDate: loan.dueDate,
-              isOverdue: loan.isOverdue,
+          body: SingleChildScrollView(
+            controller: ScrollController(),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: LoanDetails(
+                borrower: loan.borrower,
+                things: [loan.thing],
+                checkedOutDate: loan.checkedOutDate,
+                dueDate: loan.dueDate,
+                isOverdue: loan.isOverdue,
+              ),
             ),
           ),
           floatingActionButton: FloatingActionButton(

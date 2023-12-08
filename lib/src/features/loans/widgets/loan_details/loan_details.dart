@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/models/borrower_model.dart';
 import 'package:librarian_app/src/features/common/widgets/detail.dart';
 import 'package:librarian_app/src/features/loans/models/thing_summary_model.dart';
+import 'package:librarian_app/src/utils/media_query.dart';
 
 class LoanDetails extends StatelessWidget {
   const LoanDetails({
@@ -28,10 +29,8 @@ class LoanDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          Builder(builder: (context) {
+            final children = [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -102,9 +101,34 @@ class LoanDetails extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
+            ];
+
+            if (isMobile(context)) {
+              return ListView.separated(
+                itemCount: children.length,
+                itemBuilder: (context, index) {
+                  return children[index];
+                },
+                separatorBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 16),
+                    child: const Divider(),
+                  );
+                },
+                shrinkWrap: true,
+              );
+            }
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            );
+          }),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 16),
+            child: const Divider(),
           ),
-          const SizedBox(height: 64),
           Detail(
             label: 'Notes',
             minWidth: 500,
