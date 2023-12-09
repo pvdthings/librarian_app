@@ -7,6 +7,7 @@ class LoanModel {
   final ThingSummaryModel thing;
   final BorrowerModel borrower;
   final DateTime checkedOutDate;
+  final String? notes;
   DateTime dueDate;
   DateTime? checkedInDate;
 
@@ -24,6 +25,7 @@ class LoanModel {
     required this.checkedOutDate,
     required this.dueDate,
     this.checkedInDate,
+    this.notes,
   });
 
   factory LoanModel.fromJson(Map<String, dynamic> json) {
@@ -33,8 +35,11 @@ class LoanModel {
       borrower: BorrowerModel(
         id: json['borrower']?['id'] as String? ?? '?',
         name: json['borrower']?['name'] as String? ?? '???',
+        email: json['borrower']?['contact']['email'] as String?,
+        phone: json['borrower']?['contact']['phone'] as String?,
         issues: [],
       ),
+      notes: json['notes'] as String?,
       checkedOutDate: json['checkedOutDate'] != null
           ? DateTime.parse(json['checkedOutDate'] as String)
           : DateTime.now(),
