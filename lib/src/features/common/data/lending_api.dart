@@ -43,11 +43,18 @@ class LendingApi {
     });
   }
 
-  static Future<Response> updateLoan(UpdatedLoan data) async {
-    return await _client.patch('/loans/${data.loanId}/${data.thingId}', data: {
-      'checkedInDate': data.checkedInDate,
-      'dueBackDate': data.dueBackDate,
-    });
+  static Future<Response> updateLoan(UpdatedLoan loanData) async {
+    dynamic data = {
+      'checkedInDate': loanData.checkedInDate,
+      'dueBackDate': loanData.dueBackDate,
+    };
+
+    if (loanData.notes != null) {
+      data['notes'] = loanData.notes;
+    }
+
+    return await _client.patch('/loans/${loanData.loanId}/${loanData.thingId}',
+        data: data);
   }
 
   static Future<Response> fetchBorrower(String id) async {
@@ -202,11 +209,13 @@ class UpdatedLoan {
   String thingId;
   String? dueBackDate;
   String? checkedInDate;
+  String? notes;
 
   UpdatedLoan({
     required this.loanId,
     required this.thingId,
     this.dueBackDate,
     this.checkedInDate,
+    this.notes,
   });
 }

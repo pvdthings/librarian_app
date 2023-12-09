@@ -9,7 +9,7 @@ import 'thing_number.dart';
 
 class LoanDetailsPane extends StatelessWidget {
   final LoanModel? loan;
-  final void Function(DateTime dueDate) onSave;
+  final void Function(DateTime dueDate, String? notes) onSave;
   final void Function() onCheckIn;
 
   const LoanDetailsPane({
@@ -50,8 +50,9 @@ class LoanDetailsPane extends StatelessWidget {
                                 builder: (context) {
                                   return EditLoanDialog(
                                     dueDate: loan!.dueDate,
-                                    onSavePressed: (newDueDate) {
-                                      onSave(newDueDate);
+                                    notes: loan!.notes,
+                                    onSavePressed: (newDueDate, notes) {
+                                      onSave(newDueDate, notes);
                                     },
                                   );
                                 },

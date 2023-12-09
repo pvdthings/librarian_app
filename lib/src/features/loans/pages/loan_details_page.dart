@@ -19,15 +19,15 @@ class LoanDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
-  Future<void> _updateDueDate(
-      String loanId, String thingId, DateTime newDueDate) async {
+  Future<void> _updateLoan(
+      String loanId, String thingId, DateTime newDueDate, String? notes) async {
     final loans = ref.read(loansRepositoryProvider.notifier);
     try {
-      await loans.updateDueDate(
-        loanId: loanId,
-        thingId: thingId,
-        dueBackDate: newDueDate,
-      );
+      await loans.updateLoan(
+          loanId: loanId,
+          thingId: thingId,
+          dueBackDate: newDueDate,
+          notes: notes);
 
       setState(() {
         _loanFuture = loans.getLoan(id: loanId, thingId: thingId);
@@ -100,9 +100,10 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
                     builder: (context) {
                       return EditLoanDialog(
                         dueDate: loan.dueDate,
-                        onSavePressed: (newDueDate) async {
-                          await _updateDueDate(
-                              loan.id, loan.thing.id, newDueDate);
+                        notes: loan.notes,
+                        onSavePressed: (newDueDate, notes) async {
+                          await _updateLoan(
+                              loan.id, loan.thing.id, newDueDate, notes);
                         },
                       );
                     },
@@ -124,6 +125,7 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
                 checkedOutDate: loan.checkedOutDate,
                 dueDate: loan.dueDate,
                 isOverdue: loan.isOverdue,
+                notes: loan.notes,
               ),
             ),
           ),
