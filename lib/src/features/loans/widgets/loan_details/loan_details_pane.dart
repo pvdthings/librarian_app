@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 
 import '../../models/loan_model.dart';
 import '../checkin/checkin_dialog.dart';
+import '../edit/edit_loan_dialog.dart';
 import 'loan_details.dart';
 import 'thing_number.dart';
 
-class LoanDetailsPane extends StatefulWidget {
+class LoanDetailsPane extends StatelessWidget {
   final LoanModel? loan;
-  final void Function(DateTime dueDate) onSave;
+  final void Function(DateTime dueDate, String? notes) onSave;
   final void Function() onCheckIn;
 
   const LoanDetailsPane({
@@ -20,24 +20,7 @@ class LoanDetailsPane extends StatefulWidget {
   });
 
   @override
-  State<LoanDetailsPane> createState() => _LoanDetailsPaneState();
-}
-
-class _LoanDetailsPaneState extends State<LoanDetailsPane> {
-  DateTime? _newDueDate;
-
-  void _reset() {
-    _newDueDate = null;
-  }
-
-  bool _hasUnsavedChanges() {
-    return _newDueDate != null;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final loan = widget.loan;
-
     return Card(
       clipBehavior: Clip.antiAlias,
       child: loan == null
@@ -50,48 +33,33 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                     children: [
                       Row(
                         children: [
-                          ThingNumber(number: loan.thing.number),
+                          ThingNumber(number: loan!.thing.number),
                           const SizedBox(width: 16),
                           Text(
-                            widget.loan!.thing.name,
+                            loan!.thing.name,
                             style: const TextStyle(fontSize: 24),
                           ),
                         ],
                       ),
                       Row(
                         children: [
-                          if (_hasUnsavedChanges()) ...[
-                            Text(
-                              'Unsaved Changes',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium!
-                                  .copyWith(
-                                    color: Colors.white.withOpacity(0.8),
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                            ),
-                            const SizedBox(width: 8),
-                          ],
                           IconButton(
-                            onPressed: _hasUnsavedChanges()
-                                ? () async {
-                                    if (await showSaveDialog(context)) {
-                                      widget.onSave(_newDueDate!);
-                                      setState(_reset);
-                                    }
-                                  }
-                                : null,
-                            icon: const Icon(Icons.save_rounded),
-                            tooltip: 'Save',
-                          ),
-                          const SizedBox(width: 4),
-                          IconButton(
-                            onPressed: _hasUnsavedChanges()
-                                ? () => setState(_reset)
-                                : null,
-                            icon: const Icon(Icons.cancel),
-                            tooltip: 'Discard Changes',
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return EditLoanDialog(
+                                    dueDate: loan!.dueDate,
+                                    notes: loan!.notes,
+                                    onSavePressed: (newDueDate, notes) {
+                                      onSave(newDueDate, notes);
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            icon: const Icon(Icons.edit),
+                            tooltip: 'Edit',
                           ),
                           SizedBox(
                             height: 24,
@@ -106,10 +74,9 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                                 context: context,
                                 builder: (context) {
                                   return CheckinDialog(
-                                    thingNumber: loan.thing.number,
+                                    thingNumber: loan!.thing.number,
                                     onCheckin: () async {
-                                      _reset();
-                                      await Future(widget.onCheckIn);
+                                      await Future(onCheckIn);
                                     },
                                   );
                                 },
@@ -126,15 +93,12 @@ class _LoanDetailsPaneState extends State<LoanDetailsPane> {
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: LoanDetails(
-                    borrower: loan.borrower,
-                    things: [loan.thing],
-                    checkedOutDate: loan.checkedOutDate,
-                    dueDate: _newDueDate ?? loan.dueDate,
-                    isOverdue: loan.isOverdue,
-                    onDueDateUpdated: (dueDate) {
-                      setState(() => _newDueDate = dueDate);
-                    },
-                    editable: true,
+                    borrower: loan!.borrower,
+                    things: [loan!.thing],
+                    notes: loan!.notes,
+                    checkedOutDate: loan!.checkedOutDate,
+                    dueDate: loan!.dueDate,
+                    isOverdue: loan!.isOverdue,
                   ),
                 ),
               ],

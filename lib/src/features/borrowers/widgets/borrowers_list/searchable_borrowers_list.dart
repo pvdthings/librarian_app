@@ -35,7 +35,7 @@ class SearchableBorrowersList extends ConsumerWidget {
           ),
         ),
         Expanded(
-          child: BorrowersView(onTap: onTapBorrower),
+          child: BorrowersListView(onTap: onTapBorrower),
         ),
       ],
     );

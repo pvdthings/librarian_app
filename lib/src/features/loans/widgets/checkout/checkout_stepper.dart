@@ -11,7 +11,8 @@ import 'package:librarian_app/src/features/inventory/providers/things_repository
 import 'package:librarian_app/src/features/loans/models/thing_summary_model.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/connected_thing_search_field.dart';
-import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.dart';
+
+import 'checkout_details.dart';
 
 class CheckoutStepper extends ConsumerStatefulWidget {
   const CheckoutStepper({super.key});
@@ -115,6 +116,7 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
                   prefixIcon: Icon(Icons.person_rounded),
                 ),
                 onTap: () {
+                  ref.invalidate(borrowersRepositoryProvider);
                   ref.read(borrowersProvider).then((borrowers) async {
                     return await showSearch(
                       context: context,
@@ -200,7 +202,7 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
           title: const Text('Confirm Details'),
           content: Padding(
             padding: const EdgeInsets.only(top: 8),
-            child: LoanDetails(
+            child: CheckoutDetails(
               borrower: _borrower,
               things: _things
                   .map((t) => ThingSummaryModel(
@@ -209,7 +211,6 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
                         number: t.number,
                       ))
                   .toList(),
-              checkedOutDate: DateTime.now(),
               dueDate: _dueDate,
               onDueDateUpdated: (newDate) {
                 setState(() => _dueDate = newDate);

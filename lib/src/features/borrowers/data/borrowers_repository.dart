@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/borrowers/models/payment_model.dart';
 import 'package:librarian_app/src/features/common/data/lending_api.dart';
 
 import '../models/borrower_model.dart';
@@ -18,6 +19,29 @@ class BorrowersRepository extends Notifier<Future<List<BorrowerModel>>> {
   Future<BorrowerModel?> getBorrower(String id) async {
     final borrowers = await state;
     return borrowers.firstWhereOrNull((b) => b.id == id);
+  }
+
+  Future<BorrowerModel?> getBorrowerDetails(String id) async {
+    final response = await LendingApi.fetchBorrower(id);
+    return BorrowerModel.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  Future<bool> updateBorrower(String id, {String? email, String? phone}) async {
+    try {
+      await LendingApi.updateBorrower(id, email: email, phone: phone);
+
+      ref.invalidateSelf();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  Future<List<PaymentModel>> getPayments(String borrowerId) async {
+    final response = await LendingApi.fetchPayments(borrowerId: borrowerId);
+    return (response.data as List)
+        .map((e) => PaymentModel.fromJson(e))
+        .toList();
   }
 
   Future<bool> recordCashPayment({

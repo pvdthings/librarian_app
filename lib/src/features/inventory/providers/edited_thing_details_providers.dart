@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/inventory/models/image_model.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
 import 'package:librarian_app/src/features/inventory/providers/selected_thing_provider.dart';
+import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 
 final nameProvider = StateProvider<String?>((ref) => null);
@@ -46,6 +47,7 @@ class ThingDetailsEditor {
     ref.read(hiddenProvider.notifier).state = null;
     ref.read(categoriesProvider.notifier).state = null;
     ref.read(imageUploadProvider.notifier).state = null;
+    ref.invalidate(thingDetailsProvider);
   }
 }
 

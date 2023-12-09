@@ -43,15 +43,44 @@ class LendingApi {
     });
   }
 
-  static Future<Response> updateLoan(UpdatedLoan data) async {
-    return await _client.patch('/loans/${data.loanId}/${data.thingId}', data: {
-      'checkedInDate': data.checkedInDate,
-      'dueBackDate': data.dueBackDate,
-    });
+  static Future<Response> updateLoan(UpdatedLoan loanData) async {
+    dynamic data = {
+      'checkedInDate': loanData.checkedInDate,
+      'dueBackDate': loanData.dueBackDate,
+    };
+
+    if (loanData.notes != null) {
+      data['notes'] = loanData.notes;
+    }
+
+    return await _client.patch('/loans/${loanData.loanId}/${loanData.thingId}',
+        data: data);
+  }
+
+  static Future<Response> fetchBorrower(String id) async {
+    return await _client.get('/borrowers/$id');
   }
 
   static Future<Response> fetchBorrowers() async {
     return await _client.get('/borrowers');
+  }
+
+  static Future<Response> updateBorrower(
+    String id, {
+    String? email,
+    String? phone,
+  }) async {
+    dynamic data = {};
+
+    if (email != null) {
+      data['email'] = email;
+    }
+
+    if (phone != null) {
+      data['phone'] = phone;
+    }
+
+    return await _client.patch('/borrowers/$id/contact', data: data);
   }
 
   static Future<Response> fetchThings() async {
@@ -137,6 +166,12 @@ class LendingApi {
     });
   }
 
+  static Future<Response> fetchPayments({
+    required String borrowerId,
+  }) async {
+    return await _client.get('/payments/$borrowerId');
+  }
+
   static Future<Response> recordCashPayment({
     required double cash,
     required String borrowerId,
@@ -174,11 +209,13 @@ class UpdatedLoan {
   String thingId;
   String? dueBackDate;
   String? checkedInDate;
+  String? notes;
 
   UpdatedLoan({
     required this.loanId,
     required this.thingId,
     this.dueBackDate,
     this.checkedInDate,
+    this.notes,
   });
 }

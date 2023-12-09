@@ -25,7 +25,7 @@ class _OpenLoanPageState extends ConsumerState<OpenLoanPage> {
 
   BorrowerModel _borrower = BorrowerModel(id: '', name: "Borrower", issues: []);
   final List<ItemModel> _things = [];
-  DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
+  final DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
 
   void _configureView() {
     switch (_currentView) {
@@ -63,9 +63,6 @@ class _OpenLoanPageState extends ConsumerState<OpenLoanPage> {
                 .toList(),
             checkedOutDate: DateTime.now(),
             dueDate: _dueDate,
-            onDueDateUpdated: (newDate) {
-              setState(() => _dueDate = newDate);
-            },
           ),
         );
         _floatingActionButton = FloatingActionButton.extended(
