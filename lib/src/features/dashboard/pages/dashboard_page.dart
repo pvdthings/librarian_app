@@ -27,6 +27,8 @@ class DashboardPage extends ConsumerStatefulWidget {
 }
 
 class _DashboardPageState extends ConsumerState<DashboardPage> {
+  final _createButtonKey = GlobalKey<State>();
+
   int _moduleIndex = 0;
 
   late final List<DashboardModule> _modules = [
@@ -71,6 +73,77 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     ),
   ];
 
+  void _showPopupMenu() {
+    final RenderBox button =
+        _createButtonKey.currentContext!.findRenderObject() as RenderBox;
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    final RelativeRect position = RelativeRect.fromRect(
+      Rect.fromPoints(
+        button.localToGlobal(Offset.zero, ancestor: overlay),
+        button.localToGlobal(button.size.bottomRight(Offset.zero),
+            ancestor: overlay),
+      ),
+      Offset.zero & overlay.size,
+    );
+
+    showMenu(
+      context: context,
+      position: position,
+      color: Theme.of(context).primaryColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+      items: [
+        createMenuItem(
+          context: context,
+          text: 'New Loan',
+          onTap: () async {
+            setState(() => _moduleIndex = 0);
+            await Future.delayed(const Duration(milliseconds: 500), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CheckoutPage(),
+                ),
+              );
+            });
+          },
+        ),
+        createMenuItem(
+          onTap: () async {
+            setState(() => _moduleIndex = 2);
+            await Future.delayed(const Duration(milliseconds: 500), () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return CreateThingDialog(
+                    onCreate: (name, spanishName) {
+                      ref
+                          .read(thingsRepositoryProvider.notifier)
+                          .createThing(name: name, spanishName: spanishName)
+                          .then((value) {
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${value.name} created'),
+                          ),
+                        );
+                      });
+                    },
+                  );
+                },
+              );
+            });
+          },
+          text: 'New Thing',
+          context: context,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mobile = isMobile(context);
@@ -92,10 +165,11 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   onDestinationSelected: (index) {
                     setState(() => _moduleIndex = index);
                   },
-                  leading: getFloatingActionButton(
-                    context: context,
-                    ref: ref,
-                    isMobile: mobile,
+                  leading: FloatingActionButton(
+                    mini: true,
+                    key: _createButtonKey,
+                    onPressed: () => _showPopupMenu(),
+                    child: const Icon(Icons.add),
                   ),
                   child: module.desktopLayout,
                 ),
@@ -120,16 +194,16 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                         label: "Things",
                       ),
                     ],
-                    showSelectedLabels: false,
+                    showSelectedLabels: true,
                     showUnselectedLabels: false,
                   ),
                 )
               : null,
           floatingActionButton: mobile
-              ? getFloatingActionButton(
-                  context: context,
-                  ref: ref,
-                  isMobile: mobile,
+              ? FloatingActionButton(
+                  key: _createButtonKey,
+                  onPressed: () => _showPopupMenu(),
+                  child: const Icon(Icons.add),
                 )
               : null,
         );
@@ -150,76 +224,4 @@ class DashboardModule {
   final Widget desktopLayout;
   final Widget mobileLayout;
   final Widget? floatingActionButton;
-}
-
-FloatingActionButton getFloatingActionButton({
-  required BuildContext context,
-  required WidgetRef ref,
-  required bool isMobile,
-}) {
-  return FloatingActionButton(
-    mini: !isMobile,
-    child: const Icon(Icons.add),
-    onPressed: () {
-      final RenderBox renderBox = context.findRenderObject()! as RenderBox;
-      final RenderBox overlay =
-          Overlay.of(context).context.findRenderObject()! as RenderBox;
-
-      showMenu(
-        context: context,
-        position: RelativeRect.fromRect(
-          Rect.fromPoints(
-            renderBox.localToGlobal(Offset.zero, ancestor: overlay),
-            renderBox.localToGlobal(
-              renderBox.size.bottomRight(Offset.zero),
-              ancestor: overlay,
-            ),
-          ),
-          Offset.zero & overlay.size,
-        ),
-        color: Theme.of(context).primaryColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
-        items: [
-          createMenuItem(
-            context: context,
-            text: 'New Loan',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CheckoutPage()),
-              );
-            },
-          ),
-          createMenuItem(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return CreateThingDialog(
-                    onCreate: (name, spanishName) {
-                      ref
-                          .read(thingsRepositoryProvider.notifier)
-                          .createThing(name: name, spanishName: spanishName)
-                          .then((value) {
-                        Navigator.of(context).pop();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('${value.name} created'),
-                          ),
-                        );
-                      });
-                    },
-                  );
-                },
-              );
-            },
-            text: 'New Thing',
-            context: context,
-          ),
-        ],
-      );
-    },
-  );
 }
