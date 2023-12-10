@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/layouts/borrowers_desktop_layout.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.dart';
+import 'package:librarian_app/src/features/dashboard/widgets/create_menu_item.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 import 'package:librarian_app/src/features/inventory/widgets/layouts/inventory_desktop_layout.dart';
 import 'package:librarian_app/src/features/inventory/pages/inventory_details_page.dart';
@@ -26,6 +27,8 @@ class DashboardPage extends ConsumerStatefulWidget {
 }
 
 class _DashboardPageState extends ConsumerState<DashboardPage> {
+  final _createButtonKey = GlobalKey<State>();
+
   int _moduleIndex = 0;
 
   late final List<DashboardModule> _modules = [
@@ -39,15 +42,6 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             MaterialPageRoute(
               builder: (context) => LoanDetailsPage(loan),
             ),
-          );
-        },
-      ),
-      floatingActionButton: getFloatingActionButton(
-        tooltip: 'New Loan',
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const CheckoutPage()),
           );
         },
       ),
@@ -65,10 +59,6 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           }));
         },
       ),
-      floatingActionButton: getFloatingActionButton(
-        tooltip: 'Coming Soon',
-        onPressed: null,
-      ),
     ),
     DashboardModule(
       title: 'Things',
@@ -80,33 +70,79 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           ));
         },
       ),
-      floatingActionButton: getFloatingActionButton(
-        tooltip: 'New Thing',
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return CreateThingDialog(
-                onCreate: (name, spanishName) {
-                  ref
-                      .read(thingsRepositoryProvider.notifier)
-                      .createThing(name: name, spanishName: spanishName)
-                      .then((value) {
-                    Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('${value.name} created'),
-                      ),
-                    );
-                  });
-                },
-              );
-            },
-          );
-        },
-      ),
     ),
   ];
+
+  void _showPopupMenu() {
+    final RenderBox button =
+        _createButtonKey.currentContext!.findRenderObject() as RenderBox;
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    final RelativeRect position = RelativeRect.fromRect(
+      Rect.fromPoints(
+        button.localToGlobal(Offset.zero, ancestor: overlay),
+        button.localToGlobal(button.size.bottomRight(Offset.zero),
+            ancestor: overlay),
+      ),
+      Offset.zero & overlay.size,
+    );
+
+    showMenu(
+      context: context,
+      position: position,
+      color: Theme.of(context).primaryColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+      items: [
+        createMenuItem(
+          context: context,
+          text: 'New Loan',
+          onTap: () async {
+            setState(() => _moduleIndex = 0);
+            await Future.delayed(const Duration(milliseconds: 500), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CheckoutPage(),
+                ),
+              );
+            });
+          },
+        ),
+        createMenuItem(
+          onTap: () async {
+            setState(() => _moduleIndex = 2);
+            await Future.delayed(const Duration(milliseconds: 500), () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return CreateThingDialog(
+                    onCreate: (name, spanishName) {
+                      ref
+                          .read(thingsRepositoryProvider.notifier)
+                          .createThing(name: name, spanishName: spanishName)
+                          .then((value) {
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${value.name} created'),
+                          ),
+                        );
+                      });
+                    },
+                  );
+                },
+              );
+            });
+          },
+          text: 'New Thing',
+          context: context,
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +165,12 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   onDestinationSelected: (index) {
                     setState(() => _moduleIndex = index);
                   },
-                  leading: module.floatingActionButton,
+                  leading: FloatingActionButton(
+                    mini: true,
+                    key: _createButtonKey,
+                    onPressed: () => _showPopupMenu(),
+                    child: const Icon(Icons.add),
+                  ),
                   child: module.desktopLayout,
                 ),
           bottomNavigationBar: mobile
@@ -153,14 +194,18 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                         label: "Things",
                       ),
                     ],
-                    showSelectedLabels: false,
+                    showSelectedLabels: true,
                     showUnselectedLabels: false,
                   ),
                 )
               : null,
-          floatingActionButton: mobile ? module.floatingActionButton : null,
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: mobile
+              ? FloatingActionButton(
+                  key: _createButtonKey,
+                  onPressed: () => _showPopupMenu(),
+                  child: const Icon(Icons.add),
+                )
+              : null,
         );
       },
     );
@@ -179,17 +224,4 @@ class DashboardModule {
   final Widget desktopLayout;
   final Widget mobileLayout;
   final Widget? floatingActionButton;
-}
-
-FloatingActionButton getFloatingActionButton({
-  required void Function()? onPressed,
-  String? tooltip,
-}) {
-  return FloatingActionButton.small(
-    onPressed: onPressed,
-    tooltip: tooltip,
-    child: const Icon(
-      Icons.add_rounded,
-    ),
-  );
 }
