@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/models/borrower_model.dart';
+import 'package:librarian_app/src/features/common/widgets/detail.dart';
 import 'package:librarian_app/src/features/loans/models/thing_summary_model.dart';
+import 'package:librarian_app/src/utils/media_query.dart';
 
 class LoanDetails extends StatelessWidget {
   const LoanDetails({
@@ -9,33 +11,16 @@ class LoanDetails extends StatelessWidget {
     required this.things,
     required this.checkedOutDate,
     required this.dueDate,
-    required this.onDueDateUpdated,
     this.isOverdue = false,
-    this.checkedInDate,
-    this.editable = true,
+    this.notes,
   });
 
-  final bool editable;
   final BorrowerModel? borrower;
   final List<ThingSummaryModel> things;
+  final String? notes;
   final DateTime checkedOutDate;
   final DateTime dueDate;
-  final DateTime? checkedInDate;
   final bool isOverdue;
-
-  final void Function(DateTime) onDueDateUpdated;
-
-  void showDateSelection(BuildContext context) async {
-    showDatePicker(
-      context: context,
-      initialDate: dueDate,
-      firstDate: dueDate,
-      lastDate: dueDate.add(const Duration(days: 14)),
-    ).then((value) {
-      if (value == null) return;
-      onDueDateUpdated(value);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,69 +29,111 @@ class LoanDetails extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextField(
-            controller: TextEditingController(text: borrower?.name),
-            readOnly: true,
-            decoration: const InputDecoration(
-              icon: Icon(Icons.person_rounded),
-              labelText: 'Borrower',
-              border: OutlineInputBorder(),
-              constraints: BoxConstraints(maxWidth: 500),
-            ),
-          ),
-          const SizedBox(height: 32),
-          ...things.map((thing) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              child: TextField(
-                controller: TextEditingController(
-                    text: '${thing.name} #${thing.number}'),
-                readOnly: true,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.build_rounded),
-                  labelText: 'Thing',
-                  border: OutlineInputBorder(),
-                  constraints: BoxConstraints(maxWidth: 500),
-                ),
+          Builder(builder: (context) {
+            final children = [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Detail(
+                    prefixIcon: const Icon(Icons.person),
+                    label: 'Borrower',
+                    value: borrower!.name,
+                  ),
+                  const SizedBox(height: 16),
+                  Detail(
+                    prefixIcon: const Icon(Icons.email),
+                    label: 'Borrower Email',
+                    placeholderText: 'None',
+                    value: borrower!.email,
+                  ),
+                  const SizedBox(height: 16),
+                  Detail(
+                    prefixIcon: const Icon(Icons.phone),
+                    label: 'Borrower Phone',
+                    placeholderText: 'None',
+                    value: borrower!.phone,
+                  ),
+                ],
               ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...things.map((thing) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Detail(
+                        prefixIcon: const Icon(Icons.build_rounded),
+                        label: 'Thing',
+                        value: '#${thing.number} ${thing.name}',
+                      ),
+                    );
+                  })
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Detail(
+                    prefixIcon: const Icon(Icons.calendar_month),
+                    label: 'Checked Out',
+                    value:
+                        '${checkedOutDate.month}/${checkedOutDate.day}/${checkedOutDate.year}',
+                  ),
+                  const SizedBox(height: 16),
+                  Detail(
+                    prefixIcon: Builder(
+                      builder: (_) {
+                        if (!isOverdue) {
+                          return const Icon(Icons.calendar_month);
+                        }
+
+                        return const Tooltip(
+                          message: 'Overdue',
+                          child: Icon(
+                            Icons.calendar_month,
+                            color: Colors.amber,
+                          ),
+                        );
+                      },
+                    ),
+                    label: 'Due Back',
+                    value: '${dueDate.month}/${dueDate.day}/${dueDate.year}',
+                  ),
+                ],
+              ),
+            ];
+
+            if (isMobile(context)) {
+              return ListView.separated(
+                itemCount: children.length,
+                itemBuilder: (context, index) {
+                  return children[index];
+                },
+                separatorBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 16),
+                    child: const Divider(),
+                  );
+                },
+                shrinkWrap: true,
+              );
+            }
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
             );
           }),
-          const SizedBox(height: 16),
-          Wrap(
-            spacing: 32,
-            runSpacing: 16,
-            children: [
-              TextField(
-                controller: TextEditingController(
-                    text: '${checkedOutDate.month}/${checkedOutDate.day}'),
-                readOnly: true,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.calendar_month_rounded),
-                  labelText: 'Checked Out',
-                  border: OutlineInputBorder(),
-                  constraints: BoxConstraints(maxWidth: 200),
-                ),
-              ),
-              TextField(
-                controller: TextEditingController(
-                    text: '${dueDate.month}/${dueDate.day}'),
-                readOnly: !editable,
-                onTap: () {
-                  if (editable) {
-                    showDateSelection(context);
-                  }
-                },
-                decoration: InputDecoration(
-                  icon: const Icon(Icons.calendar_month_rounded),
-                  iconColor: isOverdue ? Colors.orange : null,
-                  suffixIcon:
-                      editable ? const Icon(Icons.edit_calendar_rounded) : null,
-                  labelText: 'Due Back',
-                  border: const OutlineInputBorder(),
-                  constraints: const BoxConstraints(maxWidth: 200),
-                ),
-              ),
-            ],
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 16),
+            child: const Divider(),
+          ),
+          Detail(
+            label: 'Notes',
+            minWidth: 500,
+            placeholderText: 'None',
+            value: notes,
           ),
         ],
       ),

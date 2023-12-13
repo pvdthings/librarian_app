@@ -39,13 +39,13 @@ class LoansDesktopLayout extends ConsumerWidget {
             builder: (context, snapshot) {
               return LoanDetailsPane(
                 loan: snapshot.data,
-                onSave: (newDueDate) {
+                onSave: (newDueDate, notes) {
                   final selectedLoan = ref.read(selectedLoanProvider)!;
-                  ref.read(loansRepositoryProvider.notifier).updateDueDate(
-                        loanId: selectedLoan.id,
-                        thingId: selectedLoan.thing.id,
-                        dueBackDate: newDueDate,
-                      );
+                  ref.read(loansRepositoryProvider.notifier).updateLoan(
+                      loanId: selectedLoan.id,
+                      thingId: selectedLoan.thing.id,
+                      dueBackDate: newDueDate,
+                      notes: notes);
                 },
                 onCheckIn: () {
                   final selectedLoan = ref.read(selectedLoanProvider)!;
