@@ -100,6 +100,11 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
     return ImageDTO(url: result.url);
   }
 
+  Future<void> deleteThing(String id) async {
+    await LendingApi.deleteThing(id);
+    ref.invalidateSelf();
+  }
+
   Future<void> deleteThingImage({required String thingId}) async {
     await LendingApi.deleteThingImage(thingId);
     ref.invalidateSelf();

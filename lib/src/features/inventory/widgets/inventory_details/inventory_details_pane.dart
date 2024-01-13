@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/common/widgets/delete_dialog.dart';
 import 'package:librarian_app/src/features/common/widgets/save_dialog.widget.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 import 'package:librarian_app/src/features/inventory/models/detailed_thing_model.dart';
 import 'package:librarian_app/src/features/inventory/providers/edited_thing_details_providers.dart';
 import 'package:librarian_app/src/features/inventory/providers/selected_thing_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
+import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/inventory_details.dart';
 
 class InventoryDetailsPane extends ConsumerWidget {
@@ -15,6 +17,33 @@ class InventoryDetailsPane extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedThing = ref.watch(selectedThingProvider);
     final thingDetails = ref.watch(thingDetailsProvider);
+
+    void discardChanges() {
+      ref.read(thingDetailsEditorProvider).discardChanges();
+    }
+
+    Future<void> save() async {
+      if (await showSaveDialog(context)) {
+        await ref.read(thingDetailsEditorProvider).save();
+      }
+    }
+
+    Future<void> delete() async {
+      if (await showDeleteDialog(context,
+          title: 'Delete Thing',
+          message:
+              'Are you sure you want to delete ${selectedThing!.name}?\nThis action cannot be undone.')) {
+        ref.invalidate(selectedThingProvider);
+        ref
+            .read(thingsRepositoryProvider.notifier)
+            .deleteThing(selectedThing.id)
+            .whenComplete(() {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('${selectedThing.name} deleted'),
+          ));
+        });
+      }
+    }
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -40,13 +69,9 @@ class InventoryDetailsPane extends ConsumerWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                thingDetails.name,
-                                style: const TextStyle(fontSize: 24),
-                              ),
-                            ],
+                          Text(
+                            thingDetails.name,
+                            style: const TextStyle(fontSize: 24),
                           ),
                           Row(
                             children: [
@@ -64,27 +89,28 @@ class InventoryDetailsPane extends ConsumerWidget {
                                 const SizedBox(width: 8),
                               ],
                               IconButton(
-                                onPressed: hasUnsavedChanges
-                                    ? () async {
-                                        if (await showSaveDialog(context)) {
-                                          await ref
-                                              .read(thingDetailsEditorProvider)
-                                              .save();
-                                        }
-                                      }
-                                    : null,
+                                onPressed: hasUnsavedChanges ? save : null,
                                 icon: const Icon(Icons.save_rounded),
                                 tooltip: 'Save',
                               ),
                               const SizedBox(width: 4),
                               IconButton(
-                                onPressed: hasUnsavedChanges
-                                    ? ref
-                                        .read(thingDetailsEditorProvider)
-                                        .discardChanges
-                                    : null,
+                                onPressed:
+                                    hasUnsavedChanges ? discardChanges : null,
                                 icon: const Icon(Icons.cancel),
                                 tooltip: 'Discard Changes',
+                              ),
+                              SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: VerticalDivider(
+                                  color: Colors.white.withOpacity(0.3),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: delete,
+                                icon: const Icon(Icons.delete_forever),
+                                tooltip: 'Delete Thing',
                               ),
                             ],
                           )
