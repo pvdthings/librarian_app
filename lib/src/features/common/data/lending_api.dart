@@ -116,6 +116,10 @@ class LendingApi {
     });
   }
 
+  static Future<Response> deleteThing(String id) async {
+    return await _client.delete('/things/$id');
+  }
+
   static Future<Response> updateThingCategories(
     String id, {
     required List<String> categories,
