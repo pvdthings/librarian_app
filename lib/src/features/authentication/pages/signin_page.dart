@@ -19,10 +19,6 @@ class SignInPage extends ConsumerWidget {
       );
     }
 
-    void onError(String error) {
-      ref.read(signinErrorProvider.notifier).state = error;
-    }
-
     Future<void> signIn() async {
       if (kDebugMode) {
         onSignedIn();
@@ -33,9 +29,10 @@ class SignInPage extends ConsumerWidget {
         await ref.read(authServiceProvider).signIn();
         onSignedIn();
       } on AuthException catch (error) {
-        onError(error.toString());
+        ref.read(signinErrorProvider.notifier).state = error.toString();
       } catch (error) {
-        onError("An unexpected error occurred.");
+        ref.read(signinErrorProvider.notifier).state =
+            "An unexpected error occurred.";
       }
     }
 
