@@ -1,15 +1,44 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/authentication/providers/signin_error_provider.dart';
 import 'package:librarian_app/src/features/authentication/widgets/discord_button.dart';
 import 'package:librarian_app/src/features/authentication/providers/auth_service_provider.dart';
 import 'package:librarian_app/src/features/dashboard/pages/dashboard_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInPage extends ConsumerWidget {
   const SignInPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void onSignedIn() {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const DashboardPage()),
+        (route) => false,
+      );
+    }
+
+    void onError(String error) {
+      ref.read(signinErrorProvider.notifier).state = error;
+    }
+
+    Future<void> signIn() async {
+      if (kDebugMode) {
+        onSignedIn();
+        return;
+      }
+
+      try {
+        await ref.read(authServiceProvider).signIn();
+        onSignedIn();
+      } on AuthException catch (error) {
+        onError(error.toString());
+      } catch (error) {
+        onError("An unexpected error occurred.");
+      }
+    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -24,18 +53,7 @@ class SignInPage extends ConsumerWidget {
                 width: 160,
               ),
               const SizedBox(height: 32),
-              DiscordSigninButton(
-                signIn: ref.read(authServiceProvider).signIn,
-                onSignedIn: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (_) => const DashboardPage()),
-                    (route) => false,
-                  );
-                },
-                onError: (error) {
-                  ref.read(signinErrorProvider.notifier).state = error;
-                },
-              ),
+              DiscordSigninButton(onPressed: signIn),
               if (ref.watch(signinErrorProvider) != null) ...[
                 const SizedBox(height: 16),
                 Text(ref.read(signinErrorProvider)!)
