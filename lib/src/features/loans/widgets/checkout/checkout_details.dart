@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/borrowers/models/borrower_model.dart';
-import 'package:librarian_app/src/features/common/widgets/detail.dart';
+import 'package:librarian_app/src/widgets/detail.dart';
 import 'package:librarian_app/src/features/loans/models/thing_summary_model.dart';
 
 class CheckoutDetails extends StatelessWidget {

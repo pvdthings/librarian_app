@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/features/borrowers/providers/borrowers_repository_provider.dart';
 import 'package:librarian_app/src/features/borrowers/providers/selected_borrower_provider.dart';
-import 'package:librarian_app/src/features/common/widgets/details_card/card_body.dart';
-import 'package:librarian_app/src/features/common/widgets/details_card/card_header.dart';
-import 'package:librarian_app/src/features/common/widgets/details_card/details_card.dart';
+import 'package:librarian_app/src/widgets/details_card/card_body.dart';
+import 'package:librarian_app/src/widgets/details_card/card_header.dart';
+import 'package:librarian_app/src/widgets/details_card/details_card.dart';
 
 class PaymentsCard extends ConsumerWidget {
   const PaymentsCard({super.key});
