@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:librarian_app/src/features/common/widgets/checkbox_field.dart';
-import 'package:librarian_app/src/features/common/widgets/input_decoration.widget.dart';
+import 'package:librarian_app/src/widgets/checkbox_field.dart';
+import 'package:librarian_app/src/widgets/input_decoration.widget.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/inventory/providers/edited_item_details_providers.dart';
 import 'package:librarian_app/src/utils/format.dart';

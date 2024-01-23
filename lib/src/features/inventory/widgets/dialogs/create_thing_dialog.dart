@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/common/widgets/input_decoration.widget.dart';
+import 'package:librarian_app/src/widgets/input_decoration.widget.dart';
 
 class CreateThingDialog extends StatelessWidget {
   CreateThingDialog({super.key, this.onCreate});

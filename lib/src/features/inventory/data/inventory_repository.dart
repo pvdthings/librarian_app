@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:librarian_app/src/features/common/data/lending_api.dart';
-import 'package:librarian_app/src/features/common/services/image_service.dart';
+import 'package:librarian_app/src/api/lending_api.dart';
+import 'package:librarian_app/src/services/image_service.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
 
 import '../models/detailed_thing_model.dart';

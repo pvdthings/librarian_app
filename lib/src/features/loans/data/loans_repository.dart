@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:librarian_app/src/features/common/data/lending_api.dart';
+import 'package:librarian_app/src/api/lending_api.dart';
 import 'package:librarian_app/src/features/loans/models/loan_model.dart';
 
 class LoansRepository extends Notifier<Future<List<LoanModel>>> {

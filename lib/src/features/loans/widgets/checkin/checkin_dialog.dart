@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/common/widgets/filled_progress_button.dart';
+import 'package:librarian_app/src/widgets/filled_progress_button.dart';
 
 class CheckinDialog extends StatelessWidget {
   final int thingNumber;
