@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/providers/edited_borrower_details_providers.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_details.dart';
-import 'package:librarian_app/src/widgets/save_dialog.widget.dart';
+import 'package:librarian_app/src/widgets/save_dialog.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 
 import '../../models/borrower_model.dart';
