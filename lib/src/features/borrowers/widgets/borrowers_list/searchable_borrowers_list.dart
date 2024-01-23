@@ -4,7 +4,7 @@ import 'package:librarian_app/src/features/borrowers/models/borrower_model.dart'
 import 'package:librarian_app/src/features/borrowers/providers/borrowers_filter_provider.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/borrowers_list_view.dart';
 
-import '../../../../widgets/submit_text_field.dart';
+import '../../../../widgets/fields/submit_text_field.dart';
 
 class SearchableBorrowersList extends ConsumerWidget {
   final void Function(BorrowerModel borrower)? onTapBorrower;
