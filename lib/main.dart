@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:librarian_app/constants.dart';
 import 'package:librarian_app/src/features/splash/pages/splash_page.dart';
+import 'package:librarian_app/src/theme/indigo_theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 Future<void> main() async {
@@ -25,12 +26,7 @@ class LibrarianApp extends StatelessWidget {
     return MaterialApp(
       title: 'Librarian',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        primaryColor: Colors.deepPurple,
-        brightness: Brightness.dark,
-        useMaterial3: true,
-      ),
+      theme: indigoTheme,
       initialRoute: '/',
       routes: {
         '/': (_) => const SplashPage(),
