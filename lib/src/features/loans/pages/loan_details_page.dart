@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/inventory/pages/inventory_details_page.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkin/checkin_dialog.dart';
+import 'package:librarian_app/src/features/loans/widgets/email/send_email_dialog.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details.dart';
+import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details_controller.dart';
 
 import '../models/loan_model.dart';
 import '../widgets/edit/edit_loan_dialog.dart';
@@ -111,6 +113,31 @@ class _LoanDetailsPageState extends ConsumerState<LoanDetailsPage> {
                 },
                 icon: const Icon(Icons.edit),
                 tooltip: 'Edit',
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                onPressed: loan.borrower.email != null
+                    ? () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            final controller = LoanDetailsController(
+                                context: context, ref: ref);
+
+                            return SendEmailDialog(
+                              recipientName: loan.borrower.name,
+                              remindersSent: loan.remindersSent,
+                              onSend: () async {
+                                await controller.sendReminderEmail(
+                                    loanNumber: loan.number);
+                              },
+                            );
+                          },
+                        );
+                      }
+                    : null,
+                icon: const Icon(Icons.email),
+                tooltip: 'Send Email',
               ),
               const SizedBox(width: 8),
             ],
