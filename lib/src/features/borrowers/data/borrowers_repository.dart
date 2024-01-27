@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/models/payment_model.dart';
-import 'package:librarian_app/src/features/common/data/lending_api.dart';
+import 'package:librarian_app/src/api/lending_api.dart';
 
 import '../models/borrower_model.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/common/widgets/input_decoration.widget.dart';
+import 'package:librarian_app/src/widgets/input_decoration.dart';
 
 class AddInventoryDialog extends StatelessWidget {
   AddInventoryDialog({super.key, this.onCreate});

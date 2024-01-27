@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/borrowers/providers/borrower_details_provider.dart';
 import 'package:librarian_app/src/features/borrowers/providers/borrowers_repository_provider.dart';
 import 'package:librarian_app/src/features/borrowers/providers/selected_borrower_provider.dart';
+import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
 
 final phoneProvider = StateProvider<String?>((ref) => null);
 
@@ -21,7 +22,10 @@ class BorrowerDetailsEditor {
         ref.read(selectedBorrowerProvider)!.id,
         email: ref.read(emailProvider),
         phone: ref.read(phoneProvider));
+
     discardChanges();
+
+    ref.invalidate(loansRepositoryProvider);
   }
 
   void discardChanges() {

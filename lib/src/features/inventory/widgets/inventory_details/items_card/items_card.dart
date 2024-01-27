@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:librarian_app/src/features/common/widgets/details_card/details_card.dart';
+import 'package:librarian_app/src/widgets/details_card/details_card.dart';
 
 import '../../../models/item_model.dart';
-import '../../../../common/widgets/details_card/card_header.dart';
+import '../../../../../widgets/details_card/card_header.dart';
 
 class ItemsCard extends StatelessWidget {
   const ItemsCard({
