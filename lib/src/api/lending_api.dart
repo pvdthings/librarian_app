@@ -184,6 +184,12 @@ class LendingApi {
       'cash': cash,
     });
   }
+
+  static Future<Response> sendReminderEmail({required int loanNumber}) async {
+    return await _client.post('/messages/loan-reminder', data: {
+      'loanNumber': loanNumber,
+    });
+  }
 }
 
 class ImageDTO {

@@ -4,10 +4,12 @@ import 'package:librarian_app/src/features/loans/models/thing_summary_model.dart
 
 class LoanModel {
   final String id;
+  final int number;
   final ThingSummaryModel thing;
   final BorrowerModel borrower;
   final DateTime checkedOutDate;
   final String? notes;
+  final int remindersSent;
   DateTime dueDate;
   DateTime? checkedInDate;
 
@@ -20,10 +22,12 @@ class LoanModel {
 
   LoanModel({
     required this.id,
+    required this.number,
     required this.thing,
     required this.borrower,
     required this.checkedOutDate,
     required this.dueDate,
+    required this.remindersSent,
     this.checkedInDate,
     this.notes,
   });
@@ -31,6 +35,7 @@ class LoanModel {
   factory LoanModel.fromJson(Map<String, dynamic> json) {
     return LoanModel(
       id: json['id'] as String? ?? '?',
+      number: json['number'] as int,
       thing: ThingSummaryModel.fromJson(json['thing'] as Map<String, dynamic>),
       borrower: BorrowerModel(
         id: json['borrower']?['id'] as String? ?? '?',
@@ -49,6 +54,7 @@ class LoanModel {
       dueDate: json['dueBackDate'] != null
           ? DateTime.parse(json['dueBackDate'])
           : DateTime.now(),
+      remindersSent: json['remindersSent'] as int,
     );
   }
 }
