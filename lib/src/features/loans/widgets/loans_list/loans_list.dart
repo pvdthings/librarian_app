@@ -25,12 +25,17 @@ class LoansList extends StatelessWidget {
         final thingNumber = Text('#${loan.thing.number}');
         final thingName = Text(loan.thing.name);
         final borrowerInitials = Initials.convert(loan.borrower.name);
+        final isSelected =
+            loan.id == selected?.id && loan.thing.id == selected?.thing.id;
+        final isSelectedShown = isMobile(context) ? false : isSelected;
 
         return ListTile(
           leading: Tooltip(
             message: loan.borrower.name,
             child: CircleAvatar(
-              backgroundColor: Colors.black38,
+              backgroundColor: isSelectedShown
+                  ? Theme.of(context).primaryColor
+                  : Colors.black38,
               child: Text(borrowerInitials),
             ),
           ),
@@ -49,9 +54,7 @@ class LoansList extends StatelessWidget {
                     fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
                   ),
                 ),
-          selected: isMobile(context)
-              ? false
-              : loan.id == selected?.id && loan.thing.id == selected?.thing.id,
+          selected: isSelectedShown,
           onTap: () => onTap?.call(loan),
         );
       },
