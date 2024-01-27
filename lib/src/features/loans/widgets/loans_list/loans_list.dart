@@ -27,9 +27,12 @@ class LoansList extends StatelessWidget {
         final borrowerInitials = Initials.convert(loan.borrower.name);
 
         return ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.black38,
-            child: Text(borrowerInitials),
+          leading: Tooltip(
+            message: loan.borrower.name,
+            child: CircleAvatar(
+              backgroundColor: Colors.black38,
+              child: Text(borrowerInitials),
+            ),
           ),
           title: thingName,
           subtitle: thingNumber,
