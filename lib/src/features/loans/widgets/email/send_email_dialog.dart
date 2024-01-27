@@ -19,6 +19,7 @@ class SendEmailDialog extends StatelessWidget {
       title: const Text("Send Reminder Email"),
       content: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Are you sure you want to send an email to $recipientName?"),
           if (remindersSent > 0)
