@@ -4,11 +4,14 @@ import 'package:librarian_app/src/features/borrowers/models/borrower_model.dart'
 import 'package:librarian_app/src/features/borrowers/providers/borrowers_repository_provider.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/borrower_issues.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.dart';
+import 'package:librarian_app/src/features/loans/pages/loan_details_page.dart';
+import 'package:librarian_app/src/features/loans/providers/loans_controller_provider.dart';
+import 'package:librarian_app/src/features/loans/providers/selected_loan_provider.dart';
+import 'package:librarian_app/src/utils/media_query.dart';
 import 'package:librarian_app/src/widgets/filled_progress_button.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/models/thing_summary_model.dart';
-import 'package:librarian_app/src/features/loans/providers/loans_repository_provider.dart';
 import 'package:librarian_app/src/features/loans/widgets/checkout/connected_thing_search_field.dart';
 
 import 'checkout_details.dart';
@@ -50,21 +53,26 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
     }
   }
 
-  void _finish() {
-    ref
-        .read(loansRepositoryProvider.notifier)
-        .openLoan(
-          borrowerId: _borrower!.id,
-          thingIds: _things.map((e) => e.id).toList(),
-          dueBackDate: _dueDate,
-        )
-        .then((success) {
+  void _finish() async {
+    final success = await ref.read(loansControllerProvider).openLoan(
+        borrowerId: _borrower!.id,
+        thingIds: _things.map((e) => e.id).toList(),
+        dueDate: _dueDate);
+
+    Future.delayed(Duration.zero, () {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(success ? 'Success!' : 'Failed to create loan records'),
         ),
       );
+
+      if (isMobile(context)) {
+        final loan = ref.read(selectedLoanProvider)!;
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return LoanDetailsPage(loan);
+        }));
+      }
     });
   }
 
