@@ -39,7 +39,7 @@ class CheckoutDetails extends StatelessWidget {
           Detail(
             prefixIcon: const Icon(Icons.person),
             label: 'Borrower',
-            value: borrower!.name,
+            value: borrower?.name,
           ),
           const SizedBox(height: 32),
           Column(

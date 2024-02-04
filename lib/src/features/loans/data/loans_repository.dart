@@ -24,25 +24,25 @@ class LoansRepository extends Notifier<Future<List<LoanModel>>> {
     return (response.data as List).map((e) => LoanModel.fromJson(e)).toList();
   }
 
-  Future<bool> openLoan({
+  Future<String?> openLoan({
     required String borrowerId,
     required List<String> thingIds,
     required DateTime dueBackDate,
   }) async {
     final dateFormat = DateFormat('yyyy-MM-dd');
     try {
-      await LendingApi.createLoan(NewLoan(
+      final response = await LendingApi.createLoan(NewLoan(
         borrowerId: borrowerId,
         thingIds: thingIds,
         checkedOutDate: dateFormat.format(DateTime.now()),
         dueBackDate: dateFormat.format(dueBackDate),
       ));
-    } catch (error) {
-      return false;
-    }
 
-    ref.invalidateSelf();
-    return true;
+      ref.invalidateSelf();
+      return (response.data as Map<String, dynamic>)['id'] as String;
+    } catch (error) {
+      return null;
+    }
   }
 
   Future<void> closeLoan({

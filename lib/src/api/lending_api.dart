@@ -7,6 +7,7 @@ class LendingApi {
         baseUrl: apiHost,
         contentType: 'application/json',
         headers: {
+          'x-api-key': apiKey,
           'supabase-access-token': _accessToken,
           'supabase-refresh-token': _refreshToken,
         },
