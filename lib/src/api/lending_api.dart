@@ -171,6 +171,10 @@ class LendingApi {
     });
   }
 
+  static Future<Response> deleteInventoryItem(String id) async {
+    return await _client.delete('/inventory/$id');
+  }
+
   static Future<Response> fetchPayments({
     required String borrowerId,
   }) async {
