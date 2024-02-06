@@ -6,6 +6,7 @@
 
 ```
 API_HOST=http://localhost:8088/lending (default)
+API_KEY (optional)
 APP_URL (optional)
 SUPABASE_URL
 SUPABASE_PUBLIC_KEY
