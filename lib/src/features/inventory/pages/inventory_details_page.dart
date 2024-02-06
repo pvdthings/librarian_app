@@ -37,11 +37,17 @@ class InventoryDetailsPage extends ConsumerWidget {
           await ref.read(thingDetailsEditorProvider).save();
         }
 
+        String buildDeleteDialogMessage() {
+          return 'Are you sure you want to delete ${thingDetails.name}?\nALL items belonging to this Thing will be deleted.\nThis action cannot be undone.';
+        }
+
         Future<void> delete() async {
-          if (await showDeleteDialog(context,
-              title: 'Delete Thing',
-              message:
-                  'Are you sure you want to delete ${thingDetails.name}?\nThis action cannot be undone.')) {
+          if (await showDeleteDialog(
+            context,
+            title: 'Delete Thing',
+            message: buildDeleteDialogMessage(),
+            deleteActionText: 'Delete ALL',
+          )) {
             ref.invalidate(selectedThingProvider);
             ref
                 .read(thingsRepositoryProvider.notifier)
