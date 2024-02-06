@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/inventory/providers/thing_details_controller_provider.dart';
 import 'package:librarian_app/src/widgets/details_card/details_card.dart';
 
 import '../../../models/item_model.dart';
 import '../../../../../widgets/details_card/card_header.dart';
 
-class ItemsCard extends StatelessWidget {
+class ItemsCard extends ConsumerWidget {
   const ItemsCard({
     super.key,
     required this.items,
@@ -21,7 +23,13 @@ class ItemsCard extends StatelessWidget {
   final void Function(String id, bool value)? onToggleHidden;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    Future<void> deleteItem(String id, int number, String name) async {
+      await ref
+          .read(thingDetailsControllerProvider)
+          .deleteItem(context, id: id, itemNumber: number, thingName: name);
+    }
+
     return DetailsCard(
       header: CardHeader(
         title: 'Inventory',
@@ -72,6 +80,19 @@ class ItemsCard extends StatelessWidget {
                           icon: item.hidden
                               ? const Icon(Icons.visibility_off)
                               : const Icon(Icons.visibility),
+                        ),
+                        const SizedBox(width: 16),
+                        IconButton(
+                          onPressed: () => deleteItem(
+                            item.id,
+                            item.number,
+                            item.name,
+                          ),
+                          tooltip: 'Delete',
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            color: Colors.red,
+                          ),
                         ),
                       ],
                     ),

@@ -145,4 +145,9 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
     );
     ref.invalidateSelf();
   }
+
+  Future<void> deleteItem(String id) async {
+    await LendingApi.deleteInventoryItem(id);
+    ref.invalidateSelf();
+  }
 }

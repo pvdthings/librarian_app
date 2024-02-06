@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/inventory/providers/selected_thing_provider.dart';
+import 'package:librarian_app/src/features/inventory/widgets/dialogs/delete_inventory_item_dialog.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 
 import '../widgets/dialogs/delete_thing_dialog.dart';
@@ -29,6 +30,28 @@ class ThingDetailsController {
         }
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('$thingName deleted'),
+        ));
+      });
+    }
+  }
+
+  Future<void> deleteItem(
+    BuildContext context, {
+    required String id,
+    required int itemNumber,
+    required String thingName,
+  }) async {
+    if (await showDeleteInventoryItemDialog(
+      context,
+      itemNumber: itemNumber,
+      thingName: thingName,
+    )) {
+      ref
+          .read(thingsRepositoryProvider.notifier)
+          .deleteItem(id)
+          .whenComplete(() {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('#$itemNumber ($thingName) deleted'),
         ));
       });
     }
