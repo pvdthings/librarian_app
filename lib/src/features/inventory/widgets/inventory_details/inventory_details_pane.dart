@@ -28,19 +28,19 @@ class InventoryDetailsPane extends ConsumerWidget {
       }
     }
 
-    String buildDeleteDialogMessage(String thingName) {
+    String buildDeleteDialogMessage() {
       return 'Are you sure you want to delete ${selectedThing!.name}?\nALL items belonging to this Thing will be deleted.\nThis action cannot be undone.';
     }
 
     Future<void> delete() async {
       if (await showDeleteDialog(context,
           title: 'Delete Thing',
-          message: buildDeleteDialogMessage(selectedThing!.name),
+          message: buildDeleteDialogMessage(),
           deleteActionText: 'Delete ALL')) {
         ref.invalidate(selectedThingProvider);
         ref
             .read(thingsRepositoryProvider.notifier)
-            .deleteThing(selectedThing.id)
+            .deleteThing(selectedThing!.id)
             .whenComplete(() {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('${selectedThing.name} deleted'),
