@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:librarian_app/src/widgets/dialogs/delete_dialog.dart';
+import 'package:librarian_app/src/features/inventory/providers/thing_details_controller_provider.dart';
 import 'package:librarian_app/src/widgets/dialogs/save_dialog.dart';
 import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.widget.dart';
 import 'package:librarian_app/src/features/inventory/models/detailed_thing_model.dart';
 import 'package:librarian_app/src/features/inventory/providers/edited_thing_details_providers.dart';
 import 'package:librarian_app/src/features/inventory/providers/selected_thing_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
-import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/inventory_details.dart';
 
 class InventoryDetailsPane extends ConsumerWidget {
@@ -28,25 +27,8 @@ class InventoryDetailsPane extends ConsumerWidget {
       }
     }
 
-    String buildDeleteDialogMessage() {
-      return 'Are you sure you want to delete ${selectedThing!.name}?\nALL items belonging to this Thing will be deleted.\nThis action cannot be undone.';
-    }
-
     Future<void> delete() async {
-      if (await showDeleteDialog(context,
-          title: 'Delete Thing',
-          message: buildDeleteDialogMessage(),
-          deleteActionText: 'Delete ALL')) {
-        ref.invalidate(selectedThingProvider);
-        ref
-            .read(thingsRepositoryProvider.notifier)
-            .deleteThing(selectedThing!.id)
-            .whenComplete(() {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('${selectedThing.name} deleted'),
-          ));
-        });
-      }
+      await ref.read(thingDetailsControllerProvider).delete(context);
     }
 
     return Card(

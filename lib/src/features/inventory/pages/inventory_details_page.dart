@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:librarian_app/src/widgets/dialogs/delete_dialog.dart';
+import 'package:librarian_app/src/features/inventory/providers/thing_details_controller_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
-import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 
 import '../providers/edited_thing_details_providers.dart';
-import '../providers/selected_thing_provider.dart';
 import '../widgets/inventory_details/inventory_details.dart';
 
 class InventoryDetailsPage extends ConsumerWidget {
@@ -37,28 +35,8 @@ class InventoryDetailsPage extends ConsumerWidget {
           await ref.read(thingDetailsEditorProvider).save();
         }
 
-        String buildDeleteDialogMessage() {
-          return 'Are you sure you want to delete ${thingDetails.name}?\nALL items belonging to this Thing will be deleted.\nThis action cannot be undone.';
-        }
-
         Future<void> delete() async {
-          if (await showDeleteDialog(
-            context,
-            title: 'Delete Thing',
-            message: buildDeleteDialogMessage(),
-            deleteActionText: 'Delete ALL',
-          )) {
-            ref.invalidate(selectedThingProvider);
-            ref
-                .read(thingsRepositoryProvider.notifier)
-                .deleteThing(thingDetails.id)
-                .whenComplete(() {
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('${thingDetails.name} deleted'),
-              ));
-            });
-          }
+          await ref.read(thingDetailsControllerProvider).delete(context);
         }
 
         return Scaffold(
