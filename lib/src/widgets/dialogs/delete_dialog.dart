@@ -5,10 +5,12 @@ class DeleteDialog extends StatelessWidget {
     super.key,
     required this.title,
     this.message,
+    this.deleteActionText,
   });
 
   final String title;
   final String? message;
+  final String? deleteActionText;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,9 @@ class DeleteDialog extends StatelessWidget {
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
           ),
-          child: const Text('Delete'),
+          child: deleteActionText != null
+              ? Text(deleteActionText!)
+              : const Text('Delete'),
         )
       ],
     );
@@ -42,10 +46,15 @@ Future<bool> showDeleteDialog(
   BuildContext context, {
   String title = 'Delete',
   String? message,
+  String? deleteActionText,
 }) async {
   return await showDialog<bool>(
         context: context,
-        builder: (_) => DeleteDialog(title: title, message: message),
+        builder: (_) => DeleteDialog(
+          title: title,
+          message: message,
+          deleteActionText: deleteActionText,
+        ),
       ) ??
       false;
 }
