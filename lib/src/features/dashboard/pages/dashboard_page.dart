@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/authentication/providers/auth_service_provider.dart';
+import 'package:librarian_app/src/features/authentication/providers/user_tray.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/layouts/borrowers_desktop_layout.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.dart';
@@ -15,7 +17,7 @@ import 'package:librarian_app/src/features/loans/widgets/loans_list/searchable_l
 import 'package:librarian_app/src/features/loans/widgets/layouts/loans_desktop_layout.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 
-import '../widgets/desktop_dashboard.widget.dart';
+import '../widgets/desktop_dashboard.dart';
 
 class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
@@ -155,6 +157,22 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           appBar: AppBar(
             title: Text(module.title),
             centerTitle: mobile,
+            actions: [
+              if (!mobile) ...[
+                const UserTray(),
+                const SizedBox(width: 16),
+              ],
+              IconButton(
+                onPressed: () {
+                  ref.read(authServiceProvider).signOut();
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/', (route) => false);
+                },
+                icon: const Icon(Icons.logout),
+                tooltip: 'Log out',
+              ),
+              const SizedBox(width: 16),
+            ],
             elevation: 0,
             scrolledUnderElevation: isMobile(context) ? 1 : 0,
           ),
