@@ -157,22 +157,22 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           appBar: AppBar(
             title: Text(module.title),
             centerTitle: mobile,
-            actions: mobile
-                ? null
-                : [
-                    const UserTray(),
-                    const SizedBox(width: 16),
-                    IconButton(
-                      onPressed: () {
-                        ref.read(authServiceProvider).signOut();
-                        Navigator.of(context)
-                            .pushNamedAndRemoveUntil('/', (route) => false);
-                      },
-                      icon: const Icon(Icons.logout),
-                      tooltip: 'Log out',
-                    ),
-                    const SizedBox(width: 16),
-                  ],
+            actions: [
+              if (!mobile) ...[
+                const UserTray(),
+                const SizedBox(width: 16),
+              ],
+              IconButton(
+                onPressed: () {
+                  ref.read(authServiceProvider).signOut();
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/', (route) => false);
+                },
+                icon: const Icon(Icons.logout),
+                tooltip: 'Log out',
+              ),
+              const SizedBox(width: 16),
+            ],
             elevation: 0,
             scrolledUnderElevation: isMobile(context) ? 1 : 0,
           ),
