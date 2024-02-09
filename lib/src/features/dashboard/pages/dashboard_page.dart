@@ -75,35 +75,29 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     ),
   ];
 
-  void _showPopupMenu() {
-    final RenderBox button =
-        _createButtonKey.currentContext!.findRenderObject() as RenderBox;
-    final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
+  final _menuController = MenuController();
 
-    final RelativeRect position = RelativeRect.fromRect(
-      Rect.fromPoints(
-        button.localToGlobal(Offset.zero, ancestor: overlay),
-        button.localToGlobal(button.size.bottomRight(Offset.zero),
-            ancestor: overlay),
-      ),
-      Offset.zero & overlay.size,
-    );
+  @override
+  Widget build(BuildContext context) {
+    final mobile = isMobile(context);
+    final module = _modules[_moduleIndex];
 
-    showMenu(
-      context: context,
-      position: position,
-      color: Theme.of(context).primaryColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+    final menuAnchor = MenuAnchor(
+      anchorTapClosesMenu: true,
+      controller: _menuController,
+      style: MenuStyle(
+        backgroundColor:
+            MaterialStatePropertyAll(Theme.of(context).primaryColor),
       ),
-      items: [
+      menuChildren: [
         createMenuItem(
           context: context,
-          text: 'New Loan',
+          leadingIcon: const Icon(Icons.handshake_rounded),
+          text: 'Create Loan',
           onTap: () async {
+            _menuController.close();
             setState(() => _moduleIndex = 0);
-            await Future.delayed(const Duration(milliseconds: 500), () {
+            await Future.delayed(const Duration(milliseconds: 150), () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -114,9 +108,13 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           },
         ),
         createMenuItem(
+          context: context,
+          leadingIcon: const Icon(Icons.build_rounded),
+          text: 'Create Thing',
           onTap: () async {
+            _menuController.close();
             setState(() => _moduleIndex = 2);
-            await Future.delayed(const Duration(milliseconds: 500), () {
+            await Future.delayed(const Duration(milliseconds: 150), () {
               showDialog(
                 context: context,
                 builder: (context) {
@@ -139,17 +137,15 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               );
             });
           },
-          text: 'New Thing',
-          context: context,
         ),
       ],
+      child: FloatingActionButton(
+        mini: !mobile,
+        key: _createButtonKey,
+        onPressed: () => _menuController.open(),
+        child: const Icon(Icons.add),
+      ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final mobile = isMobile(context);
-    final module = _modules[_moduleIndex];
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -183,12 +179,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   onDestinationSelected: (index) {
                     setState(() => _moduleIndex = index);
                   },
-                  leading: FloatingActionButton(
-                    mini: true,
-                    key: _createButtonKey,
-                    onPressed: () => _showPopupMenu(),
-                    child: const Icon(Icons.add),
-                  ),
+                  leading: menuAnchor,
                   child: module.desktopLayout,
                 ),
           bottomNavigationBar: mobile
@@ -217,13 +208,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   ),
                 )
               : null,
-          floatingActionButton: mobile
-              ? FloatingActionButton(
-                  key: _createButtonKey,
-                  onPressed: () => _showPopupMenu(),
-                  child: const Icon(Icons.add),
-                )
-              : null,
+          floatingActionButton: mobile ? menuAnchor : null,
         );
       },
     );
@@ -235,11 +220,9 @@ class DashboardModule {
     required this.title,
     required this.desktopLayout,
     required this.mobileLayout,
-    this.floatingActionButton,
   });
 
   final String title;
   final Widget desktopLayout;
   final Widget mobileLayout;
-  final Widget? floatingActionButton;
 }
