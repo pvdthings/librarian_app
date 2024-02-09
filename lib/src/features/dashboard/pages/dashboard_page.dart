@@ -83,7 +83,6 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     final module = _modules[_moduleIndex];
 
     final menuAnchor = MenuAnchor(
-      anchorTapClosesMenu: true,
       controller: _menuController,
       style: MenuStyle(
         backgroundColor:
@@ -142,7 +141,11 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       child: FloatingActionButton(
         mini: !mobile,
         key: _createButtonKey,
-        onPressed: () => _menuController.open(),
+        onPressed: () {
+          _menuController.isOpen
+              ? _menuController.close()
+              : _menuController.open();
+        },
         child: const Icon(Icons.add),
       ),
     );
