@@ -23,17 +23,20 @@ class DesktopDashboard extends StatelessWidget {
           leading: leading,
           destinations: const [
             NavigationRailDestination(
-              icon: Icon(Icons.handshake_rounded),
+              selectedIcon: Icon(Icons.handshake),
+              icon: Icon(Icons.handshake_outlined),
               label: Text('Loans'),
               padding: EdgeInsets.symmetric(vertical: 8),
             ),
             NavigationRailDestination(
-              icon: Icon(Icons.people_rounded),
+              selectedIcon: Icon(Icons.people),
+              icon: Icon(Icons.people_outlined),
               label: Text('Borrowers'),
               padding: EdgeInsets.symmetric(vertical: 8),
             ),
             NavigationRailDestination(
-              icon: Icon(Icons.build_rounded),
+              selectedIcon: Icon(Icons.build),
+              icon: Icon(Icons.build_outlined),
               label: Text('Things'),
               padding: EdgeInsets.symmetric(vertical: 8),
             ),

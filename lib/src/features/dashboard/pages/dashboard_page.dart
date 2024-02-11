@@ -187,27 +187,28 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 ),
           bottomNavigationBar: mobile
               ? SafeArea(
-                  child: BottomNavigationBar(
-                    currentIndex: _moduleIndex,
-                    onTap: (index) => setState(() {
-                      _moduleIndex = index;
-                    }),
-                    items: const [
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.handshake_rounded),
+                  child: NavigationBar(
+                    selectedIndex: _moduleIndex,
+                    onDestinationSelected: (index) {
+                      setState(() => _moduleIndex = index);
+                    },
+                    destinations: const [
+                      NavigationDestination(
+                        selectedIcon: Icon(Icons.handshake),
+                        icon: Icon(Icons.handshake_outlined),
                         label: "Loans",
                       ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.people_rounded),
+                      NavigationDestination(
+                        selectedIcon: Icon(Icons.people),
+                        icon: Icon(Icons.people_outlined),
                         label: "Borrowers",
                       ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.build_rounded),
+                      NavigationDestination(
+                        selectedIcon: Icon(Icons.build),
+                        icon: Icon(Icons.build_outlined),
                         label: "Things",
                       ),
                     ],
-                    showSelectedLabels: true,
-                    showUnselectedLabels: false,
                   ),
                 )
               : null,
