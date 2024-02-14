@@ -74,6 +74,7 @@ class LoanDetails extends StatelessWidget {
           ...things.map((thing) {
             return Detail(
               useListTile: true,
+              prefixIcon: iconPlaceholder,
               value: '#${thing.number} ${thing.name}',
             );
           })
