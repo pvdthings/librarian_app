@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class Detail extends StatelessWidget {
   const Detail({
     super.key,
-    required this.label,
-    required this.value,
+    this.label,
+    this.value,
     this.prefixIcon,
     this.suffixIcon,
     this.minWidth,
@@ -12,7 +12,7 @@ class Detail extends StatelessWidget {
     this.useListTile = false,
   });
 
-  final String label;
+  final String? label;
   final String? value;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
@@ -23,20 +23,16 @@ class Detail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (useListTile) {
-      return Container(
-        constraints: const BoxConstraints(
-          minWidth: 200,
-          maxWidth: 500,
-        ),
-        child: ListTile(
-          leading: prefixIcon,
-          trailing: suffixIcon,
-          title: Text(label),
-          titleTextStyle: Theme.of(context).textTheme.labelLarge,
-          subtitle: Text(value ?? placeholderText ?? ''),
-          subtitleTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-              fontSize: 20, color: value == null ? Colors.white54 : null),
-        ),
+      return ListTile(
+        leading: prefixIcon,
+        trailing: suffixIcon,
+        title: label != null ? Text(label!) : null,
+        titleTextStyle: Theme.of(context).textTheme.labelLarge,
+        subtitle: value == null && placeholderText == null
+            ? null
+            : Text(value ?? placeholderText!),
+        subtitleTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+            fontSize: 20, color: value == null ? Colors.white54 : null),
       );
     }
 
@@ -51,25 +47,35 @@ class Detail extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
+        if (label != null)
+          Text(
+            label!,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
         const SizedBox(height: 4),
-        prefixIcon != null
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  prefixIcon!,
-                  const SizedBox(width: 8),
-                  text,
-                  if (suffixIcon != null) ...[
+        Container(
+          constraints:
+              minWidth != null ? const BoxConstraints(minWidth: 300) : null,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            color: Colors.black38,
+          ),
+          child: prefixIcon != null
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    prefixIcon!,
                     const SizedBox(width: 8),
-                    suffixIcon!,
+                    text,
+                    if (suffixIcon != null) ...[
+                      const SizedBox(width: 8),
+                      suffixIcon!,
+                    ],
                   ],
-                ],
-              )
-            : text,
+                )
+              : text,
+        ),
       ],
     );
   }

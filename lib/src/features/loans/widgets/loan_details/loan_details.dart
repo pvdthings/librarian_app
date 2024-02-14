@@ -24,30 +24,38 @@ class LoanDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const iconPlaceholder = SizedBox.square(dimension: 16);
+
+    final isMobileScreen = isMobile(context);
+    final double cardElevation = isMobileScreen ? 1 : 0;
+
     final borrowerCard = Card(
-      elevation: 0,
+      elevation: cardElevation,
       child: Column(
         children: [
+          const Detail(
+            useListTile: true,
+            prefixIcon: Icon(Icons.person),
+            label: 'Borrower',
+          ),
           Detail(
             useListTile: true,
-            prefixIcon: const Icon(Icons.person),
-            label: 'Borrower',
+            prefixIcon: iconPlaceholder,
+            label: 'Name',
             value: borrower!.name,
           ),
-          // const SizedBox(height: 16),
           Detail(
             useListTile: true,
-            prefixIcon: const Icon(Icons.email),
-            label: 'Borrower Email',
-            placeholderText: 'None',
+            prefixIcon: iconPlaceholder,
+            label: 'Email',
+            placeholderText: '-',
             value: borrower!.email,
           ),
-          // const SizedBox(height: 16),
           Detail(
             useListTile: true,
-            prefixIcon: const Icon(Icons.phone),
-            label: 'Borrower Phone',
-            placeholderText: 'None',
+            prefixIcon: iconPlaceholder,
+            label: 'Phone',
+            placeholderText: '-',
             value: borrower!.phone,
           ),
         ],
@@ -55,14 +63,17 @@ class LoanDetails extends StatelessWidget {
     );
 
     final thingsCard = Card(
-      elevation: 0,
+      elevation: cardElevation,
       child: Column(
         children: [
+          const Detail(
+            useListTile: true,
+            label: 'Thing',
+            prefixIcon: Icon(Icons.build_rounded),
+          ),
           ...things.map((thing) {
             return Detail(
               useListTile: true,
-              prefixIcon: const Icon(Icons.build_rounded),
-              label: 'Thing',
               value: '#${thing.number} ${thing.name}',
             );
           })
@@ -71,18 +82,9 @@ class LoanDetails extends StatelessWidget {
     );
 
     final datesCard = Card(
-      elevation: 0,
+      elevation: cardElevation,
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // mainAxisSize: MainAxisSize.min,
         children: [
-          Detail(
-            useListTile: true,
-            prefixIcon: const Icon(Icons.calendar_month),
-            label: 'Checked Out',
-            value:
-                '${checkedOutDate.month}/${checkedOutDate.day}/${checkedOutDate.year}',
-          ),
           Detail(
             useListTile: true,
             prefixIcon: Builder(
@@ -100,8 +102,39 @@ class LoanDetails extends StatelessWidget {
                 );
               },
             ),
+            label: 'Dates',
+          ),
+          Detail(
+            useListTile: true,
+            prefixIcon: iconPlaceholder,
+            label: 'Checked Out',
+            value:
+                '${checkedOutDate.month}/${checkedOutDate.day}/${checkedOutDate.year}',
+          ),
+          Detail(
+            useListTile: true,
+            prefixIcon: iconPlaceholder,
             label: 'Due Back',
             value: '${dueDate.month}/${dueDate.day}/${dueDate.year}',
+          ),
+        ],
+      ),
+    );
+
+    final notesCard = Card(
+      elevation: cardElevation,
+      child: Column(
+        children: [
+          const Detail(
+            useListTile: true,
+            prefixIcon: Icon(Icons.notes),
+            label: 'Notes',
+          ),
+          Detail(
+            useListTile: true,
+            prefixIcon: iconPlaceholder,
+            value: notes,
+            placeholderText: '-',
           ),
         ],
       ),
@@ -115,67 +148,23 @@ class LoanDetails extends StatelessWidget {
         children: [
           Wrap(
             children: [
-              thingsCard,
-              datesCard,
-              borrowerCard,
+              FractionallySizedBox(
+                widthFactor: isMobileScreen ? 1 : 0.5,
+                child: thingsCard,
+              ),
+              FractionallySizedBox(
+                widthFactor: isMobileScreen ? 1 : 0.5,
+                child: datesCard,
+              ),
+              FractionallySizedBox(
+                widthFactor: isMobileScreen ? 1 : 0.5,
+                child: notesCard,
+              ),
+              FractionallySizedBox(
+                widthFactor: isMobileScreen ? 1 : 0.5,
+                child: borrowerCard,
+              ),
             ],
-          ),
-          // Builder(builder: (context) {
-          //   final children = [
-          //     Column(
-          //       crossAxisAlignment: CrossAxisAlignment.start,
-          //       children: [
-          //         Card(
-          //           elevation: 0,
-          //           child: Column(
-          //             children: [
-          //               ...things.map((thing) {
-          //                 return Detail(
-          //                   useListTile: true,
-          //                   prefixIcon: const Icon(Icons.build_rounded),
-          //                   label: 'Thing',
-          //                   value: '#${thing.number} ${thing.name}',
-          //                 );
-          //               })
-          //             ],
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ];
-
-          //   if (isMobile(context)) {
-          //     return ListView.separated(
-          //       itemCount: children.length,
-          //       itemBuilder: (context, index) {
-          //         return children[index];
-          //       },
-          //       separatorBuilder: (context, index) {
-          //         return Container(
-          //           margin: const EdgeInsets.symmetric(vertical: 16),
-          //           child: const Divider(),
-          //         );
-          //       },
-          //       shrinkWrap: true,
-          //     );
-          //   }
-
-          //   return Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: children,
-          //   );
-          // }),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 16),
-            child: const Divider(),
-          ),
-          Detail(
-            useListTile: true,
-            label: 'Notes',
-            minWidth: 500,
-            placeholderText: 'None',
-            value: notes,
           ),
         ],
       ),
