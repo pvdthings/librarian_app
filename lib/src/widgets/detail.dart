@@ -3,23 +3,39 @@ import 'package:flutter/material.dart';
 class Detail extends StatelessWidget {
   const Detail({
     super.key,
-    required this.label,
-    required this.value,
+    this.label,
+    this.value,
     this.prefixIcon,
     this.suffixIcon,
     this.minWidth,
     this.placeholderText,
+    this.useListTile = false,
   });
 
-  final String label;
+  final String? label;
   final String? value;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final double? minWidth;
   final String? placeholderText;
+  final bool useListTile;
 
   @override
   Widget build(BuildContext context) {
+    if (useListTile) {
+      return ListTile(
+        leading: prefixIcon,
+        trailing: suffixIcon,
+        title: label != null ? Text(label!) : null,
+        titleTextStyle: Theme.of(context).textTheme.labelLarge,
+        subtitle: value == null && placeholderText == null
+            ? null
+            : Text(value ?? placeholderText!),
+        subtitleTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+            fontSize: 20, color: value == null ? Colors.white54 : null),
+      );
+    }
+
     final text = Text(
       value ?? placeholderText ?? '',
       style: Theme.of(context)
@@ -31,10 +47,11 @@ class Detail extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
+        if (label != null)
+          Text(
+            label!,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
         const SizedBox(height: 4),
         Container(
           constraints:
