@@ -40,6 +40,12 @@ class DesktopDashboard extends StatelessWidget {
               label: Text('Things'),
               padding: EdgeInsets.symmetric(vertical: 8),
             ),
+            NavigationRailDestination(
+              selectedIcon: Icon(Icons.electric_bolt),
+              icon: Icon(Icons.electric_bolt_outlined),
+              label: Text('Actions'),
+              padding: EdgeInsets.symmetric(vertical: 8),
+            ),
           ],
           selectedIndex: selectedIndex,
           onDestinationSelected: (index) {

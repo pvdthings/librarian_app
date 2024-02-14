@@ -16,6 +16,8 @@ import 'package:librarian_app/src/features/loans/pages/loan_details_page.dart';
 import 'package:librarian_app/src/features/loans/widgets/loans_list/searchable_loans_list.dart';
 import 'package:librarian_app/src/features/loans/widgets/layouts/loans_desktop_layout.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
+import 'package:librarian_app/src/features/actions/widgets/actions.dart'
+    as librarian_actions;
 
 import '../widgets/desktop_dashboard.dart';
 
@@ -71,6 +73,14 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             builder: (context) => const InventoryDetailsPage(),
           ));
         },
+      ),
+    ),
+    const DashboardModule(
+      title: 'Actions',
+      desktopLayout: librarian_actions.Actions(),
+      mobileLayout: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: librarian_actions.Actions(),
       ),
     ),
   ];
@@ -207,6 +217,11 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                         selectedIcon: Icon(Icons.build),
                         icon: Icon(Icons.build_outlined),
                         label: "Things",
+                      ),
+                      NavigationDestination(
+                        selectedIcon: Icon(Icons.electric_bolt),
+                        icon: Icon(Icons.electric_bolt_outlined),
+                        label: "Actions",
                       ),
                     ],
                   ),
