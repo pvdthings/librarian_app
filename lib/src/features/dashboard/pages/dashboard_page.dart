@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/authentication/providers/auth_service_provider.dart';
+import 'package:librarian_app/src/features/authentication/providers/user_tray.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/layouts/borrowers_desktop_layout.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/borrowers_list/searchable_borrowers_list.dart';
 import 'package:librarian_app/src/features/borrowers/widgets/needs_attention_view.dart';
@@ -15,7 +17,7 @@ import 'package:librarian_app/src/features/loans/widgets/loans_list/searchable_l
 import 'package:librarian_app/src/features/loans/widgets/layouts/loans_desktop_layout.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 
-import '../widgets/desktop_dashboard.widget.dart';
+import '../widgets/desktop_dashboard.dart';
 
 class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
@@ -73,35 +75,28 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     ),
   ];
 
-  void _showPopupMenu() {
-    final RenderBox button =
-        _createButtonKey.currentContext!.findRenderObject() as RenderBox;
-    final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
+  final _menuController = MenuController();
 
-    final RelativeRect position = RelativeRect.fromRect(
-      Rect.fromPoints(
-        button.localToGlobal(Offset.zero, ancestor: overlay),
-        button.localToGlobal(button.size.bottomRight(Offset.zero),
-            ancestor: overlay),
-      ),
-      Offset.zero & overlay.size,
-    );
+  @override
+  Widget build(BuildContext context) {
+    final mobile = isMobile(context);
+    final module = _modules[_moduleIndex];
 
-    showMenu(
-      context: context,
-      position: position,
-      color: Theme.of(context).primaryColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+    final menuAnchor = MenuAnchor(
+      controller: _menuController,
+      style: MenuStyle(
+        backgroundColor:
+            MaterialStatePropertyAll(Theme.of(context).primaryColor),
       ),
-      items: [
+      menuChildren: [
         createMenuItem(
           context: context,
-          text: 'New Loan',
+          leadingIcon: const Icon(Icons.handshake_rounded),
+          text: 'Create Loan',
           onTap: () async {
+            _menuController.close();
             setState(() => _moduleIndex = 0);
-            await Future.delayed(const Duration(milliseconds: 500), () {
+            await Future.delayed(const Duration(milliseconds: 150), () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -112,9 +107,13 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           },
         ),
         createMenuItem(
+          context: context,
+          leadingIcon: const Icon(Icons.build_rounded),
+          text: 'Create Thing',
           onTap: () async {
+            _menuController.close();
             setState(() => _moduleIndex = 2);
-            await Future.delayed(const Duration(milliseconds: 500), () {
+            await Future.delayed(const Duration(milliseconds: 150), () {
               showDialog(
                 context: context,
                 builder: (context) {
@@ -137,17 +136,19 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               );
             });
           },
-          text: 'New Thing',
-          context: context,
         ),
       ],
+      child: FloatingActionButton(
+        mini: !mobile,
+        key: _createButtonKey,
+        onPressed: () {
+          _menuController.isOpen
+              ? _menuController.close()
+              : _menuController.open();
+        },
+        child: const Icon(Icons.add),
+      ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final mobile = isMobile(context);
-    final module = _modules[_moduleIndex];
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -155,6 +156,22 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           appBar: AppBar(
             title: Text(module.title),
             centerTitle: mobile,
+            actions: [
+              if (!mobile) ...[
+                const UserTray(),
+                const SizedBox(width: 16),
+              ],
+              IconButton(
+                onPressed: () {
+                  ref.read(authServiceProvider).signOut();
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/', (route) => false);
+                },
+                icon: const Icon(Icons.logout),
+                tooltip: 'Log out',
+              ),
+              const SizedBox(width: 16),
+            ],
             elevation: 0,
             scrolledUnderElevation: isMobile(context) ? 1 : 0,
           ),
@@ -165,47 +182,37 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   onDestinationSelected: (index) {
                     setState(() => _moduleIndex = index);
                   },
-                  leading: FloatingActionButton(
-                    mini: true,
-                    key: _createButtonKey,
-                    onPressed: () => _showPopupMenu(),
-                    child: const Icon(Icons.add),
-                  ),
+                  leading: menuAnchor,
                   child: module.desktopLayout,
                 ),
           bottomNavigationBar: mobile
               ? SafeArea(
-                  child: BottomNavigationBar(
-                    currentIndex: _moduleIndex,
-                    onTap: (index) => setState(() {
-                      _moduleIndex = index;
-                    }),
-                    items: const [
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.handshake_rounded),
+                  child: NavigationBar(
+                    selectedIndex: _moduleIndex,
+                    onDestinationSelected: (index) {
+                      setState(() => _moduleIndex = index);
+                    },
+                    destinations: const [
+                      NavigationDestination(
+                        selectedIcon: Icon(Icons.handshake),
+                        icon: Icon(Icons.handshake_outlined),
                         label: "Loans",
                       ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.people_rounded),
+                      NavigationDestination(
+                        selectedIcon: Icon(Icons.people),
+                        icon: Icon(Icons.people_outlined),
                         label: "Borrowers",
                       ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.build_rounded),
+                      NavigationDestination(
+                        selectedIcon: Icon(Icons.build),
+                        icon: Icon(Icons.build_outlined),
                         label: "Things",
                       ),
                     ],
-                    showSelectedLabels: true,
-                    showUnselectedLabels: false,
                   ),
                 )
               : null,
-          floatingActionButton: mobile
-              ? FloatingActionButton(
-                  key: _createButtonKey,
-                  onPressed: () => _showPopupMenu(),
-                  child: const Icon(Icons.add),
-                )
-              : null,
+          floatingActionButton: mobile ? menuAnchor : null,
         );
       },
     );
@@ -217,11 +224,9 @@ class DashboardModule {
     required this.title,
     required this.desktopLayout,
     required this.mobileLayout,
-    this.floatingActionButton,
   });
 
   final String title;
   final Widget desktopLayout;
   final Widget mobileLayout;
-  final Widget? floatingActionButton;
 }

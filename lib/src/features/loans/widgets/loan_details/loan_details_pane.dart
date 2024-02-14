@@ -29,15 +29,19 @@ class LoanDetailsPane extends StatelessWidget {
                   onSave: onSave,
                   onCheckIn: onCheckIn,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: LoanDetails(
-                    borrower: loan!.borrower,
-                    things: [loan!.thing],
-                    notes: loan!.notes,
-                    checkedOutDate: loan!.checkedOutDate,
-                    dueDate: loan!.dueDate,
-                    isOverdue: loan!.isOverdue,
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: LoanDetails(
+                        borrower: loan!.borrower,
+                        things: [loan!.thing],
+                        notes: loan!.notes,
+                        checkedOutDate: loan!.checkedOutDate,
+                        dueDate: loan!.dueDate,
+                        isOverdue: loan!.isOverdue,
+                      ),
+                    ),
                   ),
                 ),
               ],
