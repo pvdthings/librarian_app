@@ -24,9 +24,7 @@ class LoanDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const iconPlaceholder = SizedBox.square(dimension: 16);
-
-    final isMobileScreen = isMobile(context);
+    final bool isMobileScreen = isMobile(context);
     final double cardElevation = isMobileScreen ? 1 : 0;
 
     final borrowerCard = Card(
@@ -40,20 +38,17 @@ class LoanDetails extends StatelessWidget {
           ),
           Detail(
             useListTile: true,
-            prefixIcon: iconPlaceholder,
             label: 'Name',
             value: borrower!.name,
           ),
           Detail(
             useListTile: true,
-            prefixIcon: iconPlaceholder,
             label: 'Email',
             placeholderText: '-',
             value: borrower!.email,
           ),
           Detail(
             useListTile: true,
-            prefixIcon: iconPlaceholder,
             label: 'Phone',
             placeholderText: '-',
             value: borrower!.phone,
@@ -74,7 +69,6 @@ class LoanDetails extends StatelessWidget {
           ...things.map((thing) {
             return Detail(
               useListTile: true,
-              prefixIcon: iconPlaceholder,
               value: '#${thing.number} ${thing.name}',
             );
           })
@@ -97,7 +91,7 @@ class LoanDetails extends StatelessWidget {
                 return const Tooltip(
                   message: 'Overdue',
                   child: Icon(
-                    Icons.calendar_month,
+                    Icons.warning_rounded,
                     color: Colors.amber,
                   ),
                 );
@@ -107,15 +101,13 @@ class LoanDetails extends StatelessWidget {
           ),
           Detail(
             useListTile: true,
-            prefixIcon: iconPlaceholder,
             label: 'Checked Out',
             value:
                 '${checkedOutDate.month}/${checkedOutDate.day}/${checkedOutDate.year}',
           ),
           Detail(
             useListTile: true,
-            prefixIcon: iconPlaceholder,
-            label: 'Due Back',
+            label: isOverdue ? 'Due Back (Overdue)' : 'Due Back',
             value: '${dueDate.month}/${dueDate.day}/${dueDate.year}',
           ),
         ],
@@ -133,7 +125,6 @@ class LoanDetails extends StatelessWidget {
           ),
           Detail(
             useListTile: true,
-            prefixIcon: iconPlaceholder,
             value: notes,
             placeholderText: '-',
           ),
