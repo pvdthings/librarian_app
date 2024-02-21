@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/actions/widgets/action_wizard.dart';
 import 'package:librarian_app/src/features/actions/widgets/action_wizard_controller.dart';
 import 'package:librarian_app/src/features/actions/widgets/extend_all_due_dates/extend_all_due_dates.dart';
+import 'package:librarian_app/src/widgets/circular_progress_icon.dart';
 
 class ActionWizardDialog extends StatelessWidget {
   const ActionWizardDialog({
@@ -38,7 +39,9 @@ class ActionWizardDialog extends StatelessWidget {
             builder: (context, child) {
               return FilledButton.icon(
                 onPressed: controller.onExecute,
-                icon: const Icon(Icons.play_arrow_rounded),
+                icon: !controller.isLoading
+                    ? const Icon(Icons.play_arrow_rounded)
+                    : const CircularProgressIcon(),
                 label: const Text('Run Action'),
               );
             },

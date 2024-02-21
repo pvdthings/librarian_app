@@ -17,7 +17,7 @@ class ActionWizardController extends ChangeNotifier {
     _dueDate = value;
 
     if (value != null) {
-      dueDateController.text = '${_dueDate!.month}/${_dueDate!.day}';
+      dueDateController.text = formatDateForHumans(value);
     }
 
     notifyListeners();
@@ -25,17 +25,40 @@ class ActionWizardController extends ChangeNotifier {
 
   final dueDateController = TextEditingController();
 
-  void Function()? get onExecute => _dueDate != null ? _runAction : null;
+  bool _isLoading = false;
 
-  void _runAction() {
-    service.extendAllDueDates(dueDate!).then((value) {
-      Navigator.of(context).pop(value);
+  bool get isLoading => _isLoading;
 
-      if (value) {
-        final dateString = formatDateForHumans(dueDate!);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('All due dates were updated to $dateString')));
-      }
+  set isLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  Future<void> Function()? get onExecute =>
+      _dueDate != null && !isLoading ? _runAction : null;
+
+  Future<void> _runAction() {
+    isLoading = true;
+    return service.extendAllDueDates(dueDate!).then((success) {
+      Future.delayed(Duration(seconds: success ? 5 : 0), () {
+        Navigator.of(context).pop(success);
+
+        if (success) {
+          final dateString = formatDateForHumans(dueDate!);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('All due dates were updated to $dateString')));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Row(
+              children: [
+                Icon(Icons.error, color: Colors.red),
+                SizedBox(width: 8),
+                Text('Whoops! Due dates could not be extended.'),
+              ],
+            ),
+          ));
+        }
+      });
     });
   }
 }
