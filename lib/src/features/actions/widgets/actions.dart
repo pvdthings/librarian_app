@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/actions/providers/actions_service_provider.dart';
+import 'package:librarian_app/src/features/actions/widgets/action_controller.dart';
+import 'package:librarian_app/src/features/actions/widgets/extend_all_due_dates/extend_all_due_dates.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 import 'package:librarian_app/src/widgets/detail.dart';
 
-class Actions extends StatelessWidget {
+class Actions extends ConsumerWidget {
   const Actions({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    final actions = [
-      const Action(
-        title: 'Extend All Due Dates',
-        actionEndpoint: '',
-        description:
-            'Extends all loan due dates to a new specified date. This is very useful if open hours have been canceled.',
-      ),
-    ];
+  static const String notAuthorizedMessage =
+      'You do not have permission to run this action.\nPlease contact an administrator.';
 
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final isMobileScreen = isMobile(context);
 
     return SizedBox(
@@ -27,16 +25,18 @@ class Actions extends StatelessWidget {
         children: [
           Wrap(
             children: [
-              ...actions.map((a) {
-                return FractionallySizedBox(
-                  widthFactor: isMobileScreen ? 1 : 0.33,
-                  child: _Action(
-                    title: a.title,
-                    description: a.description,
-                    onRun: () {},
+              // Currently hard-coded for a single action.
+              FractionallySizedBox(
+                widthFactor: isMobileScreen ? 1 : 0.33,
+                child: _Action(
+                  controller: ActionController(
+                    context,
+                    service: ref.read(actionsServiceProvider),
                   ),
-                );
-              }),
+                  title: ExtendAllDueDates.title,
+                  description: ExtendAllDueDates.description,
+                ),
+              ),
             ],
           ),
         ],
@@ -45,28 +45,16 @@ class Actions extends StatelessWidget {
   }
 }
 
-class Action {
-  const Action({
-    required this.title,
-    this.description,
-    required this.actionEndpoint,
-  });
-
-  final String title;
-  final String? description;
-  final String actionEndpoint;
-}
-
 class _Action extends StatelessWidget {
   const _Action({
+    required this.controller,
     required this.title,
     this.description,
-    this.onRun,
   });
 
+  final ActionController controller;
   final String title;
   final String? description;
-  final Function()? onRun;
 
   @override
   Widget build(BuildContext context) {
@@ -89,20 +77,40 @@ class _Action extends StatelessWidget {
               useListTile: true,
               label: 'Description',
               value: description!,
+              valueFontSize: 18,
             ),
-          if (onRun != null)
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FilledButton(
-                    onPressed: onRun,
-                    child: const Text('Run Action'),
-                  ),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FutureBuilder(
+                  future: controller.isAuthorized(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    final isAuthorized = snapshot.data ?? false;
+
+                    final button = FilledButton(
+                      onPressed: isAuthorized ? controller.showWizard : null,
+                      child: const Text('Run Action'),
+                    );
+
+                    if (!isAuthorized) {
+                      return Tooltip(
+                        message: Actions.notAuthorizedMessage,
+                        child: button,
+                      );
+                    }
+
+                    return button;
+                  },
+                ),
+              ],
             ),
+          ),
         ],
       ),
     );
