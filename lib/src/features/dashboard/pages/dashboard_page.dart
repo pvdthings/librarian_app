@@ -78,10 +78,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     const DashboardModule(
       title: 'Actions',
       desktopLayout: librarian_actions.Actions(),
-      mobileLayout: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: librarian_actions.Actions(),
-      ),
+      mobileLayout: null,
     ),
   ];
 
@@ -218,11 +215,6 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                         icon: Icon(Icons.build_outlined),
                         label: "Things",
                       ),
-                      NavigationDestination(
-                        selectedIcon: Icon(Icons.electric_bolt),
-                        icon: Icon(Icons.electric_bolt_outlined),
-                        label: "Actions",
-                      ),
                     ],
                   ),
                 )
@@ -243,5 +235,5 @@ class DashboardModule {
 
   final String title;
   final Widget desktopLayout;
-  final Widget mobileLayout;
+  final Widget? mobileLayout;
 }
