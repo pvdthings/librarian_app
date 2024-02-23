@@ -5,6 +5,7 @@ class Detail extends StatelessWidget {
     super.key,
     this.label,
     this.value,
+    this.valueFontSize = 20,
     this.prefixIcon,
     this.suffixIcon,
     this.minWidth,
@@ -14,6 +15,7 @@ class Detail extends StatelessWidget {
 
   final String? label;
   final String? value;
+  final double valueFontSize;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final double? minWidth;
@@ -32,7 +34,8 @@ class Detail extends StatelessWidget {
             ? null
             : Text(value ?? placeholderText!),
         subtitleTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-            fontSize: 20, color: value == null ? Colors.white54 : null),
+            fontSize: valueFontSize,
+            color: value == null ? Colors.white54 : null),
       );
     }
 

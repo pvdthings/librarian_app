@@ -16,6 +16,8 @@ import 'package:librarian_app/src/features/loans/pages/loan_details_page.dart';
 import 'package:librarian_app/src/features/loans/widgets/loans_list/searchable_loans_list.dart';
 import 'package:librarian_app/src/features/loans/widgets/layouts/loans_desktop_layout.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
+import 'package:librarian_app/src/features/actions/widgets/actions.dart'
+    as librarian_actions;
 
 import '../widgets/desktop_dashboard.dart';
 
@@ -72,6 +74,11 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           ));
         },
       ),
+    ),
+    const DashboardModule(
+      title: 'Actions',
+      desktopLayout: librarian_actions.Actions(),
+      mobileLayout: null,
     ),
   ];
 
@@ -228,5 +235,5 @@ class DashboardModule {
 
   final String title;
   final Widget desktopLayout;
-  final Widget mobileLayout;
+  final Widget? mobileLayout;
 }
