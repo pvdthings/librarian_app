@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/actions/providers/actions_service_provider.dart';
 import 'package:librarian_app/src/features/actions/widgets/action_controller.dart';
-import 'package:librarian_app/src/features/actions/widgets/extend_all_due_dates/extend_all_due_dates.dart';
+import 'package:librarian_app/src/features/actions/widgets/extend_active_loans/extend_active_loans.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 import 'package:librarian_app/src/widgets/detail.dart';
 
@@ -33,8 +33,8 @@ class Actions extends ConsumerWidget {
                     context,
                     service: ref.read(actionsServiceProvider),
                   ),
-                  title: ExtendAllDueDates.title,
-                  description: ExtendAllDueDates.description,
+                  title: ExtendActiveLoans.title,
+                  description: ExtendActiveLoans.description,
                 ),
               ),
             ],

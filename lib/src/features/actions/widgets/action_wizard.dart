@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/actions/widgets/action_wizard_controller.dart';
-import 'package:librarian_app/src/features/actions/widgets/extend_all_due_dates/extend_all_due_dates.dart';
+import 'package:librarian_app/src/features/actions/widgets/extend_active_loans/extend_active_loans.dart';
 
 class ActionWizard extends StatefulWidget {
   const ActionWizard({
@@ -21,7 +21,7 @@ class _ActionWizardState extends State<ActionWizard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(ExtendAllDueDates.description),
+          const Text(ExtendActiveLoans.description),
           const SizedBox(height: 32),
           TextFormField(
             controller: widget.controller.dueDateController,

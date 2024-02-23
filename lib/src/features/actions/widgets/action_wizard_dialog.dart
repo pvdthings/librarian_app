@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/features/actions/widgets/action_wizard.dart';
 import 'package:librarian_app/src/features/actions/widgets/action_wizard_controller.dart';
-import 'package:librarian_app/src/features/actions/widgets/extend_all_due_dates/extend_all_due_dates.dart';
+import 'package:librarian_app/src/features/actions/widgets/extend_active_loans/extend_active_loans.dart';
 import 'package:librarian_app/src/widgets/circular_progress_icon.dart';
 
 class ActionWizardDialog extends StatelessWidget {
@@ -22,7 +22,7 @@ class ActionWizardDialog extends StatelessWidget {
           Icons.electric_bolt_rounded,
           color: Colors.amber,
         ),
-        title: const Text(ExtendAllDueDates.title),
+        title: const Text(ExtendActiveLoans.title),
         content: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ActionWizard(controller: controller),
