@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:librarian_app/src/widgets/circular_progress_icon.dart';
 
 class FilledProgressButton extends StatefulWidget {
   const FilledProgressButton({
@@ -22,11 +23,7 @@ class _FilledProgressButtonState extends State<FilledProgressButton> {
     if (_isLoading) {
       return FilledButton.icon(
         onPressed: null,
-        icon: const SizedBox(
-          width: 16,
-          height: 16,
-          child: CircularProgressIndicator(strokeWidth: 2),
-        ),
+        icon: const CircularProgressIcon(),
         label: widget.child,
       );
     }

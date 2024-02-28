@@ -1,41 +1,24 @@
 import 'package:dio/dio.dart';
-import 'package:librarian_app/constants.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:librarian_app/src/api/dio_client.dart';
 
 class LendingApi {
-  static Dio get _client => Dio(BaseOptions(
-        baseUrl: apiHost,
-        contentType: 'application/json',
-        headers: {
-          'x-api-key': apiKey,
-          'supabase-access-token': _accessToken,
-          'supabase-refresh-token': _refreshToken,
-        },
-      ));
-
-  static String get _refreshToken =>
-      Supabase.instance.client.auth.currentSession?.refreshToken ?? '';
-
-  static String get _accessToken =>
-      Supabase.instance.client.auth.currentSession?.accessToken ?? '';
-
   static Future<Response> getCategories() async {
-    return await _client.get('/things/categories');
+    return await DioClient.instance.get('/things/categories');
   }
 
   static Future<Response> fetchLoans() async {
-    return await _client.get('/loans');
+    return await DioClient.instance.get('/loans');
   }
 
   static Future<Response> fetchLoan({
     required String id,
     required String thingId,
   }) async {
-    return await _client.get('/loans/$id/$thingId');
+    return await DioClient.instance.get('/loans/$id/$thingId');
   }
 
   static Future<Response> createLoan(NewLoan data) async {
-    return await _client.put('/loans', data: {
+    return await DioClient.instance.put('/loans', data: {
       'borrowerId': data.borrowerId,
       'thingIds': data.thingIds,
       'checkedOutDate': data.checkedOutDate,
@@ -54,16 +37,16 @@ class LendingApi {
       data['notes'] = loanData.notes;
     }
 
-    return await _client.patch('/loans/${loanData.loanId}/${loanData.thingId}',
-        data: data);
+    return await DioClient.instance
+        .patch('/loans/${loanData.loanId}/${loanData.thingId}', data: data);
   }
 
   static Future<Response> fetchBorrower(String id) async {
-    return await _client.get('/borrowers/$id');
+    return await DioClient.instance.get('/borrowers/$id');
   }
 
   static Future<Response> fetchBorrowers() async {
-    return await _client.get('/borrowers');
+    return await DioClient.instance.get('/borrowers');
   }
 
   static Future<Response> updateBorrower(
@@ -81,22 +64,22 @@ class LendingApi {
       data['phone'] = phone;
     }
 
-    return await _client.patch('/borrowers/$id/contact', data: data);
+    return await DioClient.instance.patch('/borrowers/$id/contact', data: data);
   }
 
   static Future<Response> fetchThings() async {
-    return await _client.get('/things');
+    return await DioClient.instance.get('/things');
   }
 
   static Future<Response> fetchThing({required String id}) async {
-    return await _client.get('/things/$id');
+    return await DioClient.instance.get('/things/$id');
   }
 
   static Future<Response> createThing({
     required String name,
     String? spanishName,
   }) async {
-    return await _client.put('/things', data: {
+    return await DioClient.instance.put('/things', data: {
       'name': name,
       'spanishName': spanishName,
     });
@@ -109,7 +92,7 @@ class LendingApi {
     bool? hidden,
     ImageDTO? image,
   }) async {
-    return await _client.patch('/things/$thingId', data: {
+    return await DioClient.instance.patch('/things/$thingId', data: {
       'name': name,
       'spanishName': spanishName,
       'hidden': hidden,
@@ -118,24 +101,24 @@ class LendingApi {
   }
 
   static Future<Response> deleteThing(String id) async {
-    return await _client.delete('/things/$id');
+    return await DioClient.instance.delete('/things/$id');
   }
 
   static Future<Response> updateThingCategories(
     String id, {
     required List<String> categories,
   }) async {
-    return await _client.patch('/things/$id/categories', data: {
+    return await DioClient.instance.patch('/things/$id/categories', data: {
       'categories': categories,
     });
   }
 
   static Future<Response> deleteThingImage(String thingId) async {
-    return await _client.delete('/things/$thingId/image');
+    return await DioClient.instance.delete('/things/$thingId/image');
   }
 
   static Future<Response> fetchInventoryItem({required int number}) async {
-    return await _client.get('/inventory/$number');
+    return await DioClient.instance.get('/inventory/$number');
   }
 
   static Future<Response> createInventoryItems(
@@ -145,7 +128,7 @@ class LendingApi {
     required String? description,
     required double? estimatedValue,
   }) async {
-    return await _client.put('/inventory', data: {
+    return await DioClient.instance.put('/inventory', data: {
       'thingId': thingId,
       'quantity': quantity,
       'brand': brand,
@@ -162,7 +145,7 @@ class LendingApi {
     double? estimatedValue,
     bool? hidden,
   }) async {
-    return await _client.patch('/inventory/$id', data: {
+    return await DioClient.instance.patch('/inventory/$id', data: {
       'brand': brand,
       'condition': condition,
       'description': description,
@@ -172,26 +155,26 @@ class LendingApi {
   }
 
   static Future<Response> deleteInventoryItem(String id) async {
-    return await _client.delete('/inventory/$id');
+    return await DioClient.instance.delete('/inventory/$id');
   }
 
   static Future<Response> fetchPayments({
     required String borrowerId,
   }) async {
-    return await _client.get('/payments/$borrowerId');
+    return await DioClient.instance.get('/payments/$borrowerId');
   }
 
   static Future<Response> recordCashPayment({
     required double cash,
     required String borrowerId,
   }) async {
-    return await _client.put('/payments/$borrowerId', data: {
+    return await DioClient.instance.put('/payments/$borrowerId', data: {
       'cash': cash,
     });
   }
 
   static Future<Response> sendReminderEmail({required int loanNumber}) async {
-    return await _client.post('/messages/loan-reminder', data: {
+    return await DioClient.instance.post('/messages/loan-reminder', data: {
       'loanNumber': loanNumber,
     });
   }
