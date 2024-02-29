@@ -1,50 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/loans/providers/loan_details_provider.dart';
+import 'package:librarian_app/src/features/loans/providers/selected_loan_provider.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details_header.dart';
 
-import '../../models/loan_model.dart';
+import '../../providers/loans_repository_provider.dart';
 import 'loan_details.dart';
 
-class LoanDetailsPane extends StatelessWidget {
-  final LoanModel? loan;
-  final void Function(DateTime dueDate, String? notes) onSave;
-  final void Function() onCheckIn;
-
-  const LoanDetailsPane({
-    super.key,
-    required this.loan,
-    required this.onSave,
-    required this.onCheckIn,
-  });
+class LoanDetailsPane extends ConsumerWidget {
+  const LoanDetailsPane({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedLoan = ref.read(selectedLoanProvider);
+    final loanDetailsFuture = ref.watch(loanDetailsProvider);
+
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: loan == null
+      child: selectedLoan == null
           ? const Center(child: Text('Loan Details'))
-          : Column(
-              children: [
-                LoanDetailsHeader(
-                  loan: loan!,
-                  onSave: onSave,
-                  onCheckIn: onCheckIn,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: LoanDetails(
-                        borrower: loan!.borrower,
-                        things: [loan!.thing],
-                        notes: loan!.notes,
-                        checkedOutDate: loan!.checkedOutDate,
-                        dueDate: loan!.dueDate,
-                        isOverdue: loan!.isOverdue,
+          : FutureBuilder(
+              future: loanDetailsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: Text(snapshot.error.toString()));
+                }
+
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final loanDetails = snapshot.data!;
+
+                return Column(
+                  children: [
+                    LoanDetailsHeader(
+                      loan: loanDetails,
+                      onSave: (dueDate, notes) {
+                        ref.read(loansRepositoryProvider.notifier).updateLoan(
+                            loanId: selectedLoan.id,
+                            thingId: selectedLoan.thing.id,
+                            dueBackDate: dueDate,
+                            notes: notes);
+                      },
+                      onCheckIn: () {
+                        ref
+                            .read(loansRepositoryProvider.notifier)
+                            .closeLoan(
+                              loanId: selectedLoan.id,
+                              thingId: selectedLoan.thing.id,
+                            )
+                            .then((_) {
+                          ref.read(selectedLoanProvider.notifier).state = null;
+                        });
+                      },
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: LoanDetails(
+                            borrower: loanDetails.borrower,
+                            things: [loanDetails.thing],
+                            notes: loanDetails.notes,
+                            checkedOutDate: loanDetails.checkedOutDate,
+                            dueDate: loanDetails.dueDate,
+                            isOverdue: loanDetails.isOverdue,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
     );
   }

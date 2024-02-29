@@ -44,7 +44,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LoanDetailsPage(loan),
+              builder: (context) => const LoanDetailsPage(),
             ),
           );
         },
