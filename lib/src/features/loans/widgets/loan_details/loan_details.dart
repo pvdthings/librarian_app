@@ -75,31 +75,7 @@ class LoanDetails extends StatelessWidget {
               shape: BoxShape.rectangle,
             ),
             height: 240,
-            child: things[0].images.isEmpty
-                ? const Center(
-                    child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [Icon(Icons.image), Text('No image')],
-                  ))
-                : Image.network(
-                    things[0].images[0],
-                    fit: BoxFit.contain,
-                    height: 240,
-                    loadingBuilder: (context, child, event) {
-                      if (event == null) {
-                        return child;
-                      }
-
-                      final progress = event.cumulativeBytesLoaded /
-                          (event.expectedTotalBytes ?? 1);
-
-                      return Center(
-                        child: CircularProgressIndicator(value: progress),
-                      );
-                    },
-                  ),
+            child: _ThingImage(urls: things[0].images),
           ),
         ],
       ),
@@ -189,6 +165,42 @@ class LoanDetails extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ThingImage extends StatelessWidget {
+  const _ThingImage({required this.urls});
+
+  final List<String> urls;
+
+  @override
+  Widget build(BuildContext context) {
+    if (urls.isEmpty) {
+      return const Center(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: [Icon(Icons.image), Text('No image')],
+      ));
+    }
+    return Image.network(
+      urls[0],
+      fit: BoxFit.contain,
+      height: 240,
+      loadingBuilder: (context, child, event) {
+        if (event == null) {
+          return child;
+        }
+
+        final progress =
+            event.cumulativeBytesLoaded / (event.expectedTotalBytes ?? 1);
+
+        return Center(
+          child: CircularProgressIndicator(value: progress),
+        );
+      },
     );
   }
 }
