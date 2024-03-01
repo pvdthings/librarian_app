@@ -22,8 +22,7 @@ class LendingApi {
       'borrowerId': data.borrowerId,
       'thingIds': data.thingIds,
       'checkedOutDate': data.checkedOutDate,
-      'dueBackDate': data.dueBackDate,
-      'notes': 'This loan was created by the Librarian app!'
+      'dueBackDate': data.dueBackDate
     });
   }
 
