@@ -6,7 +6,6 @@ import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/bo
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.dart';
 import 'package:librarian_app/src/features/loans/pages/loan_details_page.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_controller_provider.dart';
-import 'package:librarian_app/src/features/loans/providers/selected_loan_provider.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 import 'package:librarian_app/src/widgets/filled_progress_button.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
@@ -68,9 +67,8 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
       );
 
       if (isMobile(context)) {
-        final loan = ref.read(selectedLoanProvider)!;
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return LoanDetailsPage(loan);
+          return const LoanDetailsPage();
         }));
       }
     });
@@ -216,6 +214,7 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
                         id: t.id,
                         name: t.name,
                         number: t.number,
+                        images: [],
                       ))
                   .toList(),
               dueDate: _dueDate,

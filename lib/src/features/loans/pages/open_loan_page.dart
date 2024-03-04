@@ -59,6 +59,7 @@ class _OpenLoanPageState extends ConsumerState<OpenLoanPage> {
                       id: t.id,
                       name: t.name,
                       number: t.number,
+                      images: [],
                     ))
                 .toList(),
             checkedOutDate: DateTime.now(),

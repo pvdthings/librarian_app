@@ -21,12 +21,12 @@ class LoansListView extends ConsumerWidget {
     return FutureBuilder(
       future: filteredLoans,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
         if (snapshot.hasError) {
           return Center(child: Text(snapshot.error.toString()));
+        }
+
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasData && snapshot.data!.isEmpty) {
