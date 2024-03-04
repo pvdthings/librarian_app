@@ -4,7 +4,7 @@ import 'package:librarian_app/src/features/dashboard/widgets/panes/pane_header.w
 import 'package:librarian_app/src/features/loans/widgets/email/send_email_dialog.dart';
 import 'package:librarian_app/src/features/loans/widgets/loan_details/loan_details_controller.dart';
 
-import '../../models/loan_model.dart';
+import '../../models/loan_details_model.dart';
 import '../checkin/checkin_dialog.dart';
 import '../edit/edit_loan_dialog.dart';
 import 'thing_number.dart';
@@ -17,7 +17,7 @@ class LoanDetailsHeader extends ConsumerWidget {
     required this.onCheckIn,
   });
 
-  final LoanModel loan;
+  final LoanDetailsModel loan;
   final void Function(DateTime dueDate, String? notes) onSave;
   final void Function() onCheckIn;
 

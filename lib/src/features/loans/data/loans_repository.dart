@@ -1,19 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:librarian_app/src/api/lending_api.dart';
-import 'package:librarian_app/src/features/loans/models/loan_model.dart';
+
+import '../models/loan_details_model.dart';
+import '../models/loan_model.dart';
 
 class LoansRepository extends Notifier<Future<List<LoanModel>>> {
   @override
   Future<List<LoanModel>> build() async => await getLoans();
 
-  Future<LoanModel?> getLoan({
+  Future<LoanDetailsModel?> getLoan({
     required String id,
     required String thingId,
   }) async {
     try {
       final response = await LendingApi.fetchLoan(id: id, thingId: thingId);
-      return LoanModel.fromJson(response.data as Map<String, dynamic>);
+      return LoanDetailsModel.fromJson(response.data as Map<String, dynamic>);
     } catch (error) {
       return null;
     }
