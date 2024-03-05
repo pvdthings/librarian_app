@@ -113,26 +113,12 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
           subtitle: _borrower != null ? Text(_borrower!.name) : null,
           content: Column(
             children: [
-              TextField(
-                controller: TextEditingController(text: _borrower?.name),
-                canRequestFocus: false,
-                decoration: const InputDecoration(
-                  labelText: 'Borrower',
-                  prefixIcon: Icon(Icons.person_rounded),
-                ),
-                onTap: () {
-                  ref.invalidate(borrowersRepositoryProvider);
-                  ref.read(borrowersRepositoryProvider).then((borrowers) async {
-                    return await showSearch(
-                      context: context,
-                      delegate: BorrowerSearchDelegate(borrowers),
-                      useRootNavigator: true,
-                    );
-                  }).then((borrower) {
-                    if (borrower != null) {
-                      setState(() => _borrower = borrower);
-                    }
-                  });
+              _SelectBorrowerTextField(
+                text: _borrower?.name,
+                onSelected: (borrower) {
+                  if (borrower != null) {
+                    setState(() => _borrower = borrower);
+                  }
                 },
               ),
               if (_borrower != null && !_borrower!.active) ...[
@@ -226,6 +212,53 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
           isActive: _index >= 2,
         ),
       ],
+    );
+  }
+}
+
+class _SelectBorrowerTextField extends ConsumerStatefulWidget {
+  const _SelectBorrowerTextField({
+    required this.text,
+    required this.onSelected,
+  });
+
+  final String? text;
+  final void Function(BorrowerModel? borrower) onSelected;
+
+  @override
+  ConsumerState<_SelectBorrowerTextField> createState() =>
+      _SelectBorrowerTextFieldState();
+}
+
+class _SelectBorrowerTextFieldState
+    extends ConsumerState<_SelectBorrowerTextField> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: TextEditingController(text: widget.text),
+      canRequestFocus: false,
+      decoration: InputDecoration(
+        labelText: _isLoading ? 'Loading...' : 'Borrower',
+        prefixIcon: const Icon(Icons.person_rounded),
+      ),
+      enabled: !_isLoading,
+      onTap: () {
+        setState(() => _isLoading = true);
+
+        ref.invalidate(borrowersRepositoryProvider);
+        ref.read(borrowersRepositoryProvider).then((borrowers) async {
+          return await showSearch(
+            context: context,
+            delegate: BorrowerSearchDelegate(borrowers),
+            useRootNavigator: true,
+          );
+        }).then((borrower) {
+          widget.onSelected(borrower);
+          setState(() => _isLoading = false);
+        });
+      },
     );
   }
 }
