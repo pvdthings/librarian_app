@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory_repository.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 
@@ -29,15 +30,17 @@ class ConnectedThingSearchField extends StatelessWidget {
       controller: _textController,
       onSubmitted: (_) => _submit(),
       decoration: InputDecoration(
-        hintText: 'Enter Thing #',
-        prefixText: '#',
-        prefixIcon: const Icon(Icons.build_rounded),
-        suffix: IconButton(
+        hintText: 'Enter Thing Number',
+        prefixIcon: const Icon(Icons.numbers),
+        suffixIcon: IconButton(
           tooltip: 'Add Thing',
           onPressed: () => _submit(),
           icon: const Icon(Icons.add_rounded),
         ),
       ),
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+      ],
     );
   }
 }
