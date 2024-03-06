@@ -15,6 +15,8 @@ import 'package:librarian_app/src/features/loans/pages/checkout_page.dart';
 import 'package:librarian_app/src/features/loans/pages/loan_details_page.dart';
 import 'package:librarian_app/src/features/loans/widgets/loans_list/searchable_loans_list.dart';
 import 'package:librarian_app/src/features/loans/widgets/layouts/loans_desktop_layout.dart';
+import 'package:librarian_app/src/features/updates/widgets/update_dialog_controller.dart';
+import 'package:librarian_app/src/features/updates/notifiers/update_notifier.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 import 'package:librarian_app/src/features/actions/widgets/actions.dart'
     as librarian_actions;
@@ -32,6 +34,16 @@ class DashboardPage extends ConsumerStatefulWidget {
 
 class _DashboardPageState extends ConsumerState<DashboardPage> {
   final _createButtonKey = GlobalKey<State>();
+  final _updateNotifier = UpdateNotifier();
+
+  @override
+  void initState() {
+    super.initState();
+    _updateNotifier.addListener(() {
+      UpdateDialogController(context)
+          .showUpdateDialog(_updateNotifier.newerVersion!);
+    });
+  }
 
   int _moduleIndex = 0;
 
