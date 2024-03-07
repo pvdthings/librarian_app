@@ -37,6 +37,30 @@ class SignInPage extends ConsumerWidget {
       }
     }
 
+    final card = Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Spacer(),
+            Image.asset(
+              "pvd_things.png",
+              isAntiAlias: true,
+              width: 160,
+            ),
+            const Spacer(),
+            DiscordSigninButton(onPressed: signIn),
+            if (ref.watch(signinErrorProvider) != null) ...[
+              const SizedBox(height: 16),
+              Text(ref.read(signinErrorProvider)!)
+            ],
+            const Spacer(),
+          ],
+        ),
+      ),
+    );
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -45,29 +69,7 @@ class SignInPage extends ConsumerWidget {
             heightFactor: 2 / 5,
             child: AspectRatio(
               aspectRatio: 1 / 1,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      Image.asset(
-                        "pvd_things.png",
-                        isAntiAlias: true,
-                        width: 160,
-                      ),
-                      const Spacer(),
-                      DiscordSigninButton(onPressed: signIn),
-                      if (ref.watch(signinErrorProvider) != null) ...[
-                        const SizedBox(height: 16),
-                        Text(ref.read(signinErrorProvider)!)
-                      ],
-                      const Spacer(),
-                    ],
-                  ),
-                ),
-              ),
+              child: card,
             ),
           ),
         ),

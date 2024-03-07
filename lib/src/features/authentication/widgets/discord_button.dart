@@ -13,8 +13,8 @@ class DiscordSigninButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor,
-        textStyle: const TextStyle(fontSize: 20),
         padding: const EdgeInsets.all(16),
+        textStyle: const TextStyle(fontSize: 20),
       ),
     );
   }
