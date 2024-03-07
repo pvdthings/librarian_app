@@ -81,6 +81,9 @@ class _LogoImage extends StatelessWidget {
     if (Library.logoUrl != null) {
       return Image.network(
         Library.logoUrl!,
+        loadingBuilder: (context, child, progress) {
+          return Center(child: child);
+        },
         isAntiAlias: true,
         width: 160,
       );
