@@ -40,30 +40,34 @@ class SignInPage extends ConsumerWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "pvd_things.png",
-                isAntiAlias: true,
-                width: 160,
-              ),
-              const SizedBox(height: 32),
-              DiscordSigninButton(onPressed: signIn),
-              if (ref.watch(signinErrorProvider) != null) ...[
-                const SizedBox(height: 16),
-                Text(ref.read(signinErrorProvider)!)
-              ],
-              const SizedBox(height: 32),
-              const Card(
+          child: FractionallySizedBox(
+            heightFactor: 2 / 5,
+            child: AspectRatio(
+              aspectRatio: 1 / 1,
+              child: Card(
                 child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                      'Only authorized users can sign in.\nPlease ask the PVD Things Digital Team for volunteer access.'),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Spacer(),
+                      Image.asset(
+                        "pvd_things.png",
+                        isAntiAlias: true,
+                        width: 160,
+                      ),
+                      const Spacer(),
+                      DiscordSigninButton(onPressed: signIn),
+                      if (ref.watch(signinErrorProvider) != null) ...[
+                        const SizedBox(height: 16),
+                        Text(ref.read(signinErrorProvider)!)
+                      ],
+                      const Spacer(),
+                    ],
+                  ),
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),
