@@ -28,8 +28,7 @@ class SignInPage extends ConsumerWidget {
       }
 
       try {
-        await ref.read(authServiceProvider).signIn();
-        onSignedIn();
+        ref.read(authServiceProvider).signIn().then((_) => onSignedIn());
       } on AuthException catch (error) {
         ref.read(signinErrorProvider.notifier).state = error.toString();
       } catch (error) {
