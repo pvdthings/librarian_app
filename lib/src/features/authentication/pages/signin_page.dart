@@ -5,6 +5,7 @@ import 'package:librarian_app/src/features/authentication/providers/signin_error
 import 'package:librarian_app/src/features/authentication/widgets/discord_button.dart';
 import 'package:librarian_app/src/features/authentication/providers/auth_service_provider.dart';
 import 'package:librarian_app/src/features/dashboard/pages/dashboard_page.dart';
+import 'package:librarian_app/src/widgets/fade_page_route.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignInPage extends ConsumerWidget {
@@ -14,7 +15,7 @@ class SignInPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     void onSignedIn() {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const DashboardPage()),
+        createFadePageRoute(child: const DashboardPage()),
         (route) => false,
       );
     }
