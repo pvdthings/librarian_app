@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/core/library.dart';
 import 'package:librarian_app/src/features/authentication/providers/signin_error_provider.dart';
 import 'package:librarian_app/src/features/authentication/widgets/discord_button.dart';
 import 'package:librarian_app/src/features/authentication/providers/auth_service_provider.dart';
@@ -44,11 +45,7 @@ class SignInPage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Spacer(),
-            Image.asset(
-              "pvd_things.png",
-              isAntiAlias: true,
-              width: 160,
-            ),
+            _LogoImage(),
             const Spacer(),
             DiscordSigninButton(onPressed: signIn),
             if (ref.watch(signinErrorProvider) != null) ...[
@@ -74,6 +71,24 @@ class SignInPage extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _LogoImage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    if (Library.logoUrl != null) {
+      return Image.network(
+        Library.logoUrl!,
+        isAntiAlias: true,
+        width: 160,
+      );
+    }
+
+    return const Icon(
+      Icons.local_library_outlined,
+      size: 160,
     );
   }
 }
