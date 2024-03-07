@@ -9,11 +9,12 @@ class DiscordSigninButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       icon: const Icon(Icons.discord_rounded),
-      label: const Text('Sign in with Discord'),
+      label: const Text('Sign in'),
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        textStyle: const TextStyle(fontSize: 20),
+        backgroundColor: Theme.of(context).primaryColor,
         padding: const EdgeInsets.all(16),
+        textStyle: const TextStyle(fontSize: 20),
       ),
     );
   }
