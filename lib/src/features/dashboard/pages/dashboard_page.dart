@@ -15,6 +15,8 @@ import 'package:librarian_app/src/features/loans/pages/checkout_page.dart';
 import 'package:librarian_app/src/features/loans/pages/loan_details_page.dart';
 import 'package:librarian_app/src/features/loans/widgets/loans_list/searchable_loans_list.dart';
 import 'package:librarian_app/src/features/loans/widgets/layouts/loans_desktop_layout.dart';
+import 'package:librarian_app/src/features/updates/widgets/update_dialog_controller.dart';
+import 'package:librarian_app/src/features/updates/notifiers/update_notifier.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 import 'package:librarian_app/src/features/actions/widgets/actions.dart'
     as librarian_actions;
@@ -32,6 +34,16 @@ class DashboardPage extends ConsumerStatefulWidget {
 
 class _DashboardPageState extends ConsumerState<DashboardPage> {
   final _createButtonKey = GlobalKey<State>();
+  final _updateNotifier = UpdateNotifier.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateNotifier.addListener(() {
+      UpdateDialogController(context)
+          .showUpdateDialog(_updateNotifier.newerVersion!);
+    });
+  }
 
   int _moduleIndex = 0;
 
@@ -165,8 +177,10 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             centerTitle: mobile,
             actions: [
               if (!mobile) ...[
+                _UpdateButton(),
+                const SizedBox(width: 32),
                 const UserTray(),
-                const SizedBox(width: 16),
+                const SizedBox(width: 32),
               ],
               IconButton(
                 onPressed: () {
@@ -236,4 +250,28 @@ class DashboardModule {
   final String title;
   final Widget desktopLayout;
   final Widget? mobileLayout;
+}
+
+class _UpdateButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: UpdateNotifier.instance,
+      builder: (context, _) {
+        final newVersion = UpdateNotifier.instance.newerVersion;
+
+        if (newVersion == null) {
+          return const SizedBox.shrink();
+        }
+
+        return IconButton(
+          onPressed: () {
+            UpdateDialogController(context).showUpdateDialog(newVersion);
+          },
+          tooltip: 'Update Available',
+          icon: const Icon(Icons.update, color: Colors.amber),
+        );
+      },
+    );
+  }
 }

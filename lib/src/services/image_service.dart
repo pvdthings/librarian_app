@@ -21,6 +21,10 @@ class ImageService {
 
     return ImageUploadResult(url: url);
   }
+
+  String getPublicUrl(String bucket, String path) {
+    return Supabase.instance.client.storage.from(bucket).getPublicUrl(path);
+  }
 }
 
 class ImageUploadResult {

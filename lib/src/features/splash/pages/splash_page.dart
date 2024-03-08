@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/authentication/pages/signin_page.dart';
 import 'package:librarian_app/src/features/authentication/providers/auth_service_provider.dart';
 import 'package:librarian_app/src/features/dashboard/pages/dashboard_page.dart';
+import 'package:librarian_app/src/widgets/fade_page_route.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -22,12 +23,12 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
       if (!service.hasValidSession) {
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const SignInPage()),
+          createFadePageRoute(child: const SignInPage()),
           (route) => false,
         );
       } else {
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const DashboardPage()),
+          createFadePageRoute(child: const DashboardPage()),
           (route) => false,
         );
       }
