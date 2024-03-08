@@ -54,4 +54,15 @@ class UpdateNotifier extends ChangeNotifier {
     return SemanticVersion.from(
         data['version'] as String, data['build_number'] as String);
   }
+
+  static UpdateNotifier? _instance;
+
+  static UpdateNotifier get instance {
+    if (_instance != null) {
+      return _instance!;
+    }
+
+    _instance = UpdateNotifier();
+    return _instance!;
+  }
 }

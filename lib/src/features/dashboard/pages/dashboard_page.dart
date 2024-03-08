@@ -34,7 +34,7 @@ class DashboardPage extends ConsumerStatefulWidget {
 
 class _DashboardPageState extends ConsumerState<DashboardPage> {
   final _createButtonKey = GlobalKey<State>();
-  final _updateNotifier = UpdateNotifier();
+  final _updateNotifier = UpdateNotifier.instance;
 
   @override
   void initState() {
@@ -177,8 +177,10 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             centerTitle: mobile,
             actions: [
               if (!mobile) ...[
+                _UpdateButton(),
+                const SizedBox(width: 32),
                 const UserTray(),
-                const SizedBox(width: 16),
+                const SizedBox(width: 32),
               ],
               IconButton(
                 onPressed: () {
@@ -248,4 +250,28 @@ class DashboardModule {
   final String title;
   final Widget desktopLayout;
   final Widget? mobileLayout;
+}
+
+class _UpdateButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: UpdateNotifier.instance,
+      builder: (context, _) {
+        final newVersion = UpdateNotifier.instance.newerVersion;
+
+        if (newVersion == null) {
+          return const SizedBox.shrink();
+        }
+
+        return IconButton(
+          onPressed: () {
+            UpdateDialogController(context).showUpdateDialog(newVersion);
+          },
+          tooltip: 'Update Available',
+          icon: const Icon(Icons.update, color: Colors.amber),
+        );
+      },
+    );
+  }
 }
