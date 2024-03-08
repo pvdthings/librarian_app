@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,22 +40,31 @@ class SignInPage extends ConsumerWidget {
       }
     }
 
+    final screenSize = MediaQuery.of(context).size;
+    final cardHeight = min<double>(240, screenSize.height);
+    final cardWidth = min<double>(cardHeight, screenSize.width);
+
     final card = Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Spacer(),
-            _LogoImage(),
-            const Spacer(),
-            DiscordSigninButton(onPressed: signIn),
-            if (ref.watch(signinErrorProvider) != null) ...[
-              const SizedBox(height: 16),
-              Text(ref.read(signinErrorProvider)!)
+        child: SizedBox(
+          height: cardHeight,
+          width: cardWidth,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Spacer(),
+              _LogoImage(),
+              const Spacer(),
+              DiscordSigninButton(onPressed: signIn),
+              if (ref.watch(signinErrorProvider) != null) ...[
+                const SizedBox(height: 16),
+                Text(ref.read(signinErrorProvider)!)
+              ],
+              const Spacer(),
             ],
-            const Spacer(),
-          ],
+          ),
         ),
       ),
     );
@@ -61,15 +72,7 @@ class SignInPage extends ConsumerWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Center(
-          child: FractionallySizedBox(
-            heightFactor: 2 / 5,
-            child: AspectRatio(
-              aspectRatio: 1 / 1,
-              child: card,
-            ),
-          ),
-        ),
+        child: Center(child: card),
       ),
     );
   }
@@ -85,13 +88,21 @@ class _LogoImage extends StatelessWidget {
           return Center(child: child);
         },
         isAntiAlias: true,
-        width: 160,
+        height: 120,
+      );
+    }
+
+    if (kDebugMode) {
+      return Image.asset(
+        'pvd_things.png',
+        isAntiAlias: true,
+        height: 120,
       );
     }
 
     return const Icon(
       Icons.local_library_outlined,
-      size: 160,
+      size: 120,
     );
   }
 }
