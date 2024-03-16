@@ -1,37 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details_controller.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/thing_image_card/thing_image_card.dart';
 import 'package:librarian_app/src/widgets/fields/checkbox_field.dart';
 import 'package:librarian_app/src/widgets/input_decoration.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
-import 'package:librarian_app/src/features/inventory/providers/edited_item_details_providers.dart';
-import 'package:librarian_app/src/utils/format.dart';
 
 class ItemDetails extends ConsumerWidget {
   const ItemDetails({
     super.key,
+    required this.controller,
     required this.item,
     required this.hiddenLocked,
   });
 
+  final ItemDetailsController controller;
   final ItemModel item;
   final bool hiddenLocked;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Builder(
-          builder: (context) {
+        ListenableBuilder(
+          listenable: controller,
+          builder: (context, _) {
+            return ThingImageCard(
+              imageUrl: item.imageUrls.firstOrNull,
+              imageBytes: controller.uploadedImageBytes,
+              height: 240,
+              onRemove: controller.removeImage,
+              onReplace: controller.replaceImage,
+              useNewDesign: true,
+            );
+          },
+        ),
+        const SizedBox(height: 32),
+        ListenableBuilder(
+          listenable: controller,
+          builder: (context, _) {
             final checkbox = CheckboxField(
-              title: 'Hidden',
-              value: ref.watch(hiddenProvider) ?? item.hidden,
+              title: 'Hide in Catalog',
+              value: controller.hiddenNotifier.value,
               onChanged: hiddenLocked
                   ? null
                   : (value) {
-                      ref.read(hiddenProvider.notifier).state = value;
+                      controller.hiddenNotifier.value = value ?? false;
                     },
             );
 
@@ -45,65 +62,63 @@ class ItemDetails extends ConsumerWidget {
             );
           },
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 32),
         TextFormField(
-          controller: TextEditingController(text: item.brand),
+          controller: controller.brandController,
           decoration: inputDecoration.copyWith(
             labelText: 'Brand',
             hintText: 'Generic',
           ),
-          onChanged: (value) {
-            ref.read(brandProvider.notifier).state = value;
-          },
         ),
         const SizedBox(height: 16),
         TextFormField(
-          controller: TextEditingController(text: item.description),
+          controller: controller.descriptionController,
           decoration: inputDecoration.copyWith(labelText: 'Description'),
-          onChanged: (value) {
-            ref.read(descriptionProvider.notifier).state = value;
-          },
         ),
         const SizedBox(height: 16),
         TextFormField(
-          controller:
-              TextEditingController(text: formatNumber(item.estimatedValue)),
+          controller: controller.estimatedValueController,
           decoration: inputDecoration.copyWith(
             labelText: 'Estimated Value (\$)',
             prefixText: '\$ ',
           ),
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           keyboardType: TextInputType.number,
-          onChanged: (value) {
-            ref.read(estimatedValueProvider.notifier).state =
-                double.tryParse(value);
-          },
         ),
         const SizedBox(height: 16),
-        DropdownButtonFormField(
-          decoration: inputDecoration.copyWith(labelText: 'Condition'),
-          items: const [
-            DropdownMenuItem(
-              value: 'Like New',
-              child: Text('Like New'),
-            ),
-            DropdownMenuItem(
-              value: 'Lightly Used',
-              child: Text('Lightly Used'),
-            ),
-            DropdownMenuItem(
-              value: 'Heavily Used',
-              child: Text('Heavily Used'),
-            ),
-            DropdownMenuItem(
-              value: 'Damaged',
-              child: Text('Damaged'),
-            ),
-          ],
-          onChanged: (value) {
-            ref.read(conditionProvider.notifier).state = value;
+        ListenableBuilder(
+          listenable: controller,
+          builder: (context, _) {
+            return DropdownButtonFormField(
+              decoration: inputDecoration.copyWith(labelText: 'Condition'),
+              items: const [
+                DropdownMenuItem(
+                  value: null,
+                  child: Text('None'),
+                ),
+                DropdownMenuItem(
+                  value: 'Like New',
+                  child: Text('Like New'),
+                ),
+                DropdownMenuItem(
+                  value: 'Lightly Used',
+                  child: Text('Lightly Used'),
+                ),
+                DropdownMenuItem(
+                  value: 'Heavily Used',
+                  child: Text('Heavily Used'),
+                ),
+                DropdownMenuItem(
+                  value: 'Damaged',
+                  child: Text('Damaged'),
+                ),
+              ],
+              onChanged: (value) {
+                controller.conditionNotifier.value = value;
+              },
+              value: controller.conditionNotifier.value,
+            );
           },
-          value: item.condition,
         ),
       ],
     );

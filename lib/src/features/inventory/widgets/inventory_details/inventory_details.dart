@@ -41,6 +41,8 @@ class InventoryDetails extends ConsumerWidget {
               runSpacing: 32,
               children: [
                 ThingImageCard(
+                  width: 240,
+                  height: 240,
                   imageUrl: ref.watch(imageUploadProvider) != null
                       ? null
                       : details.images.firstOrNull?.url,

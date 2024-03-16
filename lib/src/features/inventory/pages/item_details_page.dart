@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:librarian_app/src/features/inventory/providers/edited_item_details_providers.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details_controller.dart';
 
 import '../models/item_model.dart';
 
-class ItemDetailsPage extends ConsumerWidget {
+class ItemDetailsPage extends ConsumerStatefulWidget {
   const ItemDetailsPage({
     super.key,
     required this.item,
@@ -16,44 +16,51 @@ class ItemDetailsPage extends ConsumerWidget {
   final bool hiddenLocked;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return WillPopScope(
-      onWillPop: () async {
-        ref.read(itemDetailsEditorProvider).discardChanges();
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('#${item.number} ${item.name}'),
+  ConsumerState<ItemDetailsPage> createState() => _ItemDetailsPageState();
+}
+
+class _ItemDetailsPageState extends ConsumerState<ItemDetailsPage> {
+  late final _controller = ItemDetailsController(item: widget.item);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('#${widget.item.number} ${widget.item.name}'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ItemDetails(
+          controller: _controller,
+          item: widget.item,
+          hiddenLocked: widget.hiddenLocked,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ItemDetails(item: item, hiddenLocked: hiddenLocked),
-        ),
-        floatingActionButton: _FloatingActionSaveButton(itemId: item.id),
+      ),
+      floatingActionButton: ListenableBuilder(
+        listenable: _controller,
+        builder: (_, __) {
+          return _FloatingActionSaveButton(
+            onPressed: _controller.saveChanges,
+          );
+        },
       ),
     );
   }
 }
 
 class _FloatingActionSaveButton extends ConsumerWidget {
-  const _FloatingActionSaveButton({required this.itemId});
+  const _FloatingActionSaveButton({
+    this.onPressed,
+  });
 
-  final String itemId;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Visibility(
-      visible: ref.watch(unsavedChangesProvider),
+      visible: onPressed != null,
       child: FloatingActionButton(
-        onPressed: ref.watch(unsavedChangesProvider)
-            ? () {
-                ref
-                    .read(itemDetailsEditorProvider)
-                    .save(itemId)
-                    .then((_) => Navigator.of(context).pop());
-              }
-            : null,
+        onPressed: onPressed,
         child: const Icon(Icons.save),
       ),
     );
