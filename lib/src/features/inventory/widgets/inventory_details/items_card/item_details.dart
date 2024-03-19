@@ -29,7 +29,7 @@ class ItemDetails extends ConsumerWidget {
           listenable: controller,
           builder: (context, _) {
             return ThingImageCard(
-              imageUrl: item.imageUrls.firstOrNull,
+              imageUrl: controller.existingImageUrl,
               imageBytes: controller.uploadedImageBytes,
               height: 240,
               onRemove: controller.removeImage,

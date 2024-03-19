@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details_controller.dart';
 import 'package:librarian_app/src/widgets/filled_progress_button.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
-import 'package:librarian_app/src/features/inventory/providers/edited_item_details_providers.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details.dart';
 
 class ItemDetailsDialog extends ConsumerStatefulWidget {
@@ -21,7 +21,18 @@ class ItemDetailsDialog extends ConsumerStatefulWidget {
 }
 
 class _ItemDetailsDialogState extends ConsumerState<ItemDetailsDialog> {
-  late final _controller = ItemDetailsController(item: widget.item);
+  late final _controller = ItemDetailsController(
+    item: widget.item,
+    repository: ref.read(thingsRepositoryProvider.notifier),
+    onSave: () {
+      setState(() => _isLoading = true);
+    },
+    onSaveComplete: () {
+      setState(() => _isLoading = false);
+    },
+  );
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +40,16 @@ class _ItemDetailsDialogState extends ConsumerState<ItemDetailsDialog> {
       scrollable: true,
       actions: [
         OutlinedButton(
-          onPressed: () {
-            ref.read(itemDetailsEditorProvider).discardChanges();
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
         ListenableBuilder(
           listenable: _controller,
           builder: (_, __) {
-            return _SaveButton(
-              itemId: widget.item.id,
+            return FilledProgressButton(
               onPressed: _controller.saveChanges,
+              isLoading: _isLoading,
+              child: const Text('Save'),
             );
           },
         ),
@@ -66,24 +75,6 @@ class _ItemDetailsDialogState extends ConsumerState<ItemDetailsDialog> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _SaveButton extends ConsumerWidget {
-  const _SaveButton({
-    required this.itemId,
-    this.onPressed,
-  });
-
-  final String itemId;
-  final void Function()? onPressed;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return FilledProgressButton(
-      onPressed: onPressed,
-      child: const Text('Save'),
     );
   }
 }

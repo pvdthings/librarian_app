@@ -3,36 +3,75 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:librarian_app/src/features/inventory/data/inventory_repository.dart';
+import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
 import 'package:librarian_app/src/utils/format.dart';
 
 import '../../../models/item_model.dart';
 
 class ItemDetailsController extends ChangeNotifier {
-  ItemDetailsController({this.item});
+  ItemDetailsController({
+    this.item,
+    this.repository,
+    this.onSave,
+    this.onSaveComplete,
+  }) {
+    _loadItemDetails();
+  }
 
-  final ItemModel? item;
+  ItemModel? item;
+  final InventoryRepository? repository;
+  final Function()? onSave;
+  final Function()? onSaveComplete;
 
-  late final hiddenNotifier = ValueNotifier(item?.hidden ?? false)
+  late ValueNotifier<bool> hiddenNotifier = ValueNotifier(false)
+    ..addListener(notifyListeners);
+  late TextEditingController brandController = TextEditingController()
+    ..addListener(notifyListeners);
+  late TextEditingController descriptionController = TextEditingController()
+    ..addListener(notifyListeners);
+  late TextEditingController estimatedValueController = TextEditingController()
+    ..addListener(notifyListeners);
+  late ValueNotifier<String?> conditionNotifier = ValueNotifier(null)
     ..addListener(notifyListeners);
 
-  late final brandController = TextEditingController(text: item?.brand)
-    ..addListener(notifyListeners);
+  bool _isLoading = false;
 
-  late final descriptionController =
-      TextEditingController(text: item?.description)
-        ..addListener(notifyListeners);
+  Future<void> _loadItemDetails() async {
+    _isLoading = true;
+    item = await repository?.getItem(number: item!.number);
 
-  late final estimatedValueController =
-      TextEditingController(text: formatNumber(item?.estimatedValue))
-        ..addListener(notifyListeners);
+    hiddenNotifier.value = (item?.hidden ?? false);
 
-  late final conditionNotifier = ValueNotifier(item?.condition)
-    ..addListener(notifyListeners);
+    if (item?.brand != null) {
+      brandController.text = item!.brand!;
+    }
+
+    if (item?.description != null) {
+      descriptionController.text = item!.description!;
+    }
+
+    final estimatedValue = formatNumber(item?.estimatedValue);
+    if (estimatedValue != null) {
+      estimatedValueController.text = estimatedValue;
+    }
+
+    if (item?.condition != null) {
+      conditionNotifier.value = item!.condition!;
+    }
+
+    _isLoading = false;
+  }
+
+  bool _removeExistingImage = false;
 
   Uint8List? _uploadedImageBytes;
   String? _uploadedImageType;
 
   Uint8List? get uploadedImageBytes => _uploadedImageBytes;
+
+  String? get existingImageUrl =>
+      _removeExistingImage ? null : item?.imageUrls.firstOrNull;
 
   void replaceImage() async {
     FilePickerResult? result =
@@ -46,28 +85,77 @@ class ItemDetailsController extends ChangeNotifier {
   }
 
   void _removeImage() {
+    if (existingImageUrl != null) {
+      _removeExistingImage = true;
+    }
+
     _uploadedImageBytes = null;
+    _uploadedImageType = null;
     notifyListeners();
   }
 
   void Function()? get removeImage {
-    if (_uploadedImageBytes == null) {
+    if (existingImageUrl == null && _uploadedImageBytes == null) {
       return null;
     }
 
     return _removeImage;
   }
 
-  void _saveChanges() {}
+  void _saveChanges() async {
+    onSave?.call();
+
+    final estimatedValue = double.tryParse(estimatedValueController.text);
+
+    await repository?.updateItem(item!.id,
+        brand: brandController.text,
+        description: descriptionController.text,
+        condition: conditionNotifier.value,
+        estimatedValue: estimatedValue,
+        hidden: hiddenNotifier.value,
+        image: createUpdatedImageModel());
+
+    _discardChanges();
+    await _loadItemDetails();
+    notifyListeners();
+
+    onSaveComplete?.call();
+  }
+
+  UpdatedImageModel? createUpdatedImageModel() {
+    if (_removeExistingImage) {
+      return const UpdatedImageModel(type: null, bytes: null);
+    }
+
+    if (_uploadedImageBytes != null) {
+      return UpdatedImageModel(
+        type: _uploadedImageType,
+        bytes: _uploadedImageBytes,
+      );
+    }
+
+    return null;
+  }
+
+  void _discardChanges() {
+    _uploadedImageBytes = null;
+    _uploadedImageType = null;
+    _removeExistingImage = false;
+  }
 
   void Function()? get saveChanges {
+    if (_isLoading || item == null || repository == null) {
+      return null;
+    }
+
     if (_uploadedImageBytes != null ||
         hiddenNotifier.value != (item?.hidden ?? false) ||
         brandController.text != (item?.brand ?? '') ||
         descriptionController.text != (item?.description ?? '') ||
         estimatedValueController.text !=
             (formatNumber(item?.estimatedValue) ?? '') ||
-        conditionNotifier.value != item?.condition) {
+        conditionNotifier.value != item?.condition ||
+        _removeExistingImage) {
       return _saveChanges;
     }
 
