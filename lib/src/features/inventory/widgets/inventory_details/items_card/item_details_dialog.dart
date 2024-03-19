@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details_controller.dart';
 import 'package:librarian_app/src/widgets/filled_progress_button.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
-import 'package:librarian_app/src/features/inventory/providers/edited_item_details_providers.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details.dart';
 
-class ItemDetailsDialog extends ConsumerWidget {
+class ItemDetailsDialog extends ConsumerStatefulWidget {
   const ItemDetailsDialog({
     super.key,
     required this.item,
@@ -16,21 +17,46 @@ class ItemDetailsDialog extends ConsumerWidget {
   final bool hiddenLocked;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ItemDetailsDialog> createState() => _ItemDetailsDialogState();
+}
+
+class _ItemDetailsDialogState extends ConsumerState<ItemDetailsDialog> {
+  late final _controller = ItemDetailsController(
+    item: widget.item,
+    repository: ref.read(thingsRepositoryProvider.notifier),
+    onSave: () {
+      setState(() => _isLoading = true);
+    },
+    onSaveComplete: () {
+      setState(() => _isLoading = false);
+    },
+  );
+
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
     return AlertDialog(
+      scrollable: true,
       actions: [
         OutlinedButton(
-          onPressed: () {
-            ref.read(itemDetailsEditorProvider).discardChanges();
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        _SaveButton(itemId: item.id),
+        ListenableBuilder(
+          listenable: _controller,
+          builder: (_, __) {
+            return FilledProgressButton(
+              onPressed: _controller.saveChanges,
+              isLoading: _isLoading,
+              child: const Text('Save'),
+            );
+          },
+        ),
       ],
       clipBehavior: Clip.antiAlias,
       title: Text(
-        '#${item.number} ${item.name}',
+        '#${widget.item.number} ${widget.item.name}',
         style: Theme.of(context).textTheme.titleLarge,
       ),
       content: Container(
@@ -40,32 +66,15 @@ class ItemDetailsDialog extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(16),
-              child: ItemDetails(item: item, hiddenLocked: hiddenLocked),
+              child: ItemDetails(
+                controller: _controller,
+                item: widget.item,
+                hiddenLocked: widget.hiddenLocked,
+              ),
             ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _SaveButton extends ConsumerWidget {
-  const _SaveButton({required this.itemId});
-
-  final String itemId;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return FilledProgressButton(
-      onPressed: ref.watch(unsavedChangesProvider)
-          ? () {
-              ref
-                  .read(itemDetailsEditorProvider)
-                  .save(itemId)
-                  .then((_) => Navigator.of(context).pop());
-            }
-          : null,
-      child: const Text('Save'),
     );
   }
 }
