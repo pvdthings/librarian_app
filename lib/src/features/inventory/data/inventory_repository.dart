@@ -146,7 +146,7 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
         description: description,
         estimatedValue: estimatedValue,
         hidden: hidden,
-        image: ImageDTO(url: imageUrl));
+        image: image == null ? null : ImageDTO(url: imageUrl));
 
     ref.invalidateSelf();
   }
