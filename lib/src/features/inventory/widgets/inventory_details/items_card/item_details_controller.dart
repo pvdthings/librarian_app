@@ -128,7 +128,6 @@ class ItemDetailsController extends ChangeNotifier {
 
     _discardChanges();
     await _loadItemDetails();
-    notifyListeners();
 
     onSaveComplete?.call();
   }
