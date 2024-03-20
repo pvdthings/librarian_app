@@ -20,7 +20,7 @@ class ThingImageCard extends StatelessWidget {
   final double? width;
   final double? height;
   final void Function()? onRemove;
-  final void Function() onReplace;
+  final void Function()? onReplace;
 
   final bool useNewDesign;
 

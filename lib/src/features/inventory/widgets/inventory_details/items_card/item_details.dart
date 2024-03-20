@@ -21,106 +21,105 @@ class ItemDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        ListenableBuilder(
-          listenable: controller,
-          builder: (context, _) {
-            return ThingImageCard(
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, _) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            ThingImageCard(
               imageUrl: controller.existingImageUrl,
               imageBytes: controller.uploadedImageBytes,
               height: 240,
               onRemove: controller.removeImage,
               onReplace: controller.replaceImage,
               useNewDesign: true,
-            );
-          },
-        ),
-        const SizedBox(height: 32),
-        ListenableBuilder(
-          listenable: controller,
-          builder: (context, _) {
-            final checkbox = CheckboxField(
-              title: 'Hide in Catalog',
-              value: controller.hiddenNotifier.value,
-              onChanged: hiddenLocked
-                  ? null
-                  : (value) {
-                      controller.hiddenNotifier.value = value ?? false;
-                    },
-            );
+            ),
+            const SizedBox(height: 32),
+            Builder(
+              builder: (context) {
+                final checkbox = CheckboxField(
+                  title: 'Hide in Catalog',
+                  value: controller.hiddenNotifier.value,
+                  onChanged: hiddenLocked
+                      ? null
+                      : (value) {
+                          controller.hiddenNotifier.value = value ?? false;
+                        },
+                );
 
-            if (!hiddenLocked) {
-              return checkbox;
-            }
+                if (!hiddenLocked) {
+                  return checkbox;
+                }
 
-            return Tooltip(
-              message: 'Unable to unhide because the thing is hidden.',
-              child: checkbox,
-            );
-          },
-        ),
-        const SizedBox(height: 32),
-        TextFormField(
-          controller: controller.brandController,
-          decoration: inputDecoration.copyWith(
-            labelText: 'Brand',
-            hintText: 'Generic',
-          ),
-        ),
-        const SizedBox(height: 16),
-        TextFormField(
-          controller: controller.descriptionController,
-          decoration: inputDecoration.copyWith(labelText: 'Description'),
-        ),
-        const SizedBox(height: 16),
-        TextFormField(
-          controller: controller.estimatedValueController,
-          decoration: inputDecoration.copyWith(
-            labelText: 'Estimated Value (\$)',
-            prefixText: '\$ ',
-          ),
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          keyboardType: TextInputType.number,
-        ),
-        const SizedBox(height: 16),
-        ListenableBuilder(
-          listenable: controller,
-          builder: (context, _) {
-            return DropdownButtonFormField(
+                return Tooltip(
+                  message: 'Unable to unhide because the thing is hidden.',
+                  child: checkbox,
+                );
+              },
+            ),
+            const SizedBox(height: 32),
+            TextFormField(
+              controller: controller.brandController,
+              decoration: inputDecoration.copyWith(
+                labelText: 'Brand',
+                hintText: 'Generic',
+              ),
+              enabled: !controller.isLoading,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: controller.descriptionController,
+              decoration: inputDecoration.copyWith(labelText: 'Description'),
+              enabled: !controller.isLoading,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: controller.estimatedValueController,
+              decoration: inputDecoration.copyWith(
+                labelText: 'Estimated Value (\$)',
+                prefixText: '\$ ',
+              ),
+              enabled: !controller.isLoading,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType: TextInputType.number,
+            ),
+            const SizedBox(height: 16),
+            DropdownButtonFormField<String?>(
               decoration: inputDecoration.copyWith(labelText: 'Condition'),
-              items: const [
-                DropdownMenuItem(
-                  value: null,
-                  child: Text('None'),
-                ),
-                DropdownMenuItem(
-                  value: 'Like New',
-                  child: Text('Like New'),
-                ),
-                DropdownMenuItem(
-                  value: 'Lightly Used',
-                  child: Text('Lightly Used'),
-                ),
-                DropdownMenuItem(
-                  value: 'Heavily Used',
-                  child: Text('Heavily Used'),
-                ),
-                DropdownMenuItem(
-                  value: 'Damaged',
-                  child: Text('Damaged'),
-                ),
-              ],
+              items: controller.isLoading
+                  ? null
+                  : const [
+                      DropdownMenuItem(
+                        value: null,
+                        child: Text('None'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'Like New',
+                        child: Text('Like New'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'Lightly Used',
+                        child: Text('Lightly Used'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'Heavily Used',
+                        child: Text('Heavily Used'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'Damaged',
+                        child: Text('Damaged'),
+                      ),
+                    ],
               onChanged: (value) {
                 controller.conditionNotifier.value = value;
               },
               value: controller.conditionNotifier.value,
-            );
-          },
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -35,10 +35,12 @@ class ItemDetailsController extends ChangeNotifier {
   late ValueNotifier<String?> conditionNotifier = ValueNotifier(null)
     ..addListener(notifyListeners);
 
-  bool _isLoading = false;
+  bool isLoading = false;
 
   Future<void> _loadItemDetails() async {
-    _isLoading = true;
+    isLoading = true;
+    notifyListeners();
+
     item = await repository?.getItem(number: item!.number);
 
     hiddenNotifier.value = (item?.hidden ?? false);
@@ -60,7 +62,8 @@ class ItemDetailsController extends ChangeNotifier {
       conditionNotifier.value = item!.condition!;
     }
 
-    _isLoading = false;
+    isLoading = false;
+    notifyListeners();
   }
 
   bool _removeExistingImage = false;
@@ -73,7 +76,7 @@ class ItemDetailsController extends ChangeNotifier {
   String? get existingImageUrl =>
       _removeExistingImage ? null : item?.imageUrls.firstOrNull;
 
-  void replaceImage() async {
+  void _replaceImage() async {
     FilePickerResult? result =
         await FilePickerWeb.platform.pickFiles(type: FileType.image);
 
@@ -82,6 +85,14 @@ class ItemDetailsController extends ChangeNotifier {
       _uploadedImageType = result.files.single.extension;
       notifyListeners();
     }
+  }
+
+  void Function()? get replaceImage {
+    if (isLoading) {
+      return null;
+    }
+
+    return _replaceImage;
   }
 
   void _removeImage() {
@@ -144,7 +155,7 @@ class ItemDetailsController extends ChangeNotifier {
   }
 
   void Function()? get saveChanges {
-    if (_isLoading || item == null || repository == null) {
+    if (isLoading || item == null || repository == null) {
       return null;
     }
 
