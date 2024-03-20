@@ -161,7 +161,7 @@ class _ImageServiceWrapper {
   static final _service = ImageService();
 
   Future<String?> uploadImage(UpdatedImageModel? image) async {
-    if (image?.bytes == null) {
+    if (image?.bytes == null || kDebugMode) {
       return null;
     }
 
