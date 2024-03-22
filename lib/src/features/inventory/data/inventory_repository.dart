@@ -10,6 +10,8 @@ import '../models/item_model.dart';
 import '../models/thing_model.dart';
 
 class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
+  final imageService = _ImageServiceWrapper();
+
   @override
   Future<List<ThingModel>> build() async => await getThings();
 
@@ -134,20 +136,40 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
     String? condition,
     double? estimatedValue,
     bool? hidden,
+    UpdatedImageModel? image,
   }) async {
-    await LendingApi.updateInventoryItem(
-      id,
-      brand: brand,
-      condition: condition,
-      description: description,
-      estimatedValue: estimatedValue,
-      hidden: hidden,
-    );
+    final imageUrl = await imageService.uploadImage(image);
+
+    await LendingApi.updateInventoryItem(id,
+        brand: brand,
+        condition: condition,
+        description: description,
+        estimatedValue: estimatedValue,
+        hidden: hidden,
+        image: image == null ? null : ImageDTO(url: imageUrl));
+
     ref.invalidateSelf();
   }
 
   Future<void> deleteItem(String id) async {
     await LendingApi.deleteInventoryItem(id);
     ref.invalidateSelf();
+  }
+}
+
+class _ImageServiceWrapper {
+  static final _service = ImageService();
+
+  Future<String?> uploadImage(UpdatedImageModel? image) async {
+    if (image?.bytes == null || kDebugMode) {
+      return null;
+    }
+
+    final result = await _service.uploadImage(
+      bytes: image!.bytes!,
+      type: image.type!,
+    );
+
+    return result.url;
   }
 }

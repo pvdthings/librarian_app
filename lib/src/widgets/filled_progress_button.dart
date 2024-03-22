@@ -6,17 +6,19 @@ class FilledProgressButton extends StatefulWidget {
     super.key,
     required this.child,
     required this.onPressed,
+    this.isLoading,
   });
 
   final Widget child;
   final void Function()? onPressed;
+  final bool? isLoading;
 
   @override
   State<FilledProgressButton> createState() => _FilledProgressButtonState();
 }
 
 class _FilledProgressButtonState extends State<FilledProgressButton> {
-  bool _isLoading = false;
+  late bool _isLoading = widget.isLoading ?? false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,9 @@ class _FilledProgressButtonState extends State<FilledProgressButton> {
       onPressed: widget.onPressed == null
           ? null
           : () {
-              setState(() => _isLoading = true);
+              if (widget.isLoading == null) {
+                setState(() => _isLoading = true);
+              }
               widget.onPressed?.call();
             },
       child: widget.child,

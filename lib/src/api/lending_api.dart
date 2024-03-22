@@ -143,6 +143,7 @@ class LendingApi {
     String? description,
     double? estimatedValue,
     bool? hidden,
+    ImageDTO? image,
   }) async {
     return await DioClient.instance.patch('/inventory/$id', data: {
       'brand': brand,
@@ -150,6 +151,7 @@ class LendingApi {
       'description': description,
       'estimatedValue': estimatedValue,
       'hidden': hidden,
+      'image': image != null ? {'url': image.url} : null,
     });
   }
 

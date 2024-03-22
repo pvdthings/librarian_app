@@ -6,6 +6,7 @@ class ItemModel {
     required this.available,
     required this.hidden,
     required this.totalLoans,
+    required this.imageUrls,
     this.brand,
     this.condition,
     this.description,
@@ -22,6 +23,7 @@ class ItemModel {
   final bool available;
   final bool hidden;
   final int totalLoans;
+  final List<String> imageUrls;
 
   factory ItemModel.fromJson(Map<String, dynamic> json) {
     return ItemModel(
@@ -35,6 +37,7 @@ class ItemModel {
       brand: json['brand'] as String?,
       condition: json['condition'] as String?,
       estimatedValue: json['estimatedValue'] as double?,
+      imageUrls: (json['images'] as List).cast<String>(),
     );
   }
 }
