@@ -3,6 +3,7 @@ import 'package:librarian_app/src/features/borrowers/models/borrower_model.dart'
 import 'package:librarian_app/src/widgets/detail.dart';
 import 'package:librarian_app/src/features/loans/models/thing_summary_model.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
+import 'package:librarian_app/src/widgets/no_image.dart';
 
 class LoanDetails extends StatelessWidget {
   const LoanDetails({
@@ -178,12 +179,8 @@ class _ThingImage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (urls.isEmpty) {
       return const Center(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [Icon(Icons.image), Text('No image')],
-      ));
+        child: NoImage(),
+      );
     }
     return Image.network(
       urls[0],

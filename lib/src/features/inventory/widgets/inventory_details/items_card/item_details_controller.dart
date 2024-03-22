@@ -158,17 +158,21 @@ class ItemDetailsController extends ChangeNotifier {
       return null;
     }
 
-    if (_uploadedImageBytes != null ||
+    if (hasUnsavedChanges) {
+      return _saveChanges;
+    }
+
+    return null;
+  }
+
+  bool get hasUnsavedChanges {
+    return _uploadedImageBytes != null ||
         hiddenNotifier.value != (item?.hidden ?? false) ||
         brandController.text != (item?.brand ?? '') ||
         descriptionController.text != (item?.description ?? '') ||
         estimatedValueController.text !=
             (formatNumber(item?.estimatedValue) ?? '') ||
         conditionNotifier.value != item?.condition ||
-        _removeExistingImage) {
-      return _saveChanges;
-    }
-
-    return null;
+        _removeExistingImage;
   }
 }
