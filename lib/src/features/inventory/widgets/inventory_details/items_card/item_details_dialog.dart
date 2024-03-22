@@ -21,16 +21,26 @@ class ItemDetailsDialog extends ConsumerStatefulWidget {
 }
 
 class _ItemDetailsDialogState extends ConsumerState<ItemDetailsDialog> {
-  late final _controller = ItemDetailsController(
-    item: widget.item,
-    repository: ref.read(thingsRepositoryProvider.notifier),
-    onSave: () {
-      setState(() => _isLoading = true);
-    },
-    onSaveComplete: () {
-      setState(() => _isLoading = false);
-    },
-  );
+  late ItemDetailsController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = createController();
+  }
+
+  ItemDetailsController createController() {
+    return ItemDetailsController(
+      item: widget.item,
+      repository: ref.read(thingsRepositoryProvider.notifier),
+      onSave: () {
+        setState(() => _isLoading = true);
+      },
+      onSaveComplete: () {
+        setState(() => _isLoading = false);
+      },
+    );
+  }
 
   bool _isLoading = false;
 
@@ -39,9 +49,24 @@ class _ItemDetailsDialogState extends ConsumerState<ItemDetailsDialog> {
     return AlertDialog(
       scrollable: true,
       actions: [
-        OutlinedButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+        ListenableBuilder(
+          listenable: _controller,
+          builder: (context, child) {
+            if (!_controller.hasUnsavedChanges) {
+              return child!;
+            }
+
+            return OutlinedButton(
+              onPressed: () {
+                setState(() => _controller = createController());
+              },
+              child: const Text('Discard'),
+            );
+          },
+          child: OutlinedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
         ),
         ListenableBuilder(
           listenable: _controller,

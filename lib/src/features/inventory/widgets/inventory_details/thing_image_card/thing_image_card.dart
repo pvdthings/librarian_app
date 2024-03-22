@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
+import 'package:librarian_app/src/widgets/no_image.dart';
 
 class ThingImageCard extends StatelessWidget {
   const ThingImageCard({
@@ -20,7 +21,7 @@ class ThingImageCard extends StatelessWidget {
   final double? width;
   final double? height;
   final void Function()? onRemove;
-  final void Function() onReplace;
+  final void Function()? onReplace;
 
   final bool useNewDesign;
 
@@ -43,7 +44,7 @@ class ThingImageCard extends StatelessWidget {
             : SizedBox(
                 width: width,
                 height: height,
-                child: const Center(child: Text('No image')),
+                child: const Center(child: NoImage()),
               );
 
     if (useNewDesign) {
