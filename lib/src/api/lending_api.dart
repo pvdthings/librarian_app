@@ -124,15 +124,23 @@ class LendingApi {
     String thingId, {
     required int quantity,
     required String? brand,
+    String? condition,
     required String? description,
     required double? estimatedValue,
+    bool? hidden,
+    ImageDTO? image,
   }) async {
     return await DioClient.instance.put('/inventory', data: {
       'thingId': thingId,
       'quantity': quantity,
       'brand': brand,
+      'condition': condition,
       'description': description,
       'estimatedValue': estimatedValue,
+      'hidden': hidden,
+      'image': {
+        'url': image?.url,
+      },
     });
   }
 
