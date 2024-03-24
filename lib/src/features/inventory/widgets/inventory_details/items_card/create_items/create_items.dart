@@ -27,7 +27,7 @@ class CreateItems extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             FractionallySizedBox(
-              widthFactor: 0.3,
+              widthFactor: 0.4,
               child: TextFormField(
                 controller: controller.quantityController,
                 decoration: inputDecoration.copyWith(
