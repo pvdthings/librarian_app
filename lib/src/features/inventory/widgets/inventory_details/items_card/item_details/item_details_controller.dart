@@ -7,7 +7,7 @@ import 'package:librarian_app/src/features/inventory/data/inventory_repository.d
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
 import 'package:librarian_app/src/utils/format.dart';
 
-import '../../../models/item_model.dart';
+import '../../../../models/item_model.dart';
 
 class ItemDetailsController extends ChangeNotifier {
   ItemDetailsController({

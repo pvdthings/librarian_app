@@ -2,6 +2,7 @@ import 'package:file_picker/_internal/file_picker_web.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/create_items/create_items_dialog.dart';
 import 'package:librarian_app/src/widgets/fields/checkbox_field.dart';
 import 'package:librarian_app/src/widgets/input_decoration.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
@@ -10,9 +11,8 @@ import 'package:librarian_app/src/features/inventory/providers/edited_thing_deta
 import 'package:librarian_app/src/features/inventory/providers/selected_thing_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/thing_details_provider.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
-import 'package:librarian_app/src/features/inventory/widgets/dialogs/add_inventory_dialog.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/categories_card.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details_dialog.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details/item_details_dialog.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/items_card.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/thing_image_card/thing_image_card.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
@@ -122,18 +122,8 @@ class InventoryDetails extends ConsumerWidget {
               onAddItemsPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AddInventoryDialog(
-                    onCreate: (String? brand, String? description,
-                        double? estimatedValue, int quantity) async {
-                      await ref
-                          .read(thingsRepositoryProvider.notifier)
-                          .createItems(
-                              thingId: ref.read(selectedThingProvider)!.id,
-                              brand: brand,
-                              description: description,
-                              estimatedValue: estimatedValue,
-                              quantity: quantity);
-                    },
+                  builder: (context) => CreateItemsDialog(
+                    thing: ref.read(selectedThingProvider)!,
                   ),
                 );
               },
