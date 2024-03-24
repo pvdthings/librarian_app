@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory_repository.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
 
-import '../../../models/thing_model.dart';
+import '../../../../models/thing_model.dart';
 
 class CreateItemsController extends ChangeNotifier {
   CreateItemsController({

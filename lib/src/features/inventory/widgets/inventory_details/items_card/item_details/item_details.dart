@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:librarian_app/src/features/inventory/models/thing_model.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/create_items_controller.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details/item_details_controller.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/thing_image_card/thing_image_card.dart';
 import 'package:librarian_app/src/widgets/fields/checkbox_field.dart';
 import 'package:librarian_app/src/widgets/input_decoration.dart';
+import 'package:librarian_app/src/features/inventory/models/item_model.dart';
 
-class CreateItems extends ConsumerWidget {
-  const CreateItems({
+class ItemDetails extends ConsumerWidget {
+  const ItemDetails({
     super.key,
     required this.controller,
-    required this.thing,
+    required this.item,
+    required this.hiddenLocked,
   });
 
-  final CreateItemsController controller;
-  final ThingModel thing;
+  final ItemDetailsController controller;
+  final ItemModel item;
+  final bool hiddenLocked;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,46 +25,38 @@ class CreateItems extends ConsumerWidget {
       listenable: controller,
       builder: (context, _) {
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.max,
           children: [
-            FractionallySizedBox(
-              widthFactor: 0.3,
-              child: TextFormField(
-                controller: controller.quantityController,
-                decoration: inputDecoration.copyWith(
-                  prefixIcon: const Icon(Icons.numbers),
-                  labelText: 'Quantity',
-                ),
-                enabled: !controller.isLoading,
-                keyboardType: const TextInputType.numberWithOptions(),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                    RegExp(r'^0+'),
-                    replacementString: '1',
-                  ),
-                  FilteringTextInputFormatter.singleLineFormatter,
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-              ),
+            ThingImageCard(
+              imageUrl: controller.existingImageUrl,
+              imageBytes: controller.uploadedImageBytes,
+              height: 240,
+              onRemove: controller.removeImage,
+              onReplace: controller.replaceImage,
+              useNewDesign: true,
             ),
             const SizedBox(height: 32),
-            FractionallySizedBox(
-              widthFactor: 1,
-              child: ThingImageCard(
-                imageBytes: controller.uploadedImageBytes,
-                height: 240,
-                onRemove: controller.removeImage,
-                onReplace: controller.replaceImage,
-                useNewDesign: true,
-              ),
-            ),
-            const SizedBox(height: 32),
-            CheckboxField(
-              title: 'Hide in Catalog',
-              value: controller.hiddenNotifier.value,
-              onChanged: (value) {
-                controller.hiddenNotifier.value = value ?? false;
+            Builder(
+              builder: (context) {
+                final checkbox = CheckboxField(
+                  title: 'Hide in Catalog',
+                  value: controller.hiddenNotifier.value,
+                  onChanged: hiddenLocked
+                      ? null
+                      : (value) {
+                          controller.hiddenNotifier.value = value ?? false;
+                        },
+                );
+
+                if (!hiddenLocked) {
+                  return checkbox;
+                }
+
+                return Tooltip(
+                  message: 'Unable to unhide because the thing is hidden.',
+                  child: checkbox,
+                );
               },
             ),
             const SizedBox(height: 32),
