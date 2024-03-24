@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/inventory/providers/things_repository_provider.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details.dart';
-import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items_card/item_details_controller.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items/item_details/item_details.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items/item_details/item_details_controller.dart';
 
 import '../models/item_model.dart';
 

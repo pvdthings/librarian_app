@@ -116,15 +116,23 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
     required String thingId,
     required int quantity,
     required String? brand,
+    required String? condition,
     required String? description,
     required double? estimatedValue,
+    required bool? hidden,
+    required UpdatedImageModel? image,
   }) async {
+    final imageUrl = await imageService.uploadImage(image);
+
     await LendingApi.createInventoryItems(
       thingId,
       quantity: quantity,
       brand: brand,
+      condition: condition,
       description: description,
       estimatedValue: estimatedValue,
+      hidden: hidden,
+      image: image == null ? null : ImageDTO(url: imageUrl),
     );
     ref.invalidateSelf();
   }
