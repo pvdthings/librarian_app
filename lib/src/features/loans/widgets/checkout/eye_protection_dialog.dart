@@ -11,7 +11,7 @@ class EyeProtectionDialog extends StatelessWidget {
         color: Colors.amber,
       ),
       title: const Text('Eye Protection Required'),
-      content: const Text('Please add eye protection to this loan.'),
+      content: const Text('Make sure to add eye protection to this loan.'),
       actions: [
         FilledButton(
           onPressed: () {
