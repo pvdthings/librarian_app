@@ -5,6 +5,7 @@ class ItemModel {
     required this.name,
     required this.available,
     required this.hidden,
+    required this.eyeProtection,
     required this.totalLoans,
     required this.imageUrls,
     this.brand,
@@ -22,6 +23,7 @@ class ItemModel {
   final double? estimatedValue;
   final bool available;
   final bool hidden;
+  final bool eyeProtection;
   final int totalLoans;
   final List<String> imageUrls;
 
@@ -37,6 +39,7 @@ class ItemModel {
       brand: json['brand'] as String?,
       condition: json['condition'] as String?,
       estimatedValue: json['estimatedValue'] as double?,
+      eyeProtection: json['eyeProtection'] as bool,
       imageUrls: (json['images'] as List).cast<String>(),
     );
   }
