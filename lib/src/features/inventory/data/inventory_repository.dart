@@ -67,6 +67,7 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
     String? name,
     String? spanishName,
     bool? hidden,
+    bool? eyeProtection,
     List<String>? categories,
     UpdatedImageModel? image,
   }) async {
@@ -83,6 +84,7 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
       name: name,
       spanishName: spanishName,
       hidden: hidden,
+      eyeProtection: eyeProtection,
       image: await _convert(image),
     );
 
