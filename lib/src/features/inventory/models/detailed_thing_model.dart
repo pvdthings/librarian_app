@@ -10,6 +10,7 @@ class DetailedThingModel {
     required this.images,
     required this.items,
     required this.hidden,
+    required this.eyeProtection,
     required this.stock,
     required this.available,
     this.spanishName,
@@ -19,6 +20,7 @@ class DetailedThingModel {
   final String name;
   final String? spanishName;
   final bool hidden;
+  final bool eyeProtection;
   final int stock;
   final int available;
   final List<String> categories;
@@ -31,6 +33,7 @@ class DetailedThingModel {
       name: json['name'] as String,
       spanishName: json['name_es'] as String?,
       hidden: json['hidden'] as bool,
+      eyeProtection: json['eyeProtection'] as bool,
       stock: json['stock'] as int,
       available: json['available'] as int,
       categories: (json['categories'] as List).cast<String>(),
