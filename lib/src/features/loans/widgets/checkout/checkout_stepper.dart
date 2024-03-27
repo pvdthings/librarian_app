@@ -6,6 +6,7 @@ import 'package:librarian_app/src/features/borrowers/widgets/borrower_details/bo
 import 'package:librarian_app/src/features/borrowers/widgets/borrower_search_delegate.dart';
 import 'package:librarian_app/src/features/loans/pages/loan_details_page.dart';
 import 'package:librarian_app/src/features/loans/providers/loans_controller_provider.dart';
+import 'package:librarian_app/src/features/loans/widgets/checkout/eye_protection_dialog.dart';
 import 'package:librarian_app/src/utils/media_query.dart';
 import 'package:librarian_app/src/widgets/filled_progress_button.dart';
 import 'package:librarian_app/src/features/inventory/models/item_model.dart';
@@ -26,6 +27,8 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
   int _index = 0;
   BorrowerModel? _borrower;
   DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
+
+  bool _didPromptForEyeProtection = false;
 
   final List<ItemModel> _things = [];
 
@@ -160,6 +163,13 @@ class _CheckoutStepperState extends ConsumerState<CheckoutStepper> {
                   context: context,
                   onMatchFound: (thing) {
                     setState(() => _things.add(thing));
+
+                    if (thing.eyeProtection && !_didPromptForEyeProtection) {
+                      showDialog(
+                          context: context,
+                          builder: (_) => const EyeProtectionDialog());
+                      _didPromptForEyeProtection = true;
+                    }
                   },
                   repository: ref.read(thingsRepositoryProvider.notifier),
                 ),

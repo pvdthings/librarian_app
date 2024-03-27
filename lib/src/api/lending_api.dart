@@ -89,12 +89,14 @@ class LendingApi {
     String? name,
     String? spanishName,
     bool? hidden,
+    bool? eyeProtection,
     ImageDTO? image,
   }) async {
     return await DioClient.instance.patch('/things/$thingId', data: {
       'name': name,
       'spanishName': spanishName,
       'hidden': hidden,
+      'eyeProtection': eyeProtection,
       'image': image != null ? {'url': image.url} : null,
     });
   }

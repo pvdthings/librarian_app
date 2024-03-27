@@ -64,6 +64,7 @@ class InventoryDetails extends ConsumerWidget {
                   },
                 ),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextField(
                       controller: TextEditingController(text: details.name),
@@ -80,14 +81,26 @@ class InventoryDetails extends ConsumerWidget {
                       onChanged: (value) =>
                           ref.read(spanishNameProvider.notifier).state = value,
                     ),
+                    const SizedBox(height: 32),
+                    CheckboxField(
+                      title: 'Hidden',
+                      value: ref.watch(hiddenProvider) ?? details.hidden,
+                      onChanged: (bool? value) {
+                        ref.read(hiddenProvider.notifier).state =
+                            value ?? false;
+                      },
+                    ),
+                    const SizedBox(height: 32),
+                    CheckboxField(
+                      title: 'Eye Protection Required',
+                      value: ref.watch(eyeProtectionProvider) ??
+                          details.eyeProtection,
+                      onChanged: (bool? value) {
+                        ref.read(eyeProtectionProvider.notifier).state =
+                            value ?? false;
+                      },
+                    ),
                   ],
-                ),
-                CheckboxField(
-                  title: 'Hidden',
-                  value: ref.watch(hiddenProvider) ?? details.hidden,
-                  onChanged: (bool? value) {
-                    ref.read(hiddenProvider.notifier).state = value ?? false;
-                  },
                 ),
               ],
             ),
