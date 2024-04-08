@@ -154,6 +154,7 @@ class LendingApi {
     double? estimatedValue,
     bool? hidden,
     ImageDTO? image,
+    List<ImageDTO>? manuals,
   }) async {
     return await DioClient.instance.patch('/inventory/$id', data: {
       'brand': brand,
@@ -162,6 +163,7 @@ class LendingApi {
       'estimatedValue': estimatedValue,
       'hidden': hidden,
       'image': image != null ? {'url': image.url} : null,
+      'manuals': manuals?.map((m) => {'url': m.url, 'filename': m.name}),
     });
   }
 
@@ -192,9 +194,10 @@ class LendingApi {
 }
 
 class ImageDTO {
+  final String? name;
   final String? url;
 
-  const ImageDTO({required this.url});
+  const ImageDTO({required this.url, this.name});
 }
 
 class NewLoan {

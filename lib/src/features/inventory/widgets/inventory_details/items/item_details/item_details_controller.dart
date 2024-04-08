@@ -3,8 +3,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:librarian_app/src/core/file_data.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory_repository.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items/item_manuals_card.dart';
 import 'package:librarian_app/src/utils/format.dart';
 
 import '../../../../models/item_model.dart';
@@ -34,6 +36,10 @@ class ItemDetailsController extends ChangeNotifier {
     ..addListener(notifyListeners);
   late ValueNotifier<String?> conditionNotifier = ValueNotifier(null)
     ..addListener(notifyListeners);
+  late ValueNotifier<List<ManualData>> manualsNotifier = ValueNotifier([])
+    ..addListener(notifyListeners);
+
+  late List<ManualData> _originalManuals = [];
 
   bool isLoading = false;
 
@@ -62,27 +68,57 @@ class ItemDetailsController extends ChangeNotifier {
       conditionNotifier.value = item!.condition!;
     }
 
+    if (item != null) {
+      final manualData = item!.manuals
+          .map((m) => ManualData(name: m.filename, url: m.url))
+          .toList();
+      _originalManuals = manualData;
+      manualsNotifier.value = manualData;
+    }
+
     isLoading = false;
     notifyListeners();
   }
 
   bool _removeExistingImage = false;
 
-  Uint8List? _uploadedImageBytes;
-  String? _uploadedImageType;
-
-  Uint8List? get uploadedImageBytes => _uploadedImageBytes;
+  FileData? _uploadedImage;
+  Uint8List? get uploadedImageBytes => _uploadedImage?.bytes;
 
   String? get existingImageUrl =>
       _removeExistingImage ? null : item?.imageUrls.firstOrNull;
 
-  void _replaceImage() async {
+  Future<FileData?> _pickImageFile() async {
     FilePickerResult? result =
         await FilePickerWeb.platform.pickFiles(type: FileType.image);
+    return result == null
+        ? null
+        : FileData(
+            name: result.files.single.name,
+            bytes: result.files.single.bytes!,
+            type: result.files.single.extension!,
+          );
+  }
 
-    if (result != null) {
-      _uploadedImageBytes = result.files.single.bytes;
-      _uploadedImageType = result.files.single.extension;
+  Future<FileData?> _pickDocumentFile() async {
+    FilePickerResult? result = await FilePickerWeb.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    return result == null
+        ? null
+        : FileData(
+            name: result.files.single.name,
+            bytes: result.files.single.bytes!,
+            type: 'application/pdf',
+          );
+  }
+
+  void _replaceImage() async {
+    final file = await _pickImageFile();
+
+    if (file != null) {
+      _uploadedImage = file;
       notifyListeners();
     }
   }
@@ -100,13 +136,28 @@ class ItemDetailsController extends ChangeNotifier {
       _removeExistingImage = true;
     }
 
-    _uploadedImageBytes = null;
-    _uploadedImageType = null;
+    _uploadedImage = null;
     notifyListeners();
   }
 
+  void addManual() async {
+    final file = await _pickDocumentFile();
+    if (file == null) {
+      return;
+    }
+
+    final existing = manualsNotifier.value;
+    manualsNotifier.value = [...existing, ManualData.fromFile(file)];
+  }
+
+  void removeManual(int index) {
+    final existing = manualsNotifier.value;
+    existing.removeAt(index);
+    manualsNotifier.value = [...existing];
+  }
+
   void Function()? get removeImage {
-    if (existingImageUrl == null && _uploadedImageBytes == null) {
+    if (existingImageUrl == null && _uploadedImage == null) {
       return null;
     }
 
@@ -118,13 +169,23 @@ class ItemDetailsController extends ChangeNotifier {
 
     final estimatedValue = double.tryParse(estimatedValueController.text);
 
-    await repository?.updateItem(item!.id,
-        brand: brandController.text,
-        description: descriptionController.text,
-        condition: conditionNotifier.value,
-        estimatedValue: estimatedValue,
-        hidden: hiddenNotifier.value,
-        image: createUpdatedImageModel());
+    await repository?.updateItem(
+      item!.id,
+      brand: brandController.text,
+      description: descriptionController.text,
+      condition: conditionNotifier.value,
+      estimatedValue: estimatedValue,
+      hidden: hiddenNotifier.value,
+      image: createUpdatedImageModel(),
+      manuals: manualsNotifier.value
+          .map((m) => UpdatedImageModel(
+                type: m.data?.type,
+                bytes: m.data?.bytes,
+                name: m.name,
+                existingUrl: m.url,
+              ))
+          .toList(),
+    );
 
     _discardChanges();
     await _loadItemDetails();
@@ -137,10 +198,10 @@ class ItemDetailsController extends ChangeNotifier {
       return const UpdatedImageModel(type: null, bytes: null);
     }
 
-    if (_uploadedImageBytes != null) {
+    if (_uploadedImage != null) {
       return UpdatedImageModel(
-        type: _uploadedImageType,
-        bytes: _uploadedImageBytes,
+        type: _uploadedImage!.type,
+        bytes: _uploadedImage!.bytes,
       );
     }
 
@@ -148,8 +209,7 @@ class ItemDetailsController extends ChangeNotifier {
   }
 
   void _discardChanges() {
-    _uploadedImageBytes = null;
-    _uploadedImageType = null;
+    _uploadedImage = null;
     _removeExistingImage = false;
   }
 
@@ -166,7 +226,8 @@ class ItemDetailsController extends ChangeNotifier {
   }
 
   bool get hasUnsavedChanges {
-    return _uploadedImageBytes != null ||
+    return _uploadedImage != null ||
+        !listEquals(manualsNotifier.value, _originalManuals) ||
         hiddenNotifier.value != (item?.hidden ?? false) ||
         brandController.text != (item?.brand ?? '') ||
         descriptionController.text != (item?.description ?? '') ||

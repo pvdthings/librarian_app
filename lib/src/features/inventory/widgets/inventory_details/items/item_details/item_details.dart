@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items/item_details/item_details_controller.dart';
+import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items/item_manuals_card.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/thing_image_card/thing_image_card.dart';
 import 'package:librarian_app/src/widgets/fields/checkbox_field.dart';
 import 'package:librarian_app/src/widgets/input_decoration.dart';
@@ -116,6 +117,16 @@ class ItemDetails extends ConsumerWidget {
                 controller.conditionNotifier.value = value;
               },
               value: controller.conditionNotifier.value,
+            ),
+            const SizedBox(height: 32),
+            ItemManualsCard(
+              manuals: controller.manualsNotifier.value,
+              onAdd: () async {
+                controller.addManual();
+              },
+              onRemove: (index) {
+                controller.removeManual(index);
+              },
             ),
           ],
         );
