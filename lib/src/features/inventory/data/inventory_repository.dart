@@ -199,7 +199,6 @@ class _ImageServiceWrapper {
     final result = await _service.uploadImage(
       bytes: image.bytes!,
       type: image.type!,
-      bucket: 'librarian_resources',
       path: image.name,
     );
 
