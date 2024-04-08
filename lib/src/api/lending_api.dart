@@ -163,7 +163,8 @@ class LendingApi {
       'estimatedValue': estimatedValue,
       'hidden': hidden,
       'image': image != null ? {'url': image.url} : null,
-      'manuals': manuals?.map((m) => {'url': m.url, 'filename': m.name}),
+      'manuals':
+          manuals?.map((m) => {'url': m.url, 'filename': m.name}).toList(),
     });
   }
 
