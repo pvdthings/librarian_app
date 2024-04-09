@@ -1,3 +1,5 @@
+import 'manual_model.dart';
+
 class ItemModel {
   ItemModel({
     required this.id,
@@ -8,6 +10,7 @@ class ItemModel {
     required this.eyeProtection,
     required this.totalLoans,
     required this.imageUrls,
+    required this.manuals,
     this.brand,
     this.condition,
     this.description,
@@ -26,6 +29,7 @@ class ItemModel {
   final bool eyeProtection;
   final int totalLoans;
   final List<String> imageUrls;
+  final List<ManualModel> manuals;
 
   factory ItemModel.fromJson(Map<String, dynamic> json) {
     return ItemModel(
@@ -41,6 +45,9 @@ class ItemModel {
       estimatedValue: json['estimatedValue'] as double?,
       eyeProtection: json['eyeProtection'] as bool,
       imageUrls: (json['images'] as List).cast<String>(),
+      manuals: (json['manuals'] as List)
+          .map((m) => ManualModel.fromJson(m))
+          .toList(),
     );
   }
 }

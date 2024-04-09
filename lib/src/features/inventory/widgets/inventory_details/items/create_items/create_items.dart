@@ -7,6 +7,8 @@ import 'package:librarian_app/src/features/inventory/widgets/inventory_details/t
 import 'package:librarian_app/src/widgets/fields/checkbox_field.dart';
 import 'package:librarian_app/src/widgets/input_decoration.dart';
 
+import '../item_manuals_card.dart';
+
 class CreateItems extends ConsumerWidget {
   const CreateItems({
     super.key,
@@ -122,6 +124,16 @@ class CreateItems extends ConsumerWidget {
                 controller.conditionNotifier.value = value;
               },
               value: controller.conditionNotifier.value,
+            ),
+            const SizedBox(height: 32),
+            ItemManualsCard(
+              manuals: controller.manualsNotifier.value,
+              onAdd: () async {
+                controller.addManual();
+              },
+              onRemove: (index) {
+                controller.removeManual(index);
+              },
             ),
           ],
         );

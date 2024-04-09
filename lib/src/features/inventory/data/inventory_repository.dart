@@ -123,8 +123,13 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
     required double? estimatedValue,
     required bool? hidden,
     required UpdatedImageModel? image,
+    List<UpdatedImageModel>? manuals,
   }) async {
     final imageUrl = await imageService.uploadImage(image);
+
+    final manualDTOs = manuals == null || kDebugMode
+        ? null
+        : await Future.wait(manuals.map((m) => imageService.uploadImageDTO(m)));
 
     await LendingApi.createInventoryItems(
       thingId,
@@ -135,6 +140,7 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
       estimatedValue: estimatedValue,
       hidden: hidden,
       image: image == null ? null : ImageDTO(url: imageUrl),
+      manuals: manualDTOs,
     );
     ref.invalidateSelf();
   }
@@ -147,16 +153,24 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
     double? estimatedValue,
     bool? hidden,
     UpdatedImageModel? image,
+    List<UpdatedImageModel>? manuals,
   }) async {
     final imageUrl = await imageService.uploadImage(image);
 
-    await LendingApi.updateInventoryItem(id,
-        brand: brand,
-        condition: condition,
-        description: description,
-        estimatedValue: estimatedValue,
-        hidden: hidden,
-        image: image == null ? null : ImageDTO(url: imageUrl));
+    final manualDTOs = manuals == null || kDebugMode
+        ? null
+        : await Future.wait(manuals.map((m) => imageService.uploadImageDTO(m)));
+
+    await LendingApi.updateInventoryItem(
+      id,
+      brand: brand,
+      condition: condition,
+      description: description,
+      estimatedValue: estimatedValue,
+      hidden: hidden,
+      image: image == null ? null : ImageDTO(url: imageUrl),
+      manuals: manualDTOs,
+    );
 
     ref.invalidateSelf();
   }
@@ -181,5 +195,19 @@ class _ImageServiceWrapper {
     );
 
     return result.url;
+  }
+
+  Future<ImageDTO> uploadImageDTO(UpdatedImageModel image) async {
+    if (image.existingUrl != null) {
+      return ImageDTO(url: image.existingUrl, name: image.name);
+    }
+
+    final result = await _service.uploadImage(
+      bytes: image.bytes!,
+      type: image.type!,
+      path: image.name,
+    );
+
+    return ImageDTO(url: result.url, name: image.name);
   }
 }

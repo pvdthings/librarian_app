@@ -86,18 +86,13 @@ class _ItemDetailsDialogState extends ConsumerState<ItemDetailsDialog> {
       ),
       content: Container(
         constraints: const BoxConstraints(minWidth: 500),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: ItemDetails(
-                controller: _controller,
-                item: widget.item,
-                hiddenLocked: widget.hiddenLocked,
-              ),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: ItemDetails(
+            controller: _controller,
+            item: widget.item,
+            hiddenLocked: widget.hiddenLocked,
+          ),
         ),
       ),
     );
