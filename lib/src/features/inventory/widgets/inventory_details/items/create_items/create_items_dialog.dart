@@ -64,17 +64,12 @@ class _CreateItemsDialogState extends ConsumerState<CreateItemsDialog> {
       title: Text('Create ${widget.thing.name} items'),
       content: Container(
         constraints: const BoxConstraints(minWidth: 500),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: CreateItems(
-                controller: _controller,
-                thing: widget.thing,
-              ),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: CreateItems(
+            controller: _controller,
+            thing: widget.thing,
+          ),
         ),
       ),
     );

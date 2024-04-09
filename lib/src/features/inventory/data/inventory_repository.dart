@@ -123,8 +123,13 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
     required double? estimatedValue,
     required bool? hidden,
     required UpdatedImageModel? image,
+    List<UpdatedImageModel>? manuals,
   }) async {
     final imageUrl = await imageService.uploadImage(image);
+
+    final manualDTOs = manuals == null || kDebugMode
+        ? null
+        : await Future.wait(manuals.map((m) => imageService.uploadImageDTO(m)));
 
     await LendingApi.createInventoryItems(
       thingId,
@@ -135,6 +140,7 @@ class InventoryRepository extends Notifier<Future<List<ThingModel>>> {
       estimatedValue: estimatedValue,
       hidden: hidden,
       image: image == null ? null : ImageDTO(url: imageUrl),
+      manuals: manualDTOs,
     );
     ref.invalidateSelf();
   }
