@@ -1,12 +1,13 @@
-import 'package:file_picker/_internal/file_picker_web.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:librarian_app/src/core/file_data.dart';
+import 'package:librarian_app/src/core/pick_file.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory_repository.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
 
 import '../../../../models/thing_model.dart';
+import '../item_manuals_card.dart';
 
 class CreateItemsController extends ChangeNotifier {
   CreateItemsController({
@@ -39,20 +40,20 @@ class CreateItemsController extends ChangeNotifier {
   late final quantityController = TextEditingController(text: '1')
     ..addListener(notifyListeners);
 
+  late final ValueNotifier<List<ManualData>> manualsNotifier = ValueNotifier([])
+    ..addListener(notifyListeners);
+
   bool isLoading = false;
 
-  Uint8List? _uploadedImageBytes;
-  String? _uploadedImageType;
+  FileData? _uploadedImage;
 
-  Uint8List? get uploadedImageBytes => _uploadedImageBytes;
+  Uint8List? get uploadedImageBytes => _uploadedImage?.bytes;
 
   void _replaceImage() async {
-    FilePickerResult? result =
-        await FilePickerWeb.platform.pickFiles(type: FileType.image);
+    final file = await pickImageFile();
 
-    if (result != null) {
-      _uploadedImageBytes = result.files.single.bytes;
-      _uploadedImageType = result.files.single.extension;
+    if (file != null) {
+      _uploadedImage = file;
       notifyListeners();
     }
   }
@@ -66,17 +67,32 @@ class CreateItemsController extends ChangeNotifier {
   }
 
   void _removeImage() {
-    _uploadedImageBytes = null;
-    _uploadedImageType = null;
+    _uploadedImage = null;
     notifyListeners();
   }
 
   void Function()? get removeImage {
-    if (_uploadedImageBytes == null) {
+    if (_uploadedImage == null) {
       return null;
     }
 
     return _removeImage;
+  }
+
+  void addManual() async {
+    final file = await pickDocumentFile();
+    if (file == null) {
+      return;
+    }
+
+    final existing = manualsNotifier.value;
+    manualsNotifier.value = [...existing, ManualData.fromFile(file)];
+  }
+
+  void removeManual(int index) {
+    final existing = manualsNotifier.value;
+    existing.removeAt(index);
+    manualsNotifier.value = [...existing];
   }
 
   void _saveChanges() async {
@@ -86,28 +102,32 @@ class CreateItemsController extends ChangeNotifier {
     final estimatedValue = double.tryParse(estimatedValueController.text);
 
     await repository?.createItems(
-        thingId: thing.id,
-        quantity: quantity,
-        brand: brandController.text,
-        condition: conditionNotifier.value,
-        description: descriptionController.text,
-        estimatedValue: estimatedValue,
-        hidden: hiddenNotifier.value,
-        image: _uploadedImageBytes != null
-            ? UpdatedImageModel(
-                type: _uploadedImageType,
-                bytes: _uploadedImageBytes,
-              )
-            : null);
+      thingId: thing.id,
+      quantity: quantity,
+      brand: brandController.text,
+      condition: conditionNotifier.value,
+      description: descriptionController.text,
+      estimatedValue: estimatedValue,
+      hidden: hiddenNotifier.value,
+      image: createUpdatedImageModel(),
+      manuals: manualsNotifier.value
+          .map((m) => UpdatedImageModel(
+                type: m.data?.type,
+                bytes: m.data?.bytes,
+                name: m.name,
+              ))
+          .toList(),
+    );
 
     onSaveComplete?.call();
   }
 
   UpdatedImageModel? createUpdatedImageModel() {
-    if (_uploadedImageBytes != null) {
+    if (uploadedImageBytes != null) {
       return UpdatedImageModel(
-        type: _uploadedImageType,
-        bytes: _uploadedImageBytes,
+        type: _uploadedImage!.type,
+        bytes: _uploadedImage!.bytes,
+        name: _uploadedImage!.name,
       );
     }
 

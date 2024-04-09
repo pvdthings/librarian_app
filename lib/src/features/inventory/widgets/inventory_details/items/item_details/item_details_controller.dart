@@ -1,9 +1,8 @@
-import 'package:file_picker/_internal/file_picker_web.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:librarian_app/src/core/file_data.dart';
+import 'package:librarian_app/src/core/pick_file.dart';
 import 'package:librarian_app/src/features/inventory/data/inventory_repository.dart';
 import 'package:librarian_app/src/features/inventory/models/updated_image_model.dart';
 import 'package:librarian_app/src/features/inventory/widgets/inventory_details/items/item_manuals_card.dart';
@@ -88,34 +87,8 @@ class ItemDetailsController extends ChangeNotifier {
   String? get existingImageUrl =>
       _removeExistingImage ? null : item?.imageUrls.firstOrNull;
 
-  Future<FileData?> _pickImageFile() async {
-    FilePickerResult? result =
-        await FilePickerWeb.platform.pickFiles(type: FileType.image);
-    return result == null
-        ? null
-        : FileData(
-            name: result.files.single.name,
-            bytes: result.files.single.bytes!,
-            type: result.files.single.extension!,
-          );
-  }
-
-  Future<FileData?> _pickDocumentFile() async {
-    FilePickerResult? result = await FilePickerWeb.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
-    return result == null
-        ? null
-        : FileData(
-            name: result.files.single.name,
-            bytes: result.files.single.bytes!,
-            type: 'application/pdf',
-          );
-  }
-
   void _replaceImage() async {
-    final file = await _pickImageFile();
+    final file = await pickImageFile();
 
     if (file != null) {
       _uploadedImage = file;
@@ -141,7 +114,7 @@ class ItemDetailsController extends ChangeNotifier {
   }
 
   void addManual() async {
-    final file = await _pickDocumentFile();
+    final file = await pickDocumentFile();
     if (file == null) {
       return;
     }

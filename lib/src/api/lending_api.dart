@@ -131,6 +131,7 @@ class LendingApi {
     required double? estimatedValue,
     bool? hidden,
     ImageDTO? image,
+    List<ImageDTO>? manuals,
   }) async {
     return await DioClient.instance.put('/inventory', data: {
       'thingId': thingId,
@@ -143,6 +144,8 @@ class LendingApi {
       'image': {
         'url': image?.url,
       },
+      'manuals':
+          manuals?.map((m) => {'url': m.url, 'filename': m.name}).toList(),
     });
   }
 
